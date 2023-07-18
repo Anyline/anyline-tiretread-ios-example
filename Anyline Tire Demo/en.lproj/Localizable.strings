@@ -1,0 +1,62 @@
+// Landing View
+"landing.button.start" = "START";
+"landing.button.settings" = "SETTINGS";
+"landing.label.welcome" = "Welcome to the Anyline\nTire Tread Scanner!";
+
+// Settings
+"settings.button.ok" = "OK";
+"settings.button.test_upload" = "TEST UPLOAD";
+"settings.button.test_setup" = "TEST SETUP";
+"settings.button.cancel" = "CANCEL";
+"settings.label.settings" = "Settings";
+"settings.label.use_imperial_system" = "Use Imperial System:";
+"settings.label.license_id" = "License ID:";
+"settings.label.accuraccy_speed" = "Accuracy / Speed: High Speed";
+"settings.label.high_accuracy" = "High Accuracy";
+"settings.label.app_version" = "App Version:";
+"settings.label.device_name" = "Device Name:";
+"settings.label.upload" = "Upload kbps";
+"settings.label.support" = "If you need a license please reach out to";
+"success.title" = "Success!";
+"success.description" = "The SDK has been initialized successfully!";
+
+// Scan
+"scan.button.start" = "Start";
+"scan.button.stop" = "Stop";
+"scan.button.abort" = "Abort";
+"scan.distance.perfect" = "Distance PERFECT";
+"scan.distance.ok" = "Distance OK";
+"scan.distance.bad" = "Distance BAD";
+"scan.distance.decrease" = "Decrease distance";
+"scan.distance.increase" = "Increase distance";
+"scan.distance.set_focus" = "Trying to set the focus point, please focus on the middle of the running surface …";
+
+// Feedback
+"feedback.title" = "Feedback";
+"feedback.button.submit" = "Submit";
+"feedback.button.cancel" = "Cancel";
+
+// Error
+"error.title" = "Error";
+"error.description" = "Something went wrong!, Please try again later";
+"error.invalid_license" = "Your license key is invalid or the server is currently unavailable.";
+"error.key.description" = "Unable to authenticate! Please check if you entered the correct License ID.";
+"error.scan.description" = "The scan was not successful, please try again.\n\nMake sure you do not move the device too fast and keep the right distance.";
+"error.scan.dot.description" = "Unable to set a focus point. Please adjust the distance and the focus on the tire and try again.";
+"error.pdf.description" = "The PDF data is unavailable! Please try again later.";
+"error.pdf.download" = "Unable to save the PDF. Please try again later.";
+"error.feedback.values.description" = "Please fill out all fields.";
+"error.feedback.number.values.description" = "Only numbers are allowed inside the measurement fields.";
+"error.license.missing_key" = "You are missing a license key!";
+"error.camera_permission" = "Camera permission is required.";
+
+// Loading
+"loading.title.waiting" = "Waiting for result...";
+
+// Result
+"result.label.result" = "Result";
+"result.label.details" = "Details";
+"result.label.feedback" = "Feedback";
+
+// Details
+"details.button.download" = "DOWNLOAD";
