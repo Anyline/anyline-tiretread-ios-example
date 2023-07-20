@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "anyline-tiretread-spm-module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Anyline/anyline-tiretread-spm-module",
+      "state" : {
+        "revision" : "b805e64cc1cdc55c3d67d9450c457724741eee3d",
+        "version" : "2.1.0"
+      }
+    },
+    {
       "identity" : "keychain-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/evgenyneu/keychain-swift.git",

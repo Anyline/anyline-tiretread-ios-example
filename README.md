@@ -44,7 +44,7 @@ import AnylineTireTreadSdk
 - Add the following line to your `Podfile`:
 
     ```
-    pod 'AnylineTireTreadSdk'
+    pod 'AnylineTireTreadSdk', '~>2'
     ```
 
 - Run `pod install`.

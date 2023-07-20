@@ -83,7 +83,7 @@ private extension ScanViewController {
     
     private func setupTireTreadScanView() {
 
-        let config = TireTreadScanViewConfig(measurementSystem: UserDefaultsManager.shared.imperialSystem ? .imperial : .metric, useDefaultUi: true)
+        let config = TireTreadScanViewConfig(measurementSystem: UserDefaultsManager.shared.imperialSystem ? .imperial : .metric, useDefaultUi: true, useDefaultHaptic: true)
 
         // creates a TireTreadScannerViewController. You can later refer to it here
         // as self.scannerViewController.
@@ -379,6 +379,15 @@ extension ScanViewController: ErrorViewControllerDelegate {
 }
 
 extension ScanViewController: TireTreadScanViewCallback {
+
+    func onScanAbort(uuid: String?) {
+
+    }
+
+    func onUploadAborted(uuid: String?) {
+
+    }
+
     
     func onFocusFound(uuid: String?) {
         self.playFocusSound()
