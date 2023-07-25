@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		802B90F6296D80EB0017919D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 802B90F5296D80EB0017919D /* Alamofire */; };
+		8C92B7A42A6FC8BA0068EBF5 /* AnylineTireTreadSdk in Frameworks */ = {isa = PBXBuildFile; productRef = 8C92B7A32A6FC8BA0068EBF5 /* AnylineTireTreadSdk */; };
 		A0D1F2412A6181BD00A6146B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43E3FA4296573C400F1D384 /* SceneDelegate.swift */; };
 		A0D1F2422A6181BD00A6146B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43E3FA2296573C400F1D384 /* AppDelegate.swift */; };
 		A0D1F2432A6181D600A6146B /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B9B46E299A46DE00C1CF81 /* UserDefaultsManager.swift */; };
@@ -161,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4B53701298002C5009CAB53 /* KeychainSwift in Frameworks */,
+				8C92B7A42A6FC8BA0068EBF5 /* AnylineTireTreadSdk in Frameworks */,
 				D43E3FFB2966E86200F1D384 /* SnapKit in Frameworks */,
 				802B90F6296D80EB0017919D /* Alamofire in Frameworks */,
 			);
@@ -201,6 +203,13 @@
 				80C8EC8329893F2600873781 /* ScanViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8C92B7A22A6FC8BA0068EBF5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D4084D6429911ADA00A6FB6F /* DataStorage */ = {
@@ -319,6 +328,7 @@
 			children = (
 				D43E3FA1296573C400F1D384 /* Anyline Tire Demo */,
 				D43E3FA0296573C400F1D384 /* Products */,
+				8C92B7A22A6FC8BA0068EBF5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -594,6 +604,7 @@
 				D43E3FFA2966E86200F1D384 /* SnapKit */,
 				802B90F5296D80EB0017919D /* Alamofire */,
 				D4B53700298002C5009CAB53 /* KeychainSwift */,
+				8C92B7A32A6FC8BA0068EBF5 /* AnylineTireTreadSdk */,
 			);
 			productName = "Anyline Tire Demo";
 			productReference = D43E3F9F296573C400F1D384 /* Anyline Tire Demo.app */;
@@ -995,7 +1006,7 @@
 			package = 802B90F4296D80EB0017919D /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		A07622E02A696B5400250387 /* AnylineTireTreadSdk */ = {
+		8C92B7A32A6FC8BA0068EBF5 /* AnylineTireTreadSdk */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A07622DF2A696B5400250387 /* XCRemoteSwiftPackageReference "anyline-tiretread-spm-module" */;
 			productName = AnylineTireTreadSdk;
