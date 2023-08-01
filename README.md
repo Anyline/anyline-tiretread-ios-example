@@ -9,8 +9,7 @@ For more information and additional guidance, please check the
 
 ## Requirements
 
-- Xcode version: 13.0 or later
-- Swift version: 5.0 or later
+- Xcode version: 14.3 or later
 - iOS version: 15.0 or later
 - Dependency manager: Swift Package Manager (Cocoapods also supported)
 
@@ -143,7 +142,7 @@ scan view controller.
 
 ```
 private func setupTireTreadScanView() {
-    let config = TireTreadScanViewConfig(measurementSystem: .metric, useDefaultUi: true)
+    let config = TireTreadScanViewConfig(measurementSystem: .metric, useDefaultUi: true, useDefaultHaptic: false)
     TireTreadScanViewKt.TireTreadScanView(context: self, config: config) { error in
         // Handle initialization error
     }
