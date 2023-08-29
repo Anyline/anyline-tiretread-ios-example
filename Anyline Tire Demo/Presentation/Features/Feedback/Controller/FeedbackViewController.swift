@@ -57,6 +57,26 @@ private extension FeedbackViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         feedbackView.measurementUUIDLabel.text = "Scan ID: \(self.uuid)"
+
+        let label = feedbackView.measurementUUIDLabel
+
+        // add tap-to-copy-to-clipboard
+        label.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        tapGesture.numberOfTapsRequired = 1
+        label.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func labelTapped() {
+        if feedbackView.measurementUUIDLabel.text != nil {
+            // Copy the label's text to the clipboard
+            let uuid = self.uuid
+            UIPasteboard.general.string = uuid
+            feedbackView.measurementUUIDLabel.text = "\(uuid) Copied!"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                self?.feedbackView.measurementUUIDLabel.text = "Scan ID: \(uuid)"
+            }
+        }
     }
     
     func addSubviews() {

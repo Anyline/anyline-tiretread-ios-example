@@ -33,11 +33,6 @@ class SettingsView: UIView {
         return view
     }()
     
-    private lazy var accuracySpeedView: AccuracySpeedSettingsView = {
-        let view = AccuracySpeedSettingsView()
-        return view
-    }()
-    
     lazy var infoView: InfoSettingsView = {
         let view = InfoSettingsView()
         return view
@@ -78,7 +73,6 @@ private extension SettingsView {
         self.contentVStackView.addArrangedSubview(settingsLabel)
         self.contentVStackView.addArrangedSubview(imperialSystemView)
         self.contentVStackView.addArrangedSubview(licenseView)
-        self.contentVStackView.addArrangedSubview(accuracySpeedView)
         self.contentVStackView.addArrangedSubview(infoView)
     }
     
@@ -104,7 +98,6 @@ private extension SettingsView {
     func setDelegates() {
         buttonsView.delegate = self
         imperialSystemView.delegate = self
-        accuracySpeedView.delegate = self
     }
 }
 
@@ -129,13 +122,5 @@ extension SettingsView: ImperialSystemSettingsViewDelegate {
     
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.imageTapped(tapGestureRecognizer: tapGestureRecognizer)
-    }
-}
-
-// MARK: - AccuracySpeedSettingsViewDelegate
-extension SettingsView: AccuracySpeedSettingsViewDelegate {
-    
-    func switchChanged(mySwitch: UISwitch) {
-        delegate?.switchChanged(mySwitch: mySwitch)
     }
 }

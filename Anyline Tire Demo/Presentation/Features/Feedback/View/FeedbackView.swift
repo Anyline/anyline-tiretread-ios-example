@@ -74,9 +74,10 @@ private extension FeedbackView {
         self.addSubview(buttonsView)
         self.addSubview(feedbackLabel)
         self.addSubview(contentVStackView)
+        self.addSubview(measurementUUIDLabel)
+
         self.contentVStackView.addArrangedSubview(tireDepthsView)
         self.contentVStackView.addArrangedSubview(feedbackTextField)
-        self.contentVStackView.addArrangedSubview(measurementUUIDLabel)
     }
     
     func setupLayout() {
@@ -95,6 +96,11 @@ private extension FeedbackView {
         self.feedbackTextField.snp.makeConstraints { make in
             make.width.equalTo(440)
             make.height.equalTo(90)
+        }
+
+        self.measurementUUIDLabel.snp.makeConstraints { make in
+            make.top.equalTo(20)
+            make.trailing.equalTo(-20)
         }
         
         self.contentVStackView.snp.makeConstraints { make in

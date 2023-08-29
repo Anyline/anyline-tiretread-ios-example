@@ -23,7 +23,7 @@ class LoadingViewModel {
     
     // MARK: - Actions
     func startDataProcessing() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + 10) { [weak self] in
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.fetchTreadDepthResult()
         }
     }
@@ -73,15 +73,8 @@ private extension LoadingViewModel {
                 self.loadingViewModelDelegate?.displayError()
             }
         case .processing, .waitingforimages:
-            if processingAttempts < 10 {
-                DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
-                    self?.processingAttempts += 1
-                    self?.fetchTreadDepthResult()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.loadingViewModelDelegate?.displayError()
-                }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.fetchTreadDepthResult()
             }
         default:
             break

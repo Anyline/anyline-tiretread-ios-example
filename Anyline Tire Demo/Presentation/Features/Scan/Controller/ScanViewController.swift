@@ -252,25 +252,42 @@ private extension ScanViewController {
     }
     
     // Function to start the beeping sound
-    func startBeeping(distanceInCm: Double) {
+    func startBeeping(distanceInCm: Double, distanceStatus: DistanceStatus) {
         // Cancel any existing timer
         beepingTimer?.invalidate()
 
         // Calculate the interval for the timer based on the distance
-        let roundedDistance = Int(distanceInCm)
         var interval: Double
         var playerToUse: AVAudioPlayer?
 
-        if roundedDistance < 16 {
-            interval = 500 * (distanceInCm / 16)
+        switch distanceStatus {
+        case .close:
+            interval = 1000
             playerToUse = self.highBeepAudioPlayer
-        } else if roundedDistance > 22 {
-            interval = max(500 + (distanceInCm - 22) * (0 - 500) / (40 - 22), 0)
+        case .far:
+            interval = 1000
             playerToUse = self.lowBeepAudioPlayer
-        } else {
-            // Distance is in the optimal range - no need to beep
-            return
+        case .tooClose:
+            interval = 500
+            playerToUse = self.highBeepAudioPlayer
+        case .tooFar:
+            interval = 500
+            playerToUse = self.lowBeepAudioPlayer
+        default: return
         }
+
+        // another way of calculating interval (older method)
+//        let roundedDistance = Int(distanceInCm)
+//        if roundedDistance < 16 {
+//            interval = 500 * (distanceInCm / 16)
+//            playerToUse = self.highBeepAudioPlayer
+//        } else if roundedDistance > 22 {
+//            interval = max(500 + (distanceInCm - 22) * (0 - 500) / (40 - 22), 0)
+//            playerToUse = self.lowBeepAudioPlayer
+//        } else {
+//            // Distance is in the optimal range - no need to beep
+//            return
+//        }
 
         // Create a new timer
         beepingTimer = Timer.scheduledTimer(withTimeInterval: interval / 1000, repeats: true) { _ in
@@ -285,7 +302,7 @@ private extension ScanViewController {
         }
     }
 
-    
+
     func setupHapticEngine() {
         do {
             engine = try CHHapticEngine()
@@ -381,13 +398,14 @@ extension ScanViewController: ErrorViewControllerDelegate {
 extension ScanViewController: TireTreadScanViewCallback {
 
     func onScanAbort(uuid: String?) {
-
+        print("scan aborted for uuid: \(uuid ?? "")")
+        self.navigationController?.popViewController(animated: true)
     }
 
     func onUploadAborted(uuid: String?) {
-
+        print("upload aborted for uuid: \(uuid ?? "")")
+        self.navigationController?.popViewController(animated: true)
     }
-
     
     func onFocusFound(uuid: String?) {
         self.playFocusSound()
@@ -419,6 +437,9 @@ extension ScanViewController: TireTreadScanViewCallback {
     
     func onScanStop(uuid: String?) {
         print("Native iOS: Scan stopped for uuid: \(uuid ?? "unknown")")
+        distanceLabel.isHidden = true
+        stopBeeping()
+        stopAudioPlayers()
     }
     
     /// Called when the distance has changed.
@@ -434,7 +455,7 @@ extension ScanViewController: TireTreadScanViewCallback {
     func onDistanceChanged(uuid: String?, previousStatus: DistanceStatus, newStatus: DistanceStatus, previousDistance: Float, newDistance: Float) {
         if Int(newDistance) != Int(previousDistance) {
             let distanceInCentimeters = UserDefaultsManager.shared.imperialSystem ? (newDistance * 2.54) : (newDistance / 10.0)
-            startBeeping(distanceInCm: Double(distanceInCentimeters))
+            startBeeping(distanceInCm: Double(distanceInCentimeters), distanceStatus: newStatus)
             DispatchQueue.main.async { [weak self] in
                 self?.updateUI(status: newStatus, distance: Int(UserDefaultsManager.shared.imperialSystem ? newDistance : distanceInCentimeters))
             }

@@ -42,6 +42,7 @@ class LoadingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        configureUUIDLabel()
         addSubviews()
         setupLayout()
         setDelegates()
@@ -53,6 +54,28 @@ class LoadingViewController: UIViewController {
 private extension LoadingViewController {
     func configureView() {
         view.backgroundColor = ColorStruct.snowWhite
+    }
+
+    func configureUUIDLabel() {
+        let label = self.customView.customView.measurementUUIDLabel
+
+        // add tap-to-copy-to-clipboard
+        label.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        tapGesture.numberOfTapsRequired = 1
+        label.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func labelTapped() {
+        if let _ = self.customView.customView.measurementUUIDLabel.text {
+            // Copy the label's text to the clipboard
+            let uuid = self.uuid
+            UIPasteboard.general.string = uuid
+            self.customView.customView.measurementUUIDLabel.text = "\(uuid) Copied!"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                self?.customView.customView.measurementUUIDLabel.text = "Scan ID: \(uuid)"
+            }
+        }
     }
     
     func addSubviews() {

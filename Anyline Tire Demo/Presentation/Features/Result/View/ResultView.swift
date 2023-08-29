@@ -12,6 +12,12 @@ class ResultView: UIView {
         let view = TireTreadMeasurementView()
         return view
     }()
+
+    lazy var UUIDLabel: ATDTextLabel = {
+        let label = ATDTextLabel(text: "Scan ID: {UUID}")
+        label.font = FontStruct.proximaNovaRegular12
+        return label
+    }()
     
     // MARK: - Private Properties
     
@@ -44,7 +50,7 @@ private extension ResultView {
     func addSubviews() {
         self.addSubview(buttonsView)
         self.addSubview(tireTreadMeasurementView)
-
+        self.addSubview(UUIDLabel)
     }
     
     func setupLayout() {
@@ -56,6 +62,11 @@ private extension ResultView {
         self.tireTreadMeasurementView.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
             make.trailing.equalTo(buttonsView.snp.leading)
+        }
+
+        self.UUIDLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(0)
+            make.trailing.equalTo(-20)
         }
     }
     

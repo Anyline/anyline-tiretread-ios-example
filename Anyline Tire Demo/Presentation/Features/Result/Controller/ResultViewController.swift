@@ -53,6 +53,28 @@ private extension ResultViewController {
     
     func configureView() {
         self.view.backgroundColor = ColorStruct.snowWhite
+
+        resultView.UUIDLabel.text = "Scan ID: \(self.uuid)"
+
+        let label = resultView.UUIDLabel
+
+        // add tap-to-copy-to-clipboard
+        label.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        tapGesture.numberOfTapsRequired = 1
+        label.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func labelTapped() {
+        if resultView.UUIDLabel.text != nil {
+            // Copy the label's text to the clipboard
+            let uuid = self.uuid
+            UIPasteboard.general.string = uuid
+            resultView.UUIDLabel.text = "\(uuid) Copied!"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                self?.resultView.UUIDLabel.text = "Scan ID: \(uuid)"
+            }
+        }
     }
     
     func addSubviews() {
