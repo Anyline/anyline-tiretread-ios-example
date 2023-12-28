@@ -1,7 +1,26 @@
 import UIKit
 import SnapKit
+import AnylineTireTreadSdk
+
+enum LandingViewDisplayMode {
+    case `default`
+    case intro
+}
 
 class LandingViewController: UIViewController {
+    
+    enum Constants {
+        static let userDefaultsFlag_seenIntroVideo = "userDefaultsFlag_seenIntroVideo"
+    }
+    
+    private var displayMode: LandingViewDisplayMode? {
+        didSet {
+            if let displayMode = displayMode {
+                landingView.setDisplayMode(displayMode)
+                landingView.startButton.isEnabled = true
+            }
+        }
+    }
     
     // MARK: - UI properties
     private var topView: ATDTopView = {
@@ -9,7 +28,7 @@ class LandingViewController: UIViewController {
         return view
     }()
     
-    private var customView: LandingView = {
+    private var landingView: LandingView = {
         let view = LandingView()
         return view
     }()
@@ -29,7 +48,20 @@ class LandingViewController: UIViewController {
         configureView()
         addSubviews()
         setupLayout()
-        customView.delegate = self
+        landingView.delegate = self
+
+        landingView.startButton.isEnabled = false
+        landingViewModel.tryInitializeSdk(context: self) { [weak self] success, errorMsg in
+            self?.landingView.startButton.isEnabled = true
+            if !success {
+                self?.showError(error: errorMsg ?? "Unknown error")
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        landingView.startButton.isEnabled = true
     }
 }
 
@@ -41,18 +73,17 @@ private extension LandingViewController {
     
     func addSubviews() {
         self.view.addSubview(topView)
-        self.view.addSubview(customView)
+        self.view.addSubview(landingView)
     }
     
     func setupLayout() {
-        
         topView.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.width.equalToSuperview()
             make.top.leading.trailing.equalToSuperview()
         }
         
-        customView.snp.makeConstraints({ make in
+        landingView.snp.makeConstraints({ make in
             make.top.equalTo(topView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         })
@@ -62,26 +93,63 @@ private extension LandingViewController {
 // MARK: - LandingButtonActionsDelegate
 extension LandingViewController: LandingButtonActionsDelegate {
     func startButtonTapped() {
-        customView.startButton.isEnabled = false
-        landingViewModel.tryInitializeSdk(context: self)
+        if !UserDefaults.standard.bool(forKey: Constants.userDefaultsFlag_seenIntroVideo) {
+            displayMode = .intro
+            UserDefaults.standard.set(true, forKey: Constants.userDefaultsFlag_seenIntroVideo)
+        } else {
+            displayMode = .default
+            landingView.startButton.isEnabled = false
+            landingViewModel.tryInitializeSdk(context: self) { [weak self] success, errorMsg in
+                self?.landingView.startButton.isEnabled = true
+                guard let self = self, success else {
+                    self?.showError(error: errorMsg ?? "Unknown error")
+                    return
+                }
+                self.landingViewModel.requestPermissionsAndProceed(context: self) { success, errorMsg in
+                    self.startScanningScreen()
+                }
+            }
+        }
     }
     
     func settingsButtonTapped() {
         let settingsVC = SettingsViewController()
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }
+    
+    func cancelButtonTapped() {
+        displayMode = .default
+    }
+    
+    func tutorialButtonTapped() {
+        displayMode = .intro
+    }
+
+    func startScanningScreen() {
+        landingView.startButton.isEnabled = true
+        let scanVC = ScanViewController()
+        scanVC.delegate = self
+        self.navigationController?.pushViewController(scanVC, animated: true)
+    }
 }
 
 // MARK: - LandingViewModelDelegate
 extension LandingViewController: LandingViewModelDelegate {
     func authenticationSuccessfully() {
-        customView.startButton.isEnabled = true
-        let scanVC = ScanViewController()
-        self.navigationController?.pushViewController(scanVC, animated: true)
+        startScanningScreen()
     }
     
     func showError(error: String) {
-        customView.startButton.isEnabled = true
+        landingView.startButton.isEnabled = true
         self.displayAlert(title: "error.title".localized(), message: error)
+    }
+}
+
+extension LandingViewController: ScanViewControllerDelegate {
+    
+    func startRecorderFlow(uuid: String) {
+        self.navigationController?.popToViewController(self, animated: false)
+        let vc = RecorderViewController(uuid: uuid)
+        self.navigationController?.pushViewController(vc, animated: false)
     }
 }

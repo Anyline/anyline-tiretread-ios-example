@@ -33,14 +33,14 @@ class ResultDetailsViewModel {
             }
             try anylineSDK.doInit(licenseKey: licenceID, context: context)
 
-            let kotlinByteArray = anylineSDK.getTreadDepthReportPdf(measurementUuid: self.uuid) { _ in
+            anylineSDK.getTreadDepthReportPdf(measurementUuid: self.uuid) { pdfByteArray in
                 print("PDF fetched from SDK.")
+                
+                // Convert ByteArray to Swift Data
+                let data = pdfByteArray.toNSData()
+
+                self.resultDetailsViewModelDelegate?.showPDF(pdfData: data)
             }
-
-            // Convert Kotlin ByteArray to Swift Data
-            let data = kotlinByteArray.toNSData()
-
-            self.resultDetailsViewModelDelegate?.showPDF(pdfData: data)
         } catch {
             resultDetailsViewModelDelegate?.showError(error: "error.description".localized())
         }

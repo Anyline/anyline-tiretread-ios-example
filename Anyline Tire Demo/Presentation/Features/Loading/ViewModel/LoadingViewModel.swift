@@ -3,7 +3,7 @@ import AnylineTireTreadSdk
 
 protocol LoadingViewModelDelegate: AnyObject {
     func displayError()
-    func displayDepthResultView(uuid: String, treadDepthResult: TreadDepthResultDTO)
+    func displayDepthResultView(uuid: String, treadDepthResult: TreadDepthResult)
 }
 
 class LoadingViewModel {
@@ -11,7 +11,7 @@ class LoadingViewModel {
     // MARK: - Private properties
     private weak var loadingViewModelDelegate: LoadingViewModelDelegate?
     private var processingAttempts = 0
-    
+
     // MARK: - Public properties
     var uuid: String
     
@@ -29,55 +29,23 @@ class LoadingViewModel {
     }
     
     private func fetchTreadDepthResult() {
-        AnylineTireTreadSdk.companion.getTreadDepthReportResult(
-            measurementUuid: self.uuid,
-            onGetTreadDepthReportResultSucceed: { [weak self] response in
-                response.body { resultDTO, error in
+        do {
+            try AnylineTireTreadSdk.companion.getTreadDepthReportResult(
+                measurementUuid: self.uuid,
+                onGetTreadDepthReportResultSucceeded: { [weak self] treadDepthResult in
                     guard let self = self else { return }
-                    guard let status = resultDTO?.measurement.status else {
-                        self.loadingViewModelDelegate?.displayError()
-                        return
+                    DispatchQueue.main.async {
+                        self.loadingViewModelDelegate?.displayDepthResultView(uuid: self.uuid, treadDepthResult: treadDepthResult)
                     }
-                    
-                    self.handleTreadDepthResult(treadDepthResult: resultDTO?.result, status: status)
-                }
-            },
-            onGetTreadDepthReportResultFailed: { [weak self] response, exception in
-                self?.loadingViewModelDelegate?.displayError()
-            }
-        )
-    }
-}
-
-// MARK: - Private Actions
-private extension LoadingViewModel {
-    
-    func isValidTreadDepthResult(treadDepthResult: TreadDepthResultDTO) -> Bool {
-        return treadDepthResult.global.confidence > 0
-    }
-    
-    private func handleTreadDepthResult(treadDepthResult: TreadDepthResultDTO?, status: MeasurementStatusDTO) {
-        switch status {
-        case .completed:
-            guard let treadDepthResult = treadDepthResult, isValidTreadDepthResult(treadDepthResult: treadDepthResult) else {
-                DispatchQueue.main.async {
-                    self.loadingViewModelDelegate?.displayError()
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                self.loadingViewModelDelegate?.displayDepthResultView(uuid: self.uuid, treadDepthResult: treadDepthResult)
-            }
-        case .failed, .unknown:
-            DispatchQueue.main.async {
-                self.loadingViewModelDelegate?.displayError()
-            }
-        case .processing, .waitingforimages:
-            DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.fetchTreadDepthResult()
-            }
-        default:
-            break
+                },
+                onGetTreadDepthReportResultFailed: { [weak self] measurementError in
+                    print("Error code: " + (measurementError.errorCode ?? "not available"))
+                    print("Error message: " + measurementError.errorMessage)
+                    self?.loadingViewModelDelegate?.displayError()
+                }, timeoutSeconds: 60
+            )
+        } catch {
+            self.loadingViewModelDelegate?.displayError()
         }
     }
 }

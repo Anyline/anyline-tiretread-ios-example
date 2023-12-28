@@ -5,17 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire",
       "state" : {
-        "revision" : "bc268c28fb170f494de9e9927c371b8342979ece",
-        "version" : "5.7.1"
-      }
-    },
-    {
-      "identity" : "anyline-tiretread-spm-module",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Anyline/anyline-tiretread-spm-module",
-      "state" : {
-        "revision" : "b805e64cc1cdc55c3d67d9450c457724741eee3d",
-        "version" : "2.1.0"
+        "revision" : "3dc6a42c7727c49bf26508e29b0a0b35f9c7e1ad",
+        "version" : "5.8.1"
       }
     },
     {
@@ -24,7 +15,7 @@
       "location" : "https://github.com/evgenyneu/keychain-swift.git",
       "state" : {
         "branch" : "master",
-        "revision" : "c1fde55798b164cad44b5e23cfa2f0f1ebcd76af"
+        "revision" : "95219e66c94b6ba25e7d6ece7aecf1ea13134174"
       }
     },
     {
@@ -33,7 +24,7 @@
       "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "58320fe80522414bf3a7e24c88123581dc586752"
+        "revision" : "4d52cc3768ec5d345827b063dfa59e98a929965d"
       }
     }
   ],

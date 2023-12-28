@@ -1,4 +1,5 @@
 import UIKit
+import AnylineTireTreadSdk
 
 class SettingsViewController: UIViewController {
     
@@ -8,7 +9,7 @@ class SettingsViewController: UIViewController {
         return view
     }()
     
-    private var customView: SettingsView = {
+    private var settingsView: SettingsView = {
         let view = SettingsView()
         return view
     }()
@@ -16,6 +17,8 @@ class SettingsViewController: UIViewController {
     // MARK: - Private Properties
     private var switchValueButton: Bool = UserDefaultsManager.shared.imageQualitySwitchValue
     private var imperialSystem: Bool = UserDefaultsManager.shared.imperialSystem
+    private var scanSpeed: ScanSpeed = UserDefaultsManager.shared.scanSpeed
+
     private lazy var settingsViewModel: SettingsViewModel = {
         return SettingsViewModel(delegate: self)
     }()
@@ -37,7 +40,7 @@ class SettingsViewController: UIViewController {
         configureView()
         addSubviews()
         setupLayout()
-        customView.delegate = self
+        settingsView.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,7 +73,7 @@ class SettingsViewController: UIViewController {
     
     func saveLicenseID() {
         let keychainManager = KeychainManager()
-        let licenseIDText = customView.licenseView.licenseIdTextField.text
+        let licenseIDText = settingsView.licenseView.licenseIdTextField.text
         if let licenceID = keychainManager.getValue(forKey: KeychainKeys.licenseID) {
             if licenceID != licenseIDText {
                 if let safeLicenseIDText = licenseIDText {
@@ -99,7 +102,7 @@ private extension SettingsViewController {
     
     func addSubviews() {
         self.view.addSubview(topView)
-        self.view.addSubview(customView)
+        self.view.addSubview(settingsView)
     }
     
     func setupLayout() {
@@ -110,7 +113,7 @@ private extension SettingsViewController {
             make.top.leading.trailing.equalToSuperview()
         }
         
-        customView.snp.makeConstraints { make in
+        settingsView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
@@ -120,13 +123,35 @@ private extension SettingsViewController {
 // MARK: - Private Actions
 private extension SettingsViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let userInfo = notification.userInfo,
-           let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            
-            let keyboardHeight = keyboardFrame.size.height - 100
-            
+
+        // the field that caused the software keyboard to display
+        // TODO: maybe use the main responder
+        let field = self.settingsView.licenseView.licenseIdTextField
+
+        guard let userInfo = notification.userInfo else { return }
+
+        // Get the keyboard’s frame at the end of its animation.
+        guard let screen = notification.object as? UIScreen,
+              let keyboardFrameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+
+        let fromCoordinateSpace = screen.coordinateSpace
+
+        let toCoordinateSpace: UICoordinateSpace = view
+
+        // Convert the keyboard's frame from the screen's coordinate space to your view's coordinate space.
+        let convertedKeyboardFrameEnd = fromCoordinateSpace.convert(keyboardFrameEnd, to: toCoordinateSpace)
+
+        let yMargin = 10.0 // min distance we allow between the field's bottom and the keyboard
+        
+        let fieldBottomY = (field.convert(field.frame.origin, to: screen.coordinateSpace).y +
+                            field.bounds.height +
+                            yMargin)
+
+        var shift = 0.0
+        if convertedKeyboardFrameEnd.minY < fieldBottomY {
+            shift = convertedKeyboardFrameEnd.minY - fieldBottomY
             UIView.animate(withDuration: 0.3) {
-                self.view.frame.origin.y = -keyboardHeight
+                self.view.frame.origin.y = shift
             }
         }
     }
@@ -144,6 +169,57 @@ private extension SettingsViewController {
 
 // MARK: - SettingsButtonActionsDelegate
 extension SettingsViewController: SettingsButtonActionsDelegate {
+
+    func scanQRCodeTapped() {
+        QRCodeReaderViewController.showReader(over: self.navigationController!,
+                                              msg: "qrcodereader.guide_text.license_key".localized(),
+                                              animated: true) { [weak self] qrViewController, decoded in
+            guard let decoded = decoded else {
+                return
+            }
+            if let licenseKeyString = self?.returnValidLicenseKey(decoded) {
+                self?.settingsView.licenseView.licenseIdTextField.text = licenseKeyString
+                qrViewController.dismiss(animated: true)
+            } else {
+                let msg = "qrcodereader.message.invalid_license_key".localized()
+                self?.showAlertQRCode(over: qrViewController, msg: msg)
+            }
+        }
+    }
+
+    func showAlertQRCode(over qrViewController: QRCodeReaderViewController, msg: String) {
+        let alert = UIAlertController(title: "Scan License Key", message: msg, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: { _ in
+            qrViewController.restart()
+        }))
+        qrViewController.present(alert, animated: true)
+    }
+
+    fileprivate func returnValidLicenseKey(_ licenseKeyString: String) -> String? {
+        return licenseKeyString
+    }
+
+    func scanSpeedDialogRequested(sender: UIButton, options: [ScanSpeed], completion: (ScanSpeed?) -> Void) {
+        let alert = UIAlertController(title: "Select Capture Speed", message: nil, preferredStyle: .actionSheet)
+
+        for speed in options {
+            let title = speed.name
+            alert.addAction(.init(title: title, style: .default, handler: { [weak self] action in
+                print("preset tapped: \(title) for preset \(speed.name)")
+                self?.settingsView.captureSpeedView.scanSpeed = speed
+                UserDefaultsManager.shared.scanSpeed = speed
+            }))
+        }
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+
+        let popoverController = alert.popoverPresentationController
+        popoverController?.sourceView = sender
+        popoverController?.sourceRect = sender.bounds
+        popoverController?.permittedArrowDirections = .up
+
+        self.navigationController?.present(alert, animated: true)
+    }
+    
     func okButtonTapped() {
         saveImperialSystem()
         saveLicenseID()
@@ -152,7 +228,8 @@ extension SettingsViewController: SettingsButtonActionsDelegate {
     }
     
     func testUploadButtonTapped() {
-        self.settingsViewModel.testSetup(context: self)
+        let licenseKey = settingsView.licenseView.licenseIdTextField.text ?? ""
+        self.settingsViewModel.testLicenseKey(licenseKey, context: self)
     }
     
     func cancelButtonTapped() {

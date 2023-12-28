@@ -3,10 +3,19 @@ import AnylineTireTreadSdk
 
 class MeasurementView: UIView {
     
+    enum Location {
+        case global
+        case regional
+    }
+    
+    var location: Location = .global
+    
+    private var isRegional: Bool { location == .regional }
+    
     // MARK: - UI properties
     private lazy var tireTreadValueLabel: ATDTextLabel = {
         let label = ATDTextLabel(text: measurementValue ?? "")
-        label.font = FontStruct.proximaNovaBold23
+        label.font = isRegional ? FontStruct.proximaNovaBold16 : FontStruct.proximaNovaBold23
         label.textColor = ColorStruct.snowWhite
         label.textAlignment = .center
         return label
@@ -14,12 +23,12 @@ class MeasurementView: UIView {
     
     private lazy var tireTreadMeasurementLabel: ATDTextLabel = {
         let label = ATDTextLabel(text: unitStr)
-        label.font = FontStruct.proximaNovaBold23
+        label.font = isRegional ? FontStruct.proximaNovaBold16 : FontStruct.proximaNovaBold23
         label.textColor = ColorStruct.snowWhite
         label.textAlignment = .center
         return label
     }()
-
+    
     private var unitStr: String {
         UserDefaultsManager.shared.imperialSystem ? "32\"" : "mm"
     }
@@ -29,7 +38,7 @@ class MeasurementView: UIView {
         view.backgroundColor = .white
         return view
     }()
-
+    
     private lazy var emptyMeasurementLine: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -58,33 +67,35 @@ class MeasurementView: UIView {
                 contentVStackView.isHidden = true
                 return
             }
+            let metricValue = Double(measurementValue) ?? 0.0
             tireTreadMeasurementLabel.text = unitStr
+            
             if UserDefaultsManager.shared.imperialSystem {
-                _ = DistanceUnitConvertKt.inchToFractionString(inch: Double(measurementValue) ?? 0.0, improper: true, denominator: 32)
-                let fractionTriple = try? DecimalFractionConvertKt.toFractionTriple(Double(measurementValue) ?? 0.0, improper: false, denominator: 32)
-                let numerator = fractionTriple?.second?.intValue ?? 0
-                tireTreadValueLabel.text = "\(numerator)"
-                self.backgroundColor = getColorFromInchFraction(numerator)
+                if let doubleValue = Double(measurementValue) {
+                    let intValue = Int(doubleValue)
+                    tireTreadValueLabel.text = "\(intValue)"
+                    self.backgroundColor = getColorFromInchFraction(intValue)
+                }
             } else {
-                let metricValue = Double(measurementValue) ?? 0.0
                 tireTreadValueLabel.text = String(format: "%.1f", metricValue)
                 self.backgroundColor = getColorForMetricValue(metricValue)
             }
         }
     }
-    
+
     // MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureView()
-        addSubviews()
-        setupLayout()
-    }
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
+    init(location: MeasurementView.Location = .global) {
+        super.init(frame: .zero)
+        self.location = location
+        
+        configureView()
+        addSubviews()
+        setupLayout()
+    }
 }
 
 // MARK: - Private functions
@@ -93,7 +104,7 @@ private extension MeasurementView {
     // MARK: - Setup UI
     func configureView() {
         backgroundColor = ColorStruct.leafGreen
-        layer.cornerRadius = 5
+        layer.cornerRadius = isRegional ? 4 : 5
     }
     
     func addSubviews() {
@@ -123,7 +134,7 @@ private extension MeasurementView {
                 make.width.equalTo(20)
             }
         }
-
+        
         self.emptyMeasurementLine.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.width.equalTo(16)
@@ -151,6 +162,6 @@ private extension MeasurementView {
             return ColorStruct.leafGreen
         }
     }
-
+    
 }
 

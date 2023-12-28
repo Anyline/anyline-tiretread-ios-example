@@ -20,23 +20,10 @@ class SettingsViewModel {
         self.settingsViewModelDelegate = delegate
     }
     
-    func testSetup(context: UIViewController) {
+    func testLicenseKey(_ licenseKey: String, context: UIViewController) {
         do {
-            let keychainManager = KeychainManager()
-            
-            guard let licenceID = keychainManager.getValue(forKey: KeychainKeys.licenseID) else {
-                settingsViewModelDelegate?.showError(error: "error.invalid_license".localized())
-                return
-            }
-            
-            try AnylineTireTreadSdk.companion.doInit(licenseKey: licenceID, context: context)
-            
-            if AnylineTireTreadSdk.companion.isInitialized {
-                requestPermissionsAndProceed(context: context)
-            } else {
-                let errorMessage = "error.invalid_license".localized()
-                self.settingsViewModelDelegate?.showError(error: errorMessage)
-            }
+            try AnylineTireTreadSdk.companion.doInit(licenseKey: licenseKey, context: context)
+            requestPermissionsAndProceed(context: context)
         } catch {
             let errorMessage = "error.invalid_license".localized() + " (\(error.localizedDescription))"
             self.settingsViewModelDelegate?.showError(error: errorMessage)

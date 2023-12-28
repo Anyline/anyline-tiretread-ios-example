@@ -9,60 +9,62 @@ protocol LandingViewModelDelegate: AnyObject {
 }
 
 class LandingViewModel {
-    
-    // MARK: - Private Let's & Var's
+
+    // MARK: - Private Properties
     private weak var landingViewModelDelegate: LandingViewModelDelegate?
-    
-    // MARK: - Public Let's & Var's
     
     // MARK: - Init
     init(delegate: LandingViewModelDelegate) {
         self.landingViewModelDelegate = delegate
     }
+
+    var isInitialized: Bool {
+        AnylineTireTreadSdk.companion.isInitialized
+    }
     
-    func tryInitializeSdk(context: UIViewController) {
+    func tryInitializeSdk(context: UIViewController, completion: @escaping (Bool, String?) -> Void) {
         do {
             let keychainManager = KeychainManager()
             
-            guard let licenceID = keychainManager.getValue(forKey: KeychainKeys.licenseID) else {
-                landingViewModelDelegate?.showError(error: "error.license.missing_key".localized())
+            guard let licenseString = keychainManager.getValue(forKey: KeychainKeys.licenseID) else {
+                completion(false, "error.license.missing_key".localized())
                 return
             }
             
-            try AnylineTireTreadSdk.companion.doInit(licenseKey: licenceID, context: context)
+            try AnylineTireTreadSdk.companion.doInit(licenseKey: licenseString, context: context)
             
-            if AnylineTireTreadSdk.companion.isInitialized {
-                requestPermissionsAndProceed(context: context)
+            if isInitialized {
+                completion(true, nil)
             } else {
                 let errorMessage = "error.invalid_license".localized()
-                self.landingViewModelDelegate?.showError(error: errorMessage)
+                completion(false, errorMessage)
             }
         } catch {
             let errorMessage = "error.invalid_license".localized() + " (\(error.localizedDescription))"
-            self.landingViewModelDelegate?.showError(error: errorMessage)
+            completion(false, errorMessage)
         }
     }
     
-    func requestPermissionsAndProceed(context: UIViewController) {
+    func requestPermissionsAndProceed(context: UIViewController, completion: @escaping (Bool, String?) -> Void) {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         
         switch cameraAuthorizationStatus {
         case .authorized:
-            self.landingViewModelDelegate?.authenticationSuccessfully()
+            completion(true, nil)
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 DispatchQueue.main.async {
                     if granted {
-                        self.landingViewModelDelegate?.authenticationSuccessfully()
+                        completion(true, nil)
                     } else {
                         let errorMessage = "error.camera_permission".localized()
-                        self.landingViewModelDelegate?.showError(error: errorMessage)
+                        completion(false, errorMessage)
                     }
                 }
             }
         default:
             let errorMessage = "error.camera_permission".localized()
-            self.landingViewModelDelegate?.showError(error: errorMessage)
+            completion(false, errorMessage)
         }
     }
 }

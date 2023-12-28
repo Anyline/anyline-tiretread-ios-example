@@ -16,7 +16,12 @@ class SettingsView: UIView {
         stackView.spacing = spacing
         return stackView
     }()
-    
+
+    private lazy var contentScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        return scrollView
+    }()
+
     private lazy var settingsLabel: ATDTitleLabel = {
         let label = ATDTitleLabel(textColor: ColorStruct.stoneGrey, text: "settings.label.settings".localized())
         label.textAlignment = .center
@@ -37,13 +42,23 @@ class SettingsView: UIView {
         let view = InfoSettingsView()
         return view
     }()
-    
+
+    lazy var captureSpeedView: CaptureSpeedView = {
+        let view = CaptureSpeedView()
+        view.delegate = self
+        return view
+    }()
+
+    @objc func didTapQRCode(sender: UIButton) {
+        delegate?.scanQRCodeTapped()
+    }
+
     // MARK: - Private Properties
-    private let spacing: CGFloat = 20
+    private let spacing: CGFloat = 15
     
     // MARK: - Public properties
     weak var delegate: SettingsButtonActionsDelegate?
-    
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -56,7 +71,6 @@ class SettingsView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
 }
 
 // MARK: - Private functions
@@ -65,30 +79,41 @@ private extension SettingsView {
     // MARK: - Setup UI
     func configureView() {
         backgroundColor = ColorStruct.snowWhite
+        licenseView.scanQRCodeButton.addTarget(self,
+                                               action: #selector(didTapQRCode),
+                                               for: .touchUpInside)
     }
     
     func addSubviews() {
         self.addSubview(buttonsView)
         self.addSubview(contentVStackView)
-        self.contentVStackView.addArrangedSubview(settingsLabel)
-        self.contentVStackView.addArrangedSubview(imperialSystemView)
-        self.contentVStackView.addArrangedSubview(licenseView)
-        self.contentVStackView.addArrangedSubview(infoView)
+
+        contentVStackView.addArrangedSubview(settingsLabel)
+        contentVStackView.addArrangedSubview(imperialSystemView)
+        contentVStackView.addArrangedSubview(licenseView)
+        contentVStackView.addArrangedSubview(captureSpeedView)
+        contentVStackView.addArrangedSubview(infoView)
     }
     
     func setupLayout() {
         buttonsView.snp.makeConstraints { make in
             make.trailing.bottom.top.equalToSuperview()
-            make.width.equalTo(200)
+            make.width.equalTo(200).priority(.low)
         }
-        
+
         contentVStackView.snp.makeConstraints { make in
             make.leading.equalTo(80)
-            make.trailing.equalTo(buttonsView.safeAreaLayoutGuide.snp.leading)
+            make.width.equalTo(500)
             make.top.equalTo(20)
             make.bottom.equalTo(0)
         }
-        
+
+        captureSpeedView.snp.makeConstraints { make in
+            make.height.equalTo(35)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+
         settingsLabel.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaInsets.top)
             make.centerX.equalTo(self)
@@ -122,5 +147,15 @@ extension SettingsView: ImperialSystemSettingsViewDelegate {
     
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.imageTapped(tapGestureRecognizer: tapGestureRecognizer)
+    }
+}
+
+extension SettingsView: CaptureSpeedViewDelegate {
+    func buttonTapped(sender: UIButton) {
+        delegate?.scanSpeedDialogRequested(sender: sender, options: [.fast, .slow], completion: { scanSpeed in
+            if let scanSpeed = scanSpeed {
+                self.captureSpeedView.scanSpeed = scanSpeed
+            }
+        })
     }
 }

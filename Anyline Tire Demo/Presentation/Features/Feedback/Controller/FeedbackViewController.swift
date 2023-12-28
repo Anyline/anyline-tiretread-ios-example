@@ -131,9 +131,9 @@ extension FeedbackViewController: FeedbackButtonActionsDelegate {
                 let safeMiddleValue = Double(middleValue),
                 let safeRightValue = Double(rightValue)
             {
-                let leftTreadResultRegion = TreadResultRegion.companion.doInitMm(isAvailable: true, confidence: 100, value: safeLeftValue)
-                let middleTreadResultRegion = TreadResultRegion.companion.doInitMm(isAvailable: true, confidence: 100, value: safeMiddleValue)
-                let rightTreadResultRegion = TreadResultRegion.companion.doInitMm(isAvailable: true, confidence: 100, value: safeRightValue)
+                let leftTreadResultRegion = TreadResultRegion.companion.doInitMm(isAvailable: true, value: safeLeftValue)
+                let middleTreadResultRegion = TreadResultRegion.companion.doInitMm(isAvailable: true, value: safeMiddleValue)
+                let rightTreadResultRegion = TreadResultRegion.companion.doInitMm(isAvailable: true, value: safeRightValue)
 
                 let treadResultRegions = [leftTreadResultRegion, middleTreadResultRegion, rightTreadResultRegion]
 

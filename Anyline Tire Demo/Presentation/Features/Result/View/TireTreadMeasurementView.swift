@@ -16,17 +16,17 @@ class TireTreadMeasurementView: UIView {
     }()
     
     lazy var leftMeasurementView: MeasurementView = {
-        var view = MeasurementView()
+        var view = MeasurementView(location: .regional)
         return view
     }()
     
     lazy var middleMeasurementView: MeasurementView = {
-        var view = MeasurementView()
+        var view = MeasurementView(location: .regional)
         return view
     }()
     
     lazy var rightMeasurementView: MeasurementView = {
-        var view = MeasurementView()
+        var view = MeasurementView(location: .regional)
         return view
     }()
     
@@ -97,6 +97,21 @@ private extension TireTreadMeasurementView {
         self.tireImageView.snp.makeConstraints { make in
             make.width.equalTo(450)
             make.height.equalTo(150)
+        }
+
+        self.leftMeasurementView.snp.makeConstraints { make in
+            make.width.equalTo(self.topMeasurementView).multipliedBy(0.8)
+            make.height.equalTo(self.topMeasurementView).multipliedBy(0.8)
+        }
+
+        self.rightMeasurementView.snp.makeConstraints { make in
+            make.width.equalTo(self.topMeasurementView).multipliedBy(0.8)
+            make.height.equalTo(self.topMeasurementView).multipliedBy(0.8)
+        }
+
+        self.middleMeasurementView.snp.makeConstraints { make in
+            make.width.equalTo(self.topMeasurementView).multipliedBy(0.8)
+            make.height.equalTo(self.topMeasurementView).multipliedBy(0.8)
         }
     }
 }

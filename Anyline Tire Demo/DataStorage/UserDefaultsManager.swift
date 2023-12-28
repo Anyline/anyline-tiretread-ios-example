@@ -1,4 +1,5 @@
 import Foundation
+import AnylineTireTreadSdk
 
 struct UserDefaultsManager {
     static var shared = UserDefaultsManager()
@@ -37,6 +38,22 @@ struct UserDefaultsManager {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "imperialSystem")
+        }
+    }
+
+    var scanSpeed: ScanSpeed {
+        get {
+            switch Int32(UserDefaults.standard.integer(forKey: "scanSpeed")) {
+            case ScanSpeed.fast.ordinal:
+                return .fast
+            case ScanSpeed.slow.ordinal:
+                return .slow
+            default:
+                return .slow
+            }
+        }
+        set {
+            UserDefaults.standard.setValue(newValue.ordinal, forKey: "scanSpeed")
         }
     }
 }

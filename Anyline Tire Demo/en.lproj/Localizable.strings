@@ -1,7 +1,13 @@
 // Landing View
-"landing.button.start" = "START";
+"landing.button.start" = "OPEN SCANNER";
 "landing.button.settings" = "SETTINGS";
+"landing.button.tutorial" = "TUTORIAL";
 "landing.label.welcome" = "Welcome to the Anyline\nTire Tread Scanner!";
+"landing.button.cancel" = "CANCEL";
+"landing.button.back" = "BACK";
+"landing.text.start" = "To start scanning, press the OPEN SCANNER button.";
+"landing.text.tutorial" = "Watch the TUTORIAL to learn how to scan.";
+"landing.text.info" = "For best scanning practices, please go to tiretreaddocu.anyline.com";
 
 // Settings
 "settings.button.ok" = "OK";
@@ -9,14 +15,19 @@
 "settings.button.test_setup" = "TEST SETUP";
 "settings.button.cancel" = "CANCEL";
 "settings.label.settings" = "Settings";
+
 "settings.label.use_imperial_system" = "Use Imperial System:";
-"settings.label.license_id" = "License ID:";
+"settings.label.license_id" = "License Key:";
 "settings.label.accuraccy_speed" = "Accuracy / Speed: High Speed";
 "settings.label.high_accuracy" = "High Accuracy";
-"settings.label.app_version" = "App Version:";
+"settings.label.app_sdk_version" = "App and SDK Version:";
 "settings.label.device_name" = "Device Name:";
 "settings.label.upload" = "Upload kbps";
 "settings.label.support" = "If you need a license please reach out to";
+"settings.label.capture_speed" = "Capture Speed:";
+"settings.label.capture_speed_fast" = "Fast";
+"settings.label.capture_speed_slow" = "Slow";
+"settings.label.capture_speed.tip" = "(Tap to change)";
 "success.title" = "Success!";
 "success.description" = "The SDK has been initialized successfully!";
 
@@ -36,11 +47,24 @@
 "feedback.button.submit" = "Submit";
 "feedback.button.cancel" = "Cancel";
 
+// Recorder
+"recorder.loading.message" = "Processing...";
+"recorder.msg.scanned_tire_id_1" = "This is the scanned Tire ID:";
+"recorder.msg.scanned_tire_id_2" = "What would you like to do?";
+"recorder.alert.title" = "Data Collection";
+"recorder.alert.message_success" = "Your data recording has been successfully submitted.";
+"recorder.alert.message_failure" = "Your data recording was not sent successfully. Retry?";
+"recorder.alert.btn_failure" = "Retry";
+"recorder.button.send" = "Submit";
+"recorder.button.title.rescan" = "Rescan Barcode";
+"recorder.button.title.abort" = "Abort";
+"recorder.button.title.ok" = "OK";
+
 // Error
 "error.title" = "Error";
 "error.description" = "Something went wrong!, Please try again later";
 "error.invalid_license" = "Your license key is invalid or the server is currently unavailable.";
-"error.key.description" = "Unable to authenticate! Please check if you entered the correct License ID.";
+"error.key.description" = "Unable to authenticate! Please check if you entered the correct license key.";
 "error.scan.description" = "The scan was not successful, please try again.\n\nMake sure you do not move the device too fast and keep the right distance.";
 "error.scan.dot.description" = "Unable to set a focus point. Please adjust the distance and the focus on the tire and try again.";
 "error.pdf.description" = "The PDF data is unavailable! Please try again later.";
@@ -60,3 +84,8 @@
 
 // Details
 "details.button.download" = "DOWNLOAD";
+
+// QR Code Reader
+"qrcodereader.guide_text.tire_id" = "Scan the QR code of the tire you have just scanned.";
+"qrcodereader.guide_text.license_key" = "Scan the QR code of your license key.";
+"qrcodereader.message.invalid_license_key" = "No valid license found.";

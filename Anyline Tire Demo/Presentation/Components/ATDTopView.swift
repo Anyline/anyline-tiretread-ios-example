@@ -1,16 +1,16 @@
 import UIKit
 
 class ATDTopView: UIView {
-    
+
     // MARK: - UI Properties
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "anyline_logo_black")
+        imageView.image = UIImage(named: "anyline_Logo_Black")
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .white
         return imageView
     }()
-    
+
     lazy var appNameLabel: UILabel = {
         let label = UILabel()
         let boldText = "TIRE TREAD"
@@ -25,7 +25,7 @@ class ATDTopView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - Private Properties
 
     // MARK: - Init
@@ -45,27 +45,27 @@ class ATDTopView: UIView {
 
 // MARK: - Private functions
 private extension ATDTopView {
-    
+
     // MARK: - Setup UI
     func configureView() {
         backgroundColor = ColorStruct.stoneGrey
     }
-    
+
     func addSubviews() {
         self.addSubview(logoImageView)
         self.addSubview(appNameLabel)
     }
-    
+
     func setupLayout() {
-        
+
         self.logoImageView.snp.makeConstraints { make in
             make.height.equalTo(35)
             make.width.equalTo(150)
             make.leading.equalTo(25)
             make.top.equalTo(9)
-            make.bottom.equalTo(-9)
+            make.bottom.greaterThanOrEqualTo(-9)
         }
-        
+
         self.appNameLabel.snp.makeConstraints { make in
             make.width.equalTo(300)
             make.trailing.equalTo(16)

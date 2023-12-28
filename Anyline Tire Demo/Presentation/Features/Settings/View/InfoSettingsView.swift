@@ -4,12 +4,13 @@ class InfoSettingsView: UIView {
     
     // MARK: - UI properties
     private lazy var appVersionLabel: ATDTextLabel = {
-        let label = ATDTextLabel(text: "settings.label.app_version".localized() + " \(SystemInfo.getAppVersion())")
+        let label = ATDTextLabel(text: "settings.label.app_sdk_version".localized() + " App: \(SystemInfo.getAppVersion()) - SDK: \(SystemInfo.getSDKVersion())")
         return label
     }()
     
     private lazy var deviceNameLabel: ATDTextLabel = {
-        let label = ATDTextLabel(text: "settings.label.device_name".localized() + " \(SystemInfo.getDeviceName())")
+        let deviceName = SystemInfo.getDeviceName()
+        let label = ATDTextLabel(text: "settings.label.device_name".localized() + " \(deviceName)")
         return label
     }()
     
@@ -23,6 +24,7 @@ class InfoSettingsView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
+        stackView.spacing = 5
         return stackView
     }()
     
@@ -62,7 +64,6 @@ private extension InfoSettingsView {
     func setupLayout() {
         contentVStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(100)
         }
     }
 }

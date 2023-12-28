@@ -2,35 +2,25 @@ import AVFoundation
 
 class VolumeButtonObserver {
     
-    private let audioSession = AVAudioSession.sharedInstance()
-    private var observer: NSKeyValueObservation?
-    private var previousVolume: Float
-    
     var onVolumeButtonPressed: (() -> Void)?
-    
-    init() {
-        do {
-            try audioSession.setActive(true)
-            previousVolume = audioSession.outputVolume
-            observer = audioSession.observe(\.outputVolume) { [weak self] _, _ in
-                self?.handleVolumeButtonPressed()
-            }
-        } catch {
-            print("Error configuring audio session: \(error)")
-            previousVolume = 0.0
-        }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
-    
-    private func handleVolumeButtonPressed() {
-        let currentVolume = audioSession.outputVolume
-        if currentVolume < previousVolume {
+
+    init() {
+        // This class' deinit has a call to deregister itself as the
+        // observer for this event.
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(volChanged(_:)),
+                         name: NSNotification.Name(rawValue: "SystemVolumeDidChange"),
+                         object: nil)
+    }
+
+    @objc func volChanged(_ notif: Notification) {
+        if notif.userInfo?["Reason"] as? String == "ExplicitVolumeChange" {
             onVolumeButtonPressed?()
         }
-        previousVolume = currentVolume
-    }
-    
-    deinit {
-        observer?.invalidate()
-        try? audioSession.setActive(false)
     }
 }

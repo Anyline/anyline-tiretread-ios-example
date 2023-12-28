@@ -21,11 +21,11 @@ class ResultViewController: UIViewController {
     private var rightTireTreadValue: String?
     
     // MARK: - Public Properties
-    var measurementResult: TreadDepthResultDTO
+    var measurementResult: TreadDepthResult
     var uuid: String
     
     // MARK: - Init
-    init(uuid: String, measurementResult: TreadDepthResultDTO) {
+    init(uuid: String, measurementResult: TreadDepthResult) {
         self.uuid = uuid
         self.measurementResult = measurementResult
         
@@ -101,21 +101,21 @@ private extension ResultViewController {
 
         let useImperial = UserDefaultsManager.shared.imperialSystem
 
-        topTireTreadValue = String(useImperial ? measurementResult.global.valueInch : measurementResult.global.valueMm)
+        topTireTreadValue = String(useImperial ? Double(measurementResult.global.valueInch32nds) : measurementResult.global.valueMm)
 
-        if measurementResult.regions[0].available {
+        if measurementResult.regions[0].isAvailable {
             leftTireTreadValue = String(useImperial ?
-                                        measurementResult.regions[0].valueInch : measurementResult.regions[0].valueMm)
+                                        Double(measurementResult.regions[0].valueInch32nds) : measurementResult.regions[0].valueMm)
         }
 
-        if measurementResult.regions[1].available {
+        if measurementResult.regions[1].isAvailable {
             middleTireTreadValue = String(useImperial ?
-                                          measurementResult.regions[1].valueInch : measurementResult.regions[1].valueMm)
+                                          Double(measurementResult.regions[1].valueInch32nds) : measurementResult.regions[1].valueMm)
         }
 
-        if measurementResult.regions[2].available {
+        if measurementResult.regions[2].isAvailable {
             rightTireTreadValue = String(useImperial ?
-                                         measurementResult.regions[2].valueInch : measurementResult.regions[2].valueMm)
+                                         Double(measurementResult.regions[2].valueInch32nds) : measurementResult.regions[2].valueMm)
         }
     }
     

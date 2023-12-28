@@ -69,14 +69,15 @@ private extension ButtonsSettingsView {
         }
         
         testUploadButton.snp.makeConstraints { make in
-            make.top.equalTo(okButton.snp.bottom).offset(30)
+            make.top.equalTo(okButton.snp.bottom).offset(10)
+            make.bottom.lessThanOrEqualTo(cancelButton.snp.top).offset(-10)
             make.trailing.equalTo(0)
             make.width.equalTo(150)
             make.height.equalTo(80)
         }
         
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-10)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.trailing.equalTo(0)
             make.width.equalTo(150)
             make.height.equalTo(80)
