@@ -112,7 +112,14 @@ private extension ScanViewController {
             if TireTreadScanner.companion.instance.isScanning {
                 TireTreadScanner.companion.instance.stopScanning()
             } else {
-                TireTreadScanner.companion.instance.startScanning()
+                if (TireTreadScanner.companion.instance.captureDistanceStatus == DistanceStatus.ok)
+                {
+                    TireTreadScanner.companion.instance.startScanning()
+                }
+                else {
+                    // Notify user to move the phone to the correct position before starting
+                    print("Move the phone to the correct position before starting")
+                }
             }
         }
     }
