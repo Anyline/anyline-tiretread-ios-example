@@ -4,8 +4,15 @@ import UIKit
 class SystemInfo {
     
     static func getAppVersion() -> String {
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        return appVersion ?? ""
+        if let infoDictionary = Bundle.main.infoDictionary {
+            let version = infoDictionary["CFBundleShortVersionString"] as? String
+            let build = infoDictionary["CFBundleVersion"] as? String
+
+            if let version = version, let build = build {
+                return "\(version) (\(build))"
+            }
+        }
+        return ""
     }
 
     static func getSDKVersion() -> String {

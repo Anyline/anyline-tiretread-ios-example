@@ -1,6 +1,6 @@
 import UIKit
 
-final class ATDTextLabel: UILabel {
+class ATDTextLabel: UILabel {
     
     // MARK: - Private properties
     
@@ -16,10 +16,15 @@ final class ATDTextLabel: UILabel {
 }
 
 // MARK: - Private func
-private extension ATDTextLabel {
+extension ATDTextLabel {
     func setup(text: String) {
         self.textColor = ColorStruct.stoneGrey
         self.text = text
         font = FontStruct.proximaNovaBold16
+    }
+    
+    func makeMultiline() {
+        self.lineBreakMode = .byWordWrapping
+        self.numberOfLines = 2
     }
 }
