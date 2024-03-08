@@ -57,8 +57,18 @@ private extension ScanViewController {
 
         let measurementSystem: MeasurementSystem = userDefaults.imperialSystem ? .imperial : .metric
 
+        /*
+         * You can optionally provide additional context to a scan.
+         * This makes sense in a workflow, where a scan is connected to other TireTread scans or
+         * other information in a larger context.
+         * Check the official documentation for more details.
+        */
+        // let tirePosition = TirePosition(axle: 1, side: TireSide.left, positionOnAxle: 1)
+        // let additionalContext = AdditionalContext(tirePosition: tirePosition)
+        
         let config = TireTreadScanViewConfig.Builder()
             .withMeasurementSystem(measurementSystem: measurementSystem)
+            //.addAdditionalContext(additionalContext: additionalContext)
             // The API ".withScanSpeed()" is experimental, may impact scan performance and be removed with any major SDK release.
             // You are advised to ignore this configuration on your implementation.
             .withScanSpeed(scanSpeed: userDefaults.scanSpeed)

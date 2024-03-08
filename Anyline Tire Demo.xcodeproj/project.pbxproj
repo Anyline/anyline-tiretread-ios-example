@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -124,12 +124,12 @@
 		696E6ED85B49AD9091DA35DE /* LandingButtonActionsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingButtonActionsDelegate.swift; sourceTree = "<group>"; };
 		6E20CCB2348A1D5779AD369D /* ATDTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATDTextField.swift; sourceTree = "<group>"; };
 		743A1DCAF06FD21B53070DE9 /* ResultDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultDetailsViewModel.swift; sourceTree = "<group>"; };
-		7806B02B24D5CA9894554DDF /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
+		7806B02B24D5CA9894554DDF /* ProximaNova-Light.otf */ = {isa = PBXFileReference; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
 		79422290CE7EF2CD20C3D8EE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7967A1D1C06BA2300E23BEA1 /* FeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModel.swift; sourceTree = "<group>"; };
 		846F00A3CE42550CD5D87E5F /* LandingTextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingTextViewDelegate.swift; sourceTree = "<group>"; };
 		898D068837A772FDC17C4F80 /* tiretread_sound_beep_too_close.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_close.wav; sourceTree = "<group>"; };
-		8A35D4D3DBCB082A5C414DA4 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		8A35D4D3DBCB082A5C414DA4 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
 		91A81A696C0FE10BADEDFFF0 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		9305D03F418897C0AD10B90F /* tiretread_focuspoint_found.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_focuspoint_found.wav; sourceTree = "<group>"; };
 		9341A53AAD476ED9898701C5 /* LandingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewModel.swift; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 		CBBFD690B0F8E473AD1285E8 /* VolumeButtonObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeButtonObserver.swift; sourceTree = "<group>"; };
 		D5BA79536B6EEBE089971CDA /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		D6FDFBEF38034A3F4671F98F /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
-		DB20B1D3E5DE027FAE19AD9F /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
+		DB20B1D3E5DE027FAE19AD9F /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
 		DBF323846DAEE03F621DBF05 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		DD27ED133BF4D5F71179625C /* TireDepthsFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TireDepthsFeedbackView.swift; sourceTree = "<group>"; };
 		DD9A3DA93C8AE03554D6124E /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
@@ -159,7 +159,7 @@
 		F23279E1B27D785630EA5A47 /* SettingsButtonActionsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButtonActionsDelegate.swift; sourceTree = "<group>"; };
 		F4F65BCB8B40B49FE3A81C57 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F6D8CBBF0CEE70A674D10D60 /* RecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderViewController.swift; sourceTree = "<group>"; };
-		F789958372145BE80D1BC584 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		F789958372145BE80D1BC584 /* .gitignore */ = {isa = PBXFileReference; path = .gitignore; sourceTree = "<group>"; };
 		F9A8744B0A87FC65A8B46D20 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		FC8B10AB00E2C39D3A8E912B /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		FE63BB8F9AD2406691FCCEAA /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -844,7 +844,10 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = (
+					UIInterfaceOrientationLandscapeLeft,
+					UIInterfaceOrientationLandscapeRight,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -934,7 +937,10 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = (
+					UIInterfaceOrientationLandscapeLeft,
+					UIInterfaceOrientationLandscapeRight,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -981,7 +987,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
+				minimumVersion = 4.1.0;
 			};
 		};
 		4B5AEA5F9FCA6152FDAB044B /* XCRemoteSwiftPackageReference "SnapKit" */ = {

@@ -98,7 +98,10 @@ private extension ResultViewController {
     }
     
     func setTireTreadValues() {
-
+        
+        // TreadDepths can be retrieved in the 'measurementResult.global' and 'measurementResult.regions' properties.
+        // more information about the measurement can be retrieved in 'measurementResult.measurement' property.
+        
         let useImperial = UserDefaultsManager.shared.imperialSystem
 
         topTireTreadValue = String(useImperial ? Double(measurementResult.global.valueInch32nds) : measurementResult.global.valueMm)

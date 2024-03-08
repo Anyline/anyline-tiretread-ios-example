@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Anyline/anyline-tiretread-spm-module",
       "state" : {
-        "revision" : "658bbb36a63138a9568d0ddb8d763a519a3b79d1",
-        "version" : "4.0.1"
+        "revision" : "4102dcc7baf7fe03d6ab615a2d849e5b11e0f027",
+        "version" : "4.1.0"
       }
     },
     {
