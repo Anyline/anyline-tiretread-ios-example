@@ -14,12 +14,6 @@ class ResultViewController: UIViewController {
         return view
     }()
     
-    // MARK: - Private Properties
-    private var topTireTreadValue: String?
-    private var leftTireTreadValue: String?
-    private var middleTireTreadValue: String?
-    private var rightTireTreadValue: String?
-    
     // MARK: - Public Properties
     var measurementResult: TreadDepthResult
     var uuid: String
@@ -30,7 +24,6 @@ class ResultViewController: UIViewController {
         self.measurementResult = measurementResult
         
         super.init(nibName: nil, bundle: nil)
-        setTireTreadValues()
     }
     
     required init?(coder: NSCoder) {
@@ -53,18 +46,18 @@ private extension ResultViewController {
     
     func configureView() {
         self.view.backgroundColor = ColorStruct.snowWhite
-
+        
         resultView.UUIDLabel.text = "Scan ID: \(self.uuid)"
-
+        
         let label = resultView.UUIDLabel
-
+        
         // add tap-to-copy-to-clipboard
         label.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         tapGesture.numberOfTapsRequired = 1
         label.addGestureRecognizer(tapGesture)
     }
-
+    
     @objc func labelTapped() {
         if resultView.UUIDLabel.text != nil {
             // Copy the label's text to the clipboard
@@ -97,36 +90,40 @@ private extension ResultViewController {
         }
     }
     
-    func setTireTreadValues() {
+    func setupMeasurements() {
         
         // TreadDepths can be retrieved in the 'measurementResult.global' and 'measurementResult.regions' properties.
         // more information about the measurement can be retrieved in 'measurementResult.measurement' property.
         
         let useImperial = UserDefaultsManager.shared.imperialSystem
-
-        topTireTreadValue = String(useImperial ? Double(measurementResult.global.valueInch32nds) : measurementResult.global.valueMm)
-
-        if measurementResult.regions[0].isAvailable {
-            leftTireTreadValue = String(useImperial ?
-                                        Double(measurementResult.regions[0].valueInch32nds) : measurementResult.regions[0].valueMm)
+        
+        // Display the Global Result
+        let globalResult = String(useImperial ? Double(measurementResult.global.valueInch32nds) : measurementResult.global.valueMm)
+        self.resultView.tireTreadMeasurementView.globalMeasurementView.measurementValue = globalResult
+        
+        // Display the Regions
+        if(measurementResult.regions.count > 0) {
+            self.resultView.tireTreadMeasurementView.bottomTireTreadMeasurementHStackView.spacing = 180 / CGFloat(measurementResult.regions.count)
+            
+            // Display the Region Results dynamically, from left to right.
+            for region in measurementResult.regions {
+                
+                let measurementView = MeasurementView(location: .regional)
+                if(region.isAvailable){
+                    measurementView.measurementValue = String(useImperial ? Double(region.valueInch32nds) : region.valueMm)
+                }
+                else {
+                    measurementView.measurementValue = nil
+                }
+                
+                self.resultView.tireTreadMeasurementView.bottomTireTreadMeasurementHStackView.addArrangedSubview(measurementView)
+                
+                measurementView.snp.makeConstraints { make in
+                    make.width.equalTo(resultView.tireTreadMeasurementView.globalMeasurementView).multipliedBy(0.8)
+                    make.height.equalTo(resultView.tireTreadMeasurementView.globalMeasurementView).multipliedBy(0.8)
+                }
+            }
         }
-
-        if measurementResult.regions[1].isAvailable {
-            middleTireTreadValue = String(useImperial ?
-                                          Double(measurementResult.regions[1].valueInch32nds) : measurementResult.regions[1].valueMm)
-        }
-
-        if measurementResult.regions[2].isAvailable {
-            rightTireTreadValue = String(useImperial ?
-                                         Double(measurementResult.regions[2].valueInch32nds) : measurementResult.regions[2].valueMm)
-        }
-    }
-    
-    func setupMeasurements() {
-        self.resultView.tireTreadMeasurementView.topMeasurementView.measurementValue = self.topTireTreadValue
-        self.resultView.tireTreadMeasurementView.leftMeasurementView.measurementValue = self.leftTireTreadValue
-        self.resultView.tireTreadMeasurementView.middleMeasurementView.measurementValue = self.middleTireTreadValue
-        self.resultView.tireTreadMeasurementView.rightMeasurementView.measurementValue = self.rightTireTreadValue
     }
 }
 

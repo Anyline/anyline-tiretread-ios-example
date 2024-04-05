@@ -3,7 +3,7 @@ import UIKit
 class TireTreadMeasurementView: UIView {
     
     // MARK: - UI properties
-    lazy var topMeasurementView: MeasurementView = {
+    lazy var globalMeasurementView: MeasurementView = {
         var view = MeasurementView()
         return view
     }()
@@ -15,27 +15,11 @@ class TireTreadMeasurementView: UIView {
         return imageView
     }()
     
-    lazy var leftMeasurementView: MeasurementView = {
-        var view = MeasurementView(location: .regional)
-        return view
-    }()
-    
-    lazy var middleMeasurementView: MeasurementView = {
-        var view = MeasurementView(location: .regional)
-        return view
-    }()
-    
-    lazy var rightMeasurementView: MeasurementView = {
-        var view = MeasurementView(location: .regional)
-        return view
-    }()
-    
-    private lazy var bottomTireTreadMeasurementHStackView: UIStackView = {
+    lazy var bottomTireTreadMeasurementHStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 60
+        stackView.distribution = .equalCentering
         return stackView
     }()
     
@@ -77,12 +61,9 @@ private extension TireTreadMeasurementView {
     
     func addSubviews() {
         self.addSubview(contentVStackView)
-        self.contentVStackView.addArrangedSubview(topMeasurementView)
+        self.contentVStackView.addArrangedSubview(globalMeasurementView)
         self.contentVStackView.addArrangedSubview(tireImageView)
         self.contentVStackView.addArrangedSubview(bottomTireTreadMeasurementHStackView)
-        self.bottomTireTreadMeasurementHStackView.addArrangedSubview(leftMeasurementView)
-        self.bottomTireTreadMeasurementHStackView.addArrangedSubview(middleMeasurementView)
-        self.bottomTireTreadMeasurementHStackView.addArrangedSubview(rightMeasurementView)
     }
     
     func setupLayout() {
@@ -97,21 +78,6 @@ private extension TireTreadMeasurementView {
         self.tireImageView.snp.makeConstraints { make in
             make.width.equalTo(450)
             make.height.equalTo(150)
-        }
-
-        self.leftMeasurementView.snp.makeConstraints { make in
-            make.width.equalTo(self.topMeasurementView).multipliedBy(0.8)
-            make.height.equalTo(self.topMeasurementView).multipliedBy(0.8)
-        }
-
-        self.rightMeasurementView.snp.makeConstraints { make in
-            make.width.equalTo(self.topMeasurementView).multipliedBy(0.8)
-            make.height.equalTo(self.topMeasurementView).multipliedBy(0.8)
-        }
-
-        self.middleMeasurementView.snp.makeConstraints { make in
-            make.width.equalTo(self.topMeasurementView).multipliedBy(0.8)
-            make.height.equalTo(self.topMeasurementView).multipliedBy(0.8)
         }
     }
 }

@@ -50,7 +50,7 @@ class MeasurementView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         stackView.spacing = UserDefaultsManager.shared.imperialSystem ? 0 : -15
         return stackView
     }()
