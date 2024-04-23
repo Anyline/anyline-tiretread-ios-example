@@ -1,20 +1,20 @@
 import UIKit
 
-protocol ImperialSystemSettingsViewDelegate: AnyObject {
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+protocol ShowGuidanceSettingsViewDelegate: AnyObject {
+    func showGuidanceImageTapped(tapGestureRecognizer: UITapGestureRecognizer)
 }
 
-class ImperialSystemSettingsView: UIView {
+class ShowGuidanceSettingsView: UIView {
     
     // MARK: - UI properties
-    private lazy var imperialSystemLabel: ATDTextLabel = {
-        let label = ATDTextLabel(text: "settings.label.use_imperial_system".localized())
+    private lazy var showGuidanceLabel: ATDTextLabel = {
+        let label = ATDTextLabel(text: "settings.label.show_guidance".localized())
         label.textAlignment = .right
         return label
     }()
     
     private lazy var checkmarkImageView: UIImageView = {
-        let imageView = UIImageView(image: UserDefaultsManager.shared.imperialSystem ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square"))
+        let imageView = UIImageView(image: UserDefaultsManager.shared.showGuidance ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square"))
         imageView.tintColor = ColorStruct.stoneGrey
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageView.isUserInteractionEnabled = true
@@ -22,7 +22,7 @@ class ImperialSystemSettingsView: UIView {
         return imageView
     }()
     
-    private lazy var imperialSystemHStackView: UIStackView = {
+    private lazy var showGuidanceHStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 20
@@ -32,7 +32,7 @@ class ImperialSystemSettingsView: UIView {
     // MARK: - Private Properties
     
     // MARK: - Public properties
-    weak var delegate: ImperialSystemSettingsViewDelegate?
+    weak var delegate: ShowGuidanceSettingsViewDelegate?
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -49,7 +49,7 @@ class ImperialSystemSettingsView: UIView {
 }
 
 // MARK: - Private functions
-private extension ImperialSystemSettingsView {
+private extension ShowGuidanceSettingsView {
     
     // MARK: - Setup UI
     func configureView() {
@@ -57,17 +57,17 @@ private extension ImperialSystemSettingsView {
     }
     
     func addSubviews() {
-        self.addSubview(imperialSystemHStackView)
-        self.imperialSystemHStackView.addArrangedSubview(imperialSystemLabel)
-        self.imperialSystemHStackView.addArrangedSubview(checkmarkImageView)
+        self.addSubview(showGuidanceHStackView)
+        self.showGuidanceHStackView.addArrangedSubview(showGuidanceLabel)
+        self.showGuidanceHStackView.addArrangedSubview(checkmarkImageView)
     }
     
     func setupLayout() {
-        imperialSystemHStackView.snp.makeConstraints { make in
+        showGuidanceHStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        imperialSystemLabel.snp.makeConstraints { make in
+        showGuidanceLabel.snp.makeConstraints { make in
             make.centerY.equalTo(checkmarkImageView.snp.centerY)
         }
         
@@ -79,7 +79,7 @@ private extension ImperialSystemSettingsView {
     // MARK: - Actions
     @objc
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        delegate?.imageTapped(tapGestureRecognizer: tapGestureRecognizer)
+        delegate?.showGuidanceImageTapped(tapGestureRecognizer: tapGestureRecognizer)
     }
 }
 

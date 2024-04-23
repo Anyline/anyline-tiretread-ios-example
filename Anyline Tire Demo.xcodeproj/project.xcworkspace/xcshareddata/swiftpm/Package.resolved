@@ -10,12 +10,21 @@
       }
     },
     {
+      "identity" : "anyline-tiretread-spm-module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Anyline/anyline-tiretread-spm-module",
+      "state" : {
+        "revision" : "4477a51d26ffd4ed280a4bee2dfdb6d208d82e90",
+        "version" : "4.2.1"
+      }
+    },
+    {
       "identity" : "keychain-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/evgenyneu/keychain-swift.git",
       "state" : {
         "branch" : "master",
-        "revision" : "95219e66c94b6ba25e7d6ece7aecf1ea13134174"
+        "revision" : "6b6fc468877a5f01fe211fcf0af840b9ecce9d98"
       }
     },
     {
@@ -24,7 +33,7 @@
       "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "4d52cc3768ec5d345827b063dfa59e98a929965d"
+        "revision" : "4478b2234e85c36b9f2c855d909037dc4dc08eda"
       }
     }
   ],

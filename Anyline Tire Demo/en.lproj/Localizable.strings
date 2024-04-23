@@ -28,6 +28,7 @@
 "settings.label.capture_speed_fast" = "Fast";
 "settings.label.capture_speed_slow" = "Slow";
 "settings.label.capture_speed.tip" = "(Tap to change)";
+"settings.label.show_guidance" = "Show Guidance:";
 "success.title" = "Success!";
 "success.description" = "The SDK has been initialized successfully!";
 
@@ -41,11 +42,6 @@
 "scan.distance.decrease" = "Decrease distance";
 "scan.distance.increase" = "Increase distance";
 "scan.distance.set_focus" = "Trying to set the focus point, please focus on the middle of the running surface …";
-
-// Feedback
-"feedback.title" = "Feedback";
-"feedback.button.submit" = "Submit";
-"feedback.button.cancel" = "Cancel";
 
 // Recorder
 "recorder.loading.message" = "Processing...";
@@ -80,7 +76,6 @@
 // Result
 "result.label.result" = "Result";
 "result.label.details" = "Details";
-"result.label.feedback" = "Feedback";
 
 // Details
 "details.button.download" = "DOWNLOAD";

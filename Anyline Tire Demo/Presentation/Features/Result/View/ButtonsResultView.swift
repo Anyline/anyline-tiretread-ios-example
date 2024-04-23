@@ -3,7 +3,6 @@ import UIKit
 protocol ButtonsResultViewDelegate: AnyObject {
     func okButtonTapped()
     func detailsButtonTapped()
-    func feedbackButtonTapped()
 }
 
 class ButtonsResultView: UIView {
@@ -20,14 +19,6 @@ class ButtonsResultView: UIView {
     private lazy var detailsButton: ATDSideButton = {
         let button = ATDSideButton(title: "result.label.details".localized())
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
-        button.titleLabel?.font = FontStruct.proximaNovaBold23
-        button.layer.cornerRadius = 15
-        return button
-    }()
-    
-    private lazy var feedbackButton: ATDSideButton = {
-        let button = ATDSideButton(title: "result.label.feedback".localized())
-        button.addTarget(self, action: #selector(feedbackButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = FontStruct.proximaNovaBold23
         button.layer.cornerRadius = 15
         return button
@@ -63,7 +54,6 @@ private extension ButtonsResultView {
     func addSubviews() {
         self.addSubview(okButton)
         self.addSubview(detailsButton)
-        self.addSubview(feedbackButton)
     }
     
     func setupLayout() {
@@ -75,13 +65,6 @@ private extension ButtonsResultView {
         }
         
         detailsButton.snp.makeConstraints { make in
-            make.bottom.equalTo(feedbackButton.snp.top).offset(-20)
-            make.trailing.equalTo(0)
-            make.width.equalTo(170)
-            make.height.equalTo(55)
-        }
-        
-        feedbackButton.snp.makeConstraints { make in
             make.bottom.equalTo(self.snp.bottom).offset(-35)
             make.trailing.equalTo(0)
             make.width.equalTo(170)
@@ -99,10 +82,4 @@ private extension ButtonsResultView {
     func detailsButtonTapped() {
         delegate?.detailsButtonTapped()
     }
-    
-    @objc
-    func feedbackButtonTapped() {
-        delegate?.feedbackButtonTapped()
-    }
-    
 }

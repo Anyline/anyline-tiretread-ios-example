@@ -85,8 +85,4 @@ extension ResultView: ButtonsResultViewDelegate {
     func detailsButtonTapped() {
         delegate?.detailsButtonTapped()
     }
-    
-    func feedbackButtonTapped() {
-        delegate?.feedbackButtonTapped()
-    }
 }
