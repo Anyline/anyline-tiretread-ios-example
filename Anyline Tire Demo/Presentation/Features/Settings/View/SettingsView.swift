@@ -32,6 +32,11 @@ class SettingsView: UIView {
         let view = ImperialSystemSettingsView()
         return view
     }()
+
+    private lazy var showGuidanceView: ShowGuidanceSettingsView = {
+        let view = ShowGuidanceSettingsView()
+        return view
+    }()
     
     lazy var licenseView: LicenseSettingsView = {
         let view = LicenseSettingsView()
@@ -92,6 +97,7 @@ private extension SettingsView {
         contentVStackView.addArrangedSubview(imperialSystemView)
         contentVStackView.addArrangedSubview(licenseView)
         contentVStackView.addArrangedSubview(captureSpeedView)
+        contentVStackView.addArrangedSubview(showGuidanceView)
         contentVStackView.addArrangedSubview(infoView)
     }
     
@@ -123,6 +129,7 @@ private extension SettingsView {
     func setDelegates() {
         buttonsView.delegate = self
         imperialSystemView.delegate = self
+        showGuidanceView.delegate = self
     }
 }
 
@@ -145,8 +152,14 @@ extension SettingsView: ButtonsSettingsViewDelegate {
 // MARK: - ImperialSystemViewDelegate
 extension SettingsView: ImperialSystemSettingsViewDelegate {
     
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        delegate?.imageTapped(tapGestureRecognizer: tapGestureRecognizer)
+    func imperialSystemImageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        delegate?.imperialSystemImageTapped(tapGestureRecognizer: tapGestureRecognizer)
+    }
+}
+extension SettingsView: ShowGuidanceSettingsViewDelegate {
+
+    func showGuidanceImageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        delegate?.showGuidanceImageTapped(tapGestureRecognizer: tapGestureRecognizer)
     }
 }
 

@@ -137,9 +137,4 @@ extension ResultViewController: ResultButtonActionsDelegate {
         let vc = ResultDetailsViewController(uuid: uuid)
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    func feedbackButtonTapped() {
-        let vc = FeedbackViewController(uuid: uuid)
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
 }

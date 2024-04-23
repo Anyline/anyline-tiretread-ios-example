@@ -56,4 +56,18 @@ struct UserDefaultsManager {
             UserDefaults.standard.setValue(newValue.ordinal, forKey: "scanSpeed")
         }
     }
+
+    var showGuidance: Bool {
+        get {
+            let showGuidanceObject = UserDefaults.standard.object(forKey: "showGuidance")
+
+            if (showGuidanceObject == nil){
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: "showGuidance")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "showGuidance")
+        }
+    }
 }

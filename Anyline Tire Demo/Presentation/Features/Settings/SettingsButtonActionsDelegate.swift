@@ -5,7 +5,8 @@ protocol SettingsButtonActionsDelegate: AnyObject {
     func okButtonTapped()
     func testUploadButtonTapped()
     func cancelButtonTapped()
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    func imperialSystemImageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    func showGuidanceImageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     func switchChanged(mySwitch: UISwitch)
 
     func scanQRCodeTapped()

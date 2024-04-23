@@ -17,6 +17,7 @@ class SettingsViewController: UIViewController {
     // MARK: - Private Properties
     private var switchValueButton: Bool = UserDefaultsManager.shared.imageQualitySwitchValue
     private var imperialSystem: Bool = UserDefaultsManager.shared.imperialSystem
+    private var showGuidance: Bool = UserDefaultsManager.shared.showGuidance
     private var scanSpeed: ScanSpeed = UserDefaultsManager.shared.scanSpeed
 
     private lazy var settingsViewModel: SettingsViewModel = {
@@ -68,6 +69,14 @@ class SettingsViewController: UIViewController {
         } else {
             // Use mm
             UserDefaultsManager.shared.imperialSystem = false
+        }
+    }
+    
+    func saveShowGuidance() {
+        if showGuidance {
+            UserDefaultsManager.shared.showGuidance = true
+        } else {
+            UserDefaultsManager.shared.showGuidance = false
         }
     }
     
@@ -222,6 +231,7 @@ extension SettingsViewController: SettingsButtonActionsDelegate {
     
     func okButtonTapped() {
         saveImperialSystem()
+        saveShowGuidance()
         saveLicenseID()
         saveImageQuality()
         navigationController?.popViewController(animated: true)
@@ -236,7 +246,7 @@ extension SettingsViewController: SettingsButtonActionsDelegate {
         navigationController?.popViewController(animated: true)
     }
     
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+    func imperialSystemImageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         let tappedImage = tapGestureRecognizer.view as! UIImageView
         if tappedImage.image == UIImage(systemName: "checkmark.square") {
             tappedImage.image = UIImage(systemName: "square")
@@ -244,6 +254,17 @@ extension SettingsViewController: SettingsButtonActionsDelegate {
         } else {
             tappedImage.image = UIImage(systemName: "checkmark.square")
             self.imperialSystem = true
+        }
+    }
+    
+    func showGuidanceImageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        if tappedImage.image == UIImage(systemName: "checkmark.square") {
+            tappedImage.image = UIImage(systemName: "square")
+            self.showGuidance = false
+        } else {
+            tappedImage.image = UIImage(systemName: "checkmark.square")
+            self.showGuidance = true
         }
     }
     

@@ -65,9 +65,17 @@ private extension ScanViewController {
         */
         // let tirePosition = TirePosition(axle: 1, side: TireSide.left, positionOnAxle: 1)
         // let additionalContext = AdditionalContext(tirePosition: tirePosition)
+        let customUiConfig = DefaultUiConfig()
+
+        let shouldShowGuidance = UserDefaultsManager.shared.showGuidance
+
+        customUiConfig.howToScanTooltipConfig.visible = shouldShowGuidance
+        customUiConfig.tireOverlayConfig.visible = shouldShowGuidance
+        customUiConfig.lineProgressBarConfig.visible = shouldShowGuidance
         
         let config = TireTreadScanViewConfig.Builder()
             .withMeasurementSystem(measurementSystem: measurementSystem)
+            .withCustomDefaultUiConfig(defaultUIConfig: customUiConfig)
             //.addAdditionalContext(additionalContext: additionalContext)
             // The API ".withScanSpeed()" is experimental, may impact scan performance and be removed with any major SDK release.
             // You are advised to ignore this configuration on your implementation.
