@@ -12,14 +12,11 @@
 		030D8C7E8F9F826524BA31A7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = AE4098F783D33EDD00174621 /* SnapKit */; };
 		0A1A2396F1C55377451C6AF4 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF323846DAEE03F621DBF05 /* ResultViewController.swift */; };
 		0FA8883A556B2FA320CA2DD2 /* AccuracySpeedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B3EE586C5AEFFD0946C9B5 /* AccuracySpeedSettingsView.swift */; };
-		0FCB12352851B2CC14B8A7C1 /* vcs.xml in Resources */ = {isa = PBXBuildFile; fileRef = CD3FF46CD2D958B6D81CB5BA /* vcs.xml */; };
 		1AC53E9E0FF2699C737155CF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67840B9E99FD8F9FC54844DB /* String+Extension.swift */; };
 		1D17BE143196523D2031D216 /* DescriptionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EA574D2CD2834C4B90FE7 /* DescriptionErrorView.swift */; };
 		1DB1D383AF7C342F7E94BE9C /* AnimationLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C5E9CF9FCB168405C7A63 /* AnimationLoadingView.swift */; };
-		25AB68DC8C089B49BF4B88D4 /* workspace.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0961EA8CC47CD233AAC28496 /* workspace.xml */; };
 		29ED2FF6F2DD3987E89BFA6A /* tiretread_sound_stop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0279B6C33EC315BFB9202A88 /* tiretread_sound_stop.wav */; };
 		2E4E98C5AC372ECAECE7BCEA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F65BCB8B40B49FE3A81C57 /* SettingsView.swift */; };
-		310CB561F42A37A560B9F435 /* Anyline Tire Demo.iml in Resources */ = {isa = PBXBuildFile; fileRef = 5AFB7AFBE9E5485338795E06 /* Anyline Tire Demo.iml */; };
 		35B3D619C9CB0D2485FB93C0 /* ResultDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592EBCA3FF9BC3EC5068119D /* ResultDetailsViewController.swift */; };
 		38DB3D561F4C43FB5A8B9727 /* ErrorButtonActionsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDD518668FD48C095561BE8 /* ErrorButtonActionsDelegate.swift */; };
 		3CAFFCCFEE3CA28949769BCE /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5A8E509B4C8C4AC6C6113DBD /* KeychainSwift */; };
@@ -34,7 +31,6 @@
 		60867B6448E0174B6C94DD34 /* PDFReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B672D5814257084C202F656D /* PDFReaderView.swift */; };
 		61F8BC3D17A20B47266573CC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A1F359FD235E25B6A374F9 /* SettingsViewModel.swift */; };
 		630302657E9563016A6A475F /* tiretread_sound_beep_too_close.wav in Resources */ = {isa = PBXBuildFile; fileRef = 898D068837A772FDC17C4F80 /* tiretread_sound_beep_too_close.wav */; };
-		66F67940F4634951C847EB98 /* misc.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8686A4230BA9C306CA9090E6 /* misc.xml */; };
 		6A3DED6F32AF230CE411624C /* ATDSideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FCB5E52078C5C5E8B5569B /* ATDSideButton.swift */; };
 		6A88F4119F37EF8E80A6C418 /* LandingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9341A53AAD476ED9898701C5 /* LandingViewModel.swift */; };
 		6E11D51C1B198681FBBBAF50 /* LoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5010D7616B934B0CEA331D02 /* LoadingViewModel.swift */; };
@@ -73,7 +69,7 @@
 		D6919D00130DD2096F69F352 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44AFD25638D1C9513636C37 /* ResultView.swift */; };
 		DA4553F0DFF86A25ACBF1197 /* LandingTextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F00A3CE42550CD5D87E5F /* LandingTextViewDelegate.swift */; };
 		DAB4121C20787CFBD4E8BC3B /* ATDTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20CCB2348A1D5779AD369D /* ATDTextField.swift */; };
-		DD19A188C2FE3B064AACA037 /* modules.xml in Resources */ = {isa = PBXBuildFile; fileRef = 848E9ACC3C8B16BC3203A29C /* modules.xml */; };
+		DB44FB5A96AA0F682A973E1D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8C50D0963153128DE17311B4 /* PrivacyInfo.xcprivacy */; };
 		DEC9D5EECB42273A5F89B447 /* LandingButtonActionsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696E6ED85B49AD9091DA35DE /* LandingButtonActionsDelegate.swift */; };
 		E42046826C435BB3C8648356 /* InfoSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E054DE5275CFBA5F059FFD /* InfoSettingsView.swift */; };
 		E867FA59DFE1158EF820BA09 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE63BB8F9AD2406691FCCEAA /* UIViewController+Extension.swift */; };
@@ -82,6 +78,7 @@
 		F61AC54D164F3F1D35289943 /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420A2185548C476939CD5037 /* QRCodeReaderViewController.swift */; };
 		F81338C8435FEBA076801D69 /* ScanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CC8518403D55DB36CAFA0D /* ScanViewModel.swift */; };
 		FA806DEF9791249E298CA64D /* tiretread_sound_beep_too_far.wav in Resources */ = {isa = PBXBuildFile; fileRef = B97D72540717494221B2D968 /* tiretread_sound_beep_too_far.wav */; };
+		FDF60A693E95780FFB708213 /* default_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C29DEB55C2E3EA584BCBFE0 /* default_config.json */; };
 		FE1F9B0BF324FAB9B95F0C81 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DC8214D152A69BF6BE2BFA /* ErrorViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -89,7 +86,6 @@
 		00CC8518403D55DB36CAFA0D /* ScanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewModel.swift; sourceTree = "<group>"; };
 		0279B6C33EC315BFB9202A88 /* tiretread_sound_stop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_stop.wav; sourceTree = "<group>"; };
 		039C5E9CF9FCB168405C7A63 /* AnimationLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationLoadingView.swift; sourceTree = "<group>"; };
-		0961EA8CC47CD233AAC28496 /* workspace.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = workspace.xml; sourceTree = "<group>"; };
 		1082146CA856FECC9AE1C392 /* LicenseSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseSettingsView.swift; sourceTree = "<group>"; };
 		14A8CECEA3C792A45FFCB5FE /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		1DBED146B22C6AF08693B5B3 /* ATDTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATDTopView.swift; sourceTree = "<group>"; };
@@ -101,6 +97,7 @@
 		356C7E9537E33B81DD3E9DF8 /* tiretread_sound_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_start.wav; sourceTree = "<group>"; };
 		390C46701BB308E6F53EFB81 /* TireTreadMeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TireTreadMeasurementView.swift; sourceTree = "<group>"; };
 		39FB6DAFECFCBA5FFF7D488D /* CaptureSpeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSpeedView.swift; sourceTree = "<group>"; };
+		3C29DEB55C2E3EA584BCBFE0 /* default_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = default_config.json; sourceTree = "<group>"; };
 		3F4512E39D68A2ECC6176D69 /* ImperialSystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImperialSystemSettingsView.swift; sourceTree = "<group>"; };
 		420A2185548C476939CD5037 /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
 		43FD477C87ED260D7F2D4B0B /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
@@ -112,7 +109,6 @@
 		53E863C814ADFA1AE90698DB /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		58DC8214D152A69BF6BE2BFA /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
 		592EBCA3FF9BC3EC5068119D /* ResultDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultDetailsViewController.swift; sourceTree = "<group>"; };
-		5AFB7AFBE9E5485338795E06 /* Anyline Tire Demo.iml */ = {isa = PBXFileReference; path = "Anyline Tire Demo.iml"; sourceTree = "<group>"; };
 		5C4839D8B8B3418C1F448C0C /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		5FA6E900770A1B48D530C0B0 /* Anyline Tire Demo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Anyline Tire Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDD518668FD48C095561BE8 /* ErrorButtonActionsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorButtonActionsDelegate.swift; sourceTree = "<group>"; };
@@ -127,17 +123,15 @@
 		7806B02B24D5CA9894554DDF /* ProximaNova-Light.otf */ = {isa = PBXFileReference; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
 		79422290CE7EF2CD20C3D8EE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		846F00A3CE42550CD5D87E5F /* LandingTextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingTextViewDelegate.swift; sourceTree = "<group>"; };
-		848E9ACC3C8B16BC3203A29C /* modules.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = modules.xml; sourceTree = "<group>"; };
-		8686A4230BA9C306CA9090E6 /* misc.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = misc.xml; sourceTree = "<group>"; };
 		898D068837A772FDC17C4F80 /* tiretread_sound_beep_too_close.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_close.wav; sourceTree = "<group>"; };
 		8A35D4D3DBCB082A5C414DA4 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		8C50D0963153128DE17311B4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		91A81A696C0FE10BADEDFFF0 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		9305D03F418897C0AD10B90F /* tiretread_focuspoint_found.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_focuspoint_found.wav; sourceTree = "<group>"; };
 		9341A53AAD476ED9898701C5 /* LandingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewModel.swift; sourceTree = "<group>"; };
 		94A1F359FD235E25B6A374F9 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		94B3EE586C5AEFFD0946C9B5 /* AccuracySpeedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuracySpeedSettingsView.swift; sourceTree = "<group>"; };
 		98E054DE5275CFBA5F059FFD /* InfoSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSettingsView.swift; sourceTree = "<group>"; };
-		991D8278FE1177881E96C0DB /* .gitignore */ = {isa = PBXFileReference; path = .gitignore; sourceTree = "<group>"; };
 		9E205BE38F7CF6F2E673D73B /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
 		A9CB99471900809461B83691 /* TextLandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLandingView.swift; sourceTree = "<group>"; };
 		AA0D513A072F0FA35EEED2BE /* ATDTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATDTextLabel.swift; sourceTree = "<group>"; };
@@ -149,7 +143,6 @@
 		C1FCB5E52078C5C5E8B5569B /* ATDSideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATDSideButton.swift; sourceTree = "<group>"; };
 		C44AFD25638D1C9513636C37 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		CBBFD690B0F8E473AD1285E8 /* VolumeButtonObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeButtonObserver.swift; sourceTree = "<group>"; };
-		CD3FF46CD2D958B6D81CB5BA /* vcs.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = vcs.xml; sourceTree = "<group>"; };
 		D5BA79536B6EEBE089971CDA /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		D6FDFBEF38034A3F4671F98F /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		DB20B1D3E5DE027FAE19AD9F /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
@@ -205,6 +198,7 @@
 		0B640698AABBBA4ECC8390C5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3C29DEB55C2E3EA584BCBFE0 /* default_config.json */,
 				19003AC71D8C98073C1BB5CA /* Audio */,
 				26065F191C2A166B67E54837 /* Extensions */,
 				9040E2F1A88E371D7DDCB6A7 /* Helpers */,
@@ -317,7 +311,6 @@
 				BE053E1CF96479297B839F59 /* LaunchScreen.storyboard */,
 				3318E4FA5B27EDB760F76DFF /* Localizable.strings */,
 				2193B4C3D407BACF67DB63B3 /* SceneDelegate.swift */,
-				810A32CC4231A35D7FE8D5A0 /* .idea */,
 				B2A029EAA4AF722D05D155BE /* DataStorage */,
 				22B452DAF0CCDD6BA9E99063 /* Fonts */,
 				4E462EF51CB251ECFF0B094A /* Presentation */,
@@ -397,19 +390,6 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
-		810A32CC4231A35D7FE8D5A0 /* .idea */ = {
-			isa = PBXGroup;
-			children = (
-				991D8278FE1177881E96C0DB /* .gitignore */,
-				5AFB7AFBE9E5485338795E06 /* Anyline Tire Demo.iml */,
-				8686A4230BA9C306CA9090E6 /* misc.xml */,
-				848E9ACC3C8B16BC3203A29C /* modules.xml */,
-				CD3FF46CD2D958B6D81CB5BA /* vcs.xml */,
-				0961EA8CC47CD233AAC28496 /* workspace.xml */,
-			);
-			path = .idea;
-			sourceTree = "<group>";
-		};
 		8301B8486339AEE6DE4D3B30 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +437,7 @@
 		930DC432CB7ADC12BB1C40F9 /* System */ = {
 			isa = PBXGroup;
 			children = (
+				8C50D0963153128DE17311B4 /* PrivacyInfo.xcprivacy */,
 				B5F46F97960F579993C41507 /* SystemInfo.swift */,
 			);
 			path = System;
@@ -642,22 +623,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				310CB561F42A37A560B9F435 /* Anyline Tire Demo.iml in Resources */,
 				778185811BD1A1128E44BED5 /* Assets.xcassets in Resources */,
 				84C49BAE86A8C61E2789AE51 /* LaunchScreen.storyboard in Resources */,
 				B43E435CF5FD514D9D4D4245 /* Localizable.strings in Resources */,
+				DB44FB5A96AA0F682A973E1D /* PrivacyInfo.xcprivacy in Resources */,
 				CFBC8035DE3560D7ABB142FD /* ProximaNova-Bold.otf in Resources */,
 				E9B33D39315858DA62E2C2BD /* ProximaNova-Light.otf in Resources */,
 				C547C5D4DB92F152AC74F0F8 /* ProximaNova-Regular.otf in Resources */,
-				66F67940F4634951C847EB98 /* misc.xml in Resources */,
-				DD19A188C2FE3B064AACA037 /* modules.xml in Resources */,
+				FDF60A693E95780FFB708213 /* default_config.json in Resources */,
 				3CDCBDE8BEBC15FDA1FB6264 /* tiretread_focuspoint_found.wav in Resources */,
 				630302657E9563016A6A475F /* tiretread_sound_beep_too_close.wav in Resources */,
 				FA806DEF9791249E298CA64D /* tiretread_sound_beep_too_far.wav in Resources */,
 				7369D989A1B4FE06EB66969A /* tiretread_sound_start.wav in Resources */,
 				29ED2FF6F2DD3987E89BFA6A /* tiretread_sound_stop.wav in Resources */,
-				0FCB12352851B2CC14B8A7C1 /* vcs.xml in Resources */,
-				25AB68DC8C089B49BF4B88D4 /* workspace.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,7 +806,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.showcase.tiretread;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -921,7 +899,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.showcase.tiretread;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -962,7 +940,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.2.1;
+				minimumVersion = 5.0.0;
 			};
 		};
 		4B5AEA5F9FCA6152FDAB044B /* XCRemoteSwiftPackageReference "SnapKit" */ = {
