@@ -55,8 +55,6 @@ private extension ScanViewController {
 
         let userDefaults = UserDefaultsManager.shared
 
-        let measurementSystem: MeasurementSystem = userDefaults.imperialSystem ? .imperial : .metric
-
         /*
          * You can optionally provide additional context to a scan.
          * This makes sense in a workflow, where a scan is connected to other TireTread scans or
@@ -72,18 +70,20 @@ private extension ScanViewController {
         customUiConfig.howToScanTooltipConfig.visible = shouldShowGuidance
         customUiConfig.tireOverlayConfig.visible = shouldShowGuidance
         customUiConfig.lineProgressBarConfig.visible = shouldShowGuidance
-        
-        let config = TireTreadScanViewConfig.Builder()
-            .withMeasurementSystem(measurementSystem: measurementSystem)
-            .withCustomDefaultUiConfig(defaultUIConfig: customUiConfig)
-            //.addAdditionalContext(additionalContext: additionalContext)
-            // The API ".withScanSpeed()" is experimental, may impact scan performance and be removed with any major SDK release.
-            // You are advised to ignore this configuration on your implementation.
-            .withScanSpeed(scanSpeed: userDefaults.scanSpeed)
-            .build()
+
+        let config = TireTreadScanViewConfig()
+        config.measurementSystem = userDefaults.imperialSystem ? .imperial : .metric
+        // ScanSpeed is experimental, may impact scan performance and may be removed with any major SDK release.
+        config.scanSpeed = userDefaults.scanSpeed
+        config.defaultUiConfig = customUiConfig
+        // You are advised to ignore this configuration on your implementation.
+        // config.additionalContext = additionalContext
         
         // creates a TireTreadScannerViewController. You can later refer to it here
         // as self.scannerViewController.
+
+        // Alternatively initialise scan process with a JSON config
+        // let config = "default_config.json"
         TireTreadScanViewKt.TireTreadScanView(context: UIViewController(), config: config, callback: self) { [weak self] error in
             self?.displayError()
             print("Initialization failed: \(error)")
