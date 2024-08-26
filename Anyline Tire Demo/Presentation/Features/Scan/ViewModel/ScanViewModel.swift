@@ -1,7 +1,7 @@
 import Foundation
 
 protocol ScanViewModelDelegate: AnyObject {
-    func displayError()
+    func displayError(uuid: String)
 }
 
 class ScanViewModel {

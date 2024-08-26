@@ -1,5 +1,6 @@
 // Landing View
 "landing.button.start" = "OPEN SCANNER";
+"landing.button.start.opening" = "OPENING ...";
 "landing.button.settings" = "SETTINGS";
 "landing.button.tutorial" = "TUTORIAL";
 "landing.label.welcome" = "Welcome to the Anyline\nTire Tread Scanner!";
@@ -48,6 +49,7 @@
 "recorder.msg.scanned_tire_id_1" = "This is the scanned Tire ID:";
 "recorder.msg.scanned_tire_id_2" = "What would you like to do?";
 "recorder.alert.title" = "Data Collection";
+"recorder.alert.title.succeeded" = "Data Collection Succeeded";
 "recorder.alert.message_success" = "Your data recording has been successfully submitted.";
 "recorder.alert.message_failure" = "Your data recording was not sent successfully. Retry?";
 "recorder.alert.btn_failure" = "Retry";
@@ -61,7 +63,8 @@
 "error.description" = "Something went wrong!, Please try again later";
 "error.invalid_license" = "Your license key is invalid or the server is currently unavailable.";
 "error.key.description" = "Unable to authenticate! Please check if you entered the correct license key.";
-"error.scan.description" = "The scan was not successful, please try again.\n\nMake sure you do not move the device too fast and keep the right distance.";
+"error.scan.title" = "The scan was not successful, please try again.";
+"error.scan.description" = "Make sure you do not move the device too fast and keep the right distance.";
 "error.scan.dot.description" = "Unable to set a focus point. Please adjust the distance and the focus on the tire and try again.";
 "error.pdf.description" = "The PDF data is unavailable! Please try again later.";
 "error.pdf.download" = "Unable to save the PDF. Please try again later.";

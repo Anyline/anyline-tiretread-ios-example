@@ -1,4 +1,5 @@
 import UIKit
+import AnylineTireTreadSdk
 
 class ErrorView: UIView {
     
@@ -7,6 +8,12 @@ class ErrorView: UIView {
     private lazy var errorView: DescriptionErrorView = {
         let view = DescriptionErrorView()
         return view
+    }()
+    
+    lazy var measurementUUIDLabel: ATDTextLabel = {
+        let label = ATDTextLabel(text: "Scan ID: {UUID}")
+        label.textAlignment = .left
+        return label
     }()
     
     private lazy var okButton: ATDSideButton = {
@@ -32,6 +39,14 @@ class ErrorView: UIView {
         super.init(coder: coder)
     }
     
+    // MARK: - Setup UI
+    func setError(code: String?, message: String?) {
+        errorView.setError(code: code, message: message)
+    }
+    
+    func setUUID(uuid: String) {
+        measurementUUIDLabel.text = "Scan ID: \(uuid)"
+    }
 }
 
 // MARK: - Private functions
@@ -45,6 +60,7 @@ private extension ErrorView {
     func addSubviews() {
         self.addSubview(okButton)
         self.addSubview(errorView)
+        self.addSubview(measurementUUIDLabel)
     }
     
     func setupLayout() {
@@ -55,11 +71,17 @@ private extension ErrorView {
             make.height.equalTo(80)
         }
         
+        self.measurementUUIDLabel.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-30)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+        }
+        
         self.errorView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(40)
             make.leading.equalTo(120)
             make.width.equalTo(500)
-            make.height.equalTo(250)
+            make.bottom.equalTo(measurementUUIDLabel.snp.top).offset(-30)
         }
     }
     

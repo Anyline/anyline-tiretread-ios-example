@@ -123,10 +123,11 @@ extension LoadingViewController: LoadingViewModelDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
-    func displayError() {
+    func displayError(code: String?, message: String?) {
         DispatchQueue.main.async { [weak self] in
-            let vc = ErrorViewController()
+            let vc = ErrorViewController(uuid: self?.uuid ?? "")
             vc.delegate = self
+            vc.setError(code: code, message: message)
             self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
