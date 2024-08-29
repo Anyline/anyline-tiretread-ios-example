@@ -32,6 +32,10 @@
     },
     "lineProgressBarConfig": {
       "visible": true
+    },
+    "orientationWarningConfig": {
+      "visible": true,
+      "text": "Rotate to landscape mode."
     }
   },
   "scanSpeed": "Fast",

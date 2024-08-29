@@ -70,4 +70,37 @@ struct UserDefaultsManager {
             UserDefaults.standard.setValue(newValue, forKey: "showGuidance")
         }
     }
+    
+    func addNewTireRegistration(tireId: String) {
+        let keychainManager = KeychainManager()
+        let licenseString = keychainManager.getValue(forKey: KeychainKeys.licenseID) ?? ""
+        var tireRegistration = UserDefaults.standard.dictionary(forKey: "tireRegistration") as? [String: [String: Int]] ?? [:]
+        var registrationCount = tireRegistration[licenseString]?[tireId] ?? 0
+        registrationCount += 1
+
+        if var licenseEntry = tireRegistration[licenseString] {
+            licenseEntry[tireId] = registrationCount
+            tireRegistration[licenseString] = licenseEntry
+        } else {
+            tireRegistration[licenseString] = [tireId: registrationCount]
+        }
+        
+        UserDefaults.standard.set(tireRegistration, forKey: "tireRegistration")
+    }
+    
+    func loadTireRegistration(tireId: String) -> Int {
+        
+        let keychainManager = KeychainManager()
+        let licenseString = keychainManager.getValue(forKey: KeychainKeys.licenseID) ?? ""
+        
+        if let tireRegistration = UserDefaults.standard.dictionary(forKey: "tireRegistration") as? [String: [String: Int]] {
+            if let tireRegistationForLicense = tireRegistration[licenseString] {
+                if let count = tireRegistationForLicense[tireId] {
+                    return count
+                }
+            }
+        }
+        return 0
+    }
+
 }

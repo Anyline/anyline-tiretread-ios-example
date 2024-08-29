@@ -62,6 +62,7 @@ class LandingViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         landingView.startButton.isEnabled = true
+        landingView.resetOpenButton()
     }
 }
 
@@ -99,14 +100,23 @@ extension LandingViewController: LandingButtonActionsDelegate {
         } else {
             displayMode = .default
             landingView.startButton.isEnabled = false
-            landingViewModel.tryInitializeSdk(context: self) { [weak self] success, errorMsg in
-                self?.landingView.startButton.isEnabled = true
-                guard let self = self, success else {
-                    self?.showError(error: errorMsg ?? "Unknown error")
-                    return
-                }
-                self.landingViewModel.requestPermissionsAndProceed(context: self) { success, errorMsg in
-                    self.startScanningScreen()
+                DispatchQueue.global().async {
+                    self.landingViewModel.tryInitializeSdk(context: self) { [weak self] success, errorMsg in
+                        DispatchQueue.main.async {
+                            guard let self = self else {
+                                return
+                            }
+                            self.landingView.startButton.isEnabled = true
+                            guard success else {
+                                self.showError(error: errorMsg ?? "Unknown error")
+                                self.landingView.resetOpenButton()
+                                return
+                            }
+                            self.landingViewModel.requestPermissionsAndProceed(context: self) { success, errorMsg in
+                                
+                                    self.startScanningScreen()
+                            }
+                        }
                 }
             }
         }
