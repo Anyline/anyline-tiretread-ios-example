@@ -96,6 +96,10 @@ class LandingView: UIView {
         cancelButton.setTitle(cancelBtnTitle, for: .normal)
     }
     
+    func resetOpenButton() {
+        startButton.setTitle("landing.button.start".localized(), for: .normal)
+    }
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -169,6 +173,7 @@ private extension LandingView {
     // MARK: - Actions
     @objc
     func startButtonTapped() {
+        startButton.setTitle("landing.button.start.opening".localized(), for: .normal)
         delegate?.startButtonTapped()
     }
     
@@ -190,6 +195,7 @@ private extension LandingView {
 
 extension LandingView: LandingTextViewDelegate {
     func startTapped() {
+        startButton.setTitle("landing.button.start.opening".localized(), for: .normal)
         delegate?.startButtonTapped()
     }
     

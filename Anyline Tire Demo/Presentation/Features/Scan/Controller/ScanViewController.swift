@@ -31,18 +31,18 @@ class ScanViewController: UIViewController, ScannerViewControllerHolder {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTireTreadScanView()
-        setupVolumeView()
+        //setupVolumeView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.setupVolumeButtonObserver()
+        // self.setupVolumeButtonObserver()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.delegate = nil
-        self.resetVolumeButtonObserver()
+        // self.resetVolumeButtonObserver()
         self.scannerViewController = nil
     
     }
@@ -85,7 +85,7 @@ private extension ScanViewController {
         // Alternatively initialise scan process with a JSON config
         // let config = "default_config.json"
         TireTreadScanViewKt.TireTreadScanView(context: UIViewController(), config: config, callback: self) { [weak self] error in
-            self?.displayError()
+            self?.displayError(uuid: "")
             print("Initialization failed: \(error)")
         }
 
@@ -97,7 +97,7 @@ private extension ScanViewController {
 
     private func addScanViewControllerAsChild() {
         guard let scannerViewController = scannerViewController else {
-            displayError()
+            displayError(uuid: "")
             return
         }
         addChild(scannerViewController)
@@ -147,8 +147,8 @@ private extension ScanViewController {
 // MARK: - ScanViewModelDelegate
 extension ScanViewController: ScanViewModelDelegate {
 
-    func displayError() {
-        let vc = ErrorViewController()
+    func displayError(uuid: String) {
+        let vc = ErrorViewController(uuid: uuid)
         vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -192,7 +192,7 @@ extension ScanViewController: TireTreadScanViewCallback {
     }
     
     func onUploadFailed(uuid: String?, exception: KotlinException) {
-        self.displayError()
+        self.displayError(uuid: uuid ?? "")
     }
     
     func onUploadCompleted(uuid: String?) {
@@ -214,7 +214,7 @@ extension ScanViewController: TireTreadScanViewCallback {
                 self.displayLoading(uuid: uuid)
             }
         } else {
-            self.displayError()
+            self.displayError(uuid: uuid ?? "")
         }
     }
     

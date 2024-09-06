@@ -2,7 +2,7 @@ import Foundation
 import AnylineTireTreadSdk
 
 protocol LoadingViewModelDelegate: AnyObject {
-    func displayError()
+    func displayError(code: String?, message: String?)
     func displayDepthResultView(uuid: String, treadDepthResult: TreadDepthResult)
 }
 
@@ -29,23 +29,24 @@ class LoadingViewModel {
     }
     
     private func fetchTreadDepthResult() {
-        do {
-            try AnylineTireTreadSdk.companion.getTreadDepthReportResult(
-                measurementUuid: self.uuid,
-                onGetTreadDepthReportResultSucceeded: { [weak self] treadDepthResult in
-                    guard let self = self else { return }
+        AnylineTireTreadSdk.companion.getTreadDepthReportResult(measurementUuid: self.uuid, timeoutSeconds: 60) { [weak self] response in
+                guard let self = self else { return }
+            
+                switch(response) {
+                case let response as ResponseSuccess<TreadDepthResult>:
                     DispatchQueue.main.async {
-                        self.loadingViewModelDelegate?.displayDepthResultView(uuid: self.uuid, treadDepthResult: treadDepthResult)
+                        self.loadingViewModelDelegate?.displayDepthResultView(uuid: self.uuid, treadDepthResult: response.data)
                     }
-                },
-                onGetTreadDepthReportResultFailed: { [weak self] measurementError in
-                    print("Error code: " + (measurementError.errorCode ?? "not available"))
-                    print("Error message: " + measurementError.errorMessage)
-                    self?.loadingViewModelDelegate?.displayError()
-                }, timeoutSeconds: 60
-            )
-        } catch {
-            self.loadingViewModelDelegate?.displayError()
+                    break;
+                case let response as ResponseError<TreadDepthResult>:
+                    self.loadingViewModelDelegate?.displayError(code: response.errorCode, message: response.errorMessage)
+                    break;
+                case let response as ResponseException<TreadDepthResult>:
+                    self.loadingViewModelDelegate?.displayError(code: nil, message: response.exception.message)
+                    break;
+                default:
+                    break;
+                }
         }
     }
 }
