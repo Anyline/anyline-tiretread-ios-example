@@ -29,7 +29,7 @@ class LoadingViewModel {
     }
     
     private func fetchTreadDepthResult() {
-        AnylineTireTreadSdk.companion.getTreadDepthReportResult(measurementUuid: self.uuid, timeoutSeconds: 60) { [weak self] response in
+        AnylineTireTreadSdk.shared.getTreadDepthReportResult(measurementUuid: self.uuid, timeoutSeconds: 60) { [weak self] response in
                 guard let self = self else { return }
             
                 switch(response) {
