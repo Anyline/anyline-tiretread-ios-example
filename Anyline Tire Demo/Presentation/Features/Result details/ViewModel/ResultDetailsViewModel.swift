@@ -14,7 +14,7 @@ class ResultDetailsViewModel {
     private var uuid: String
     
     // MARK: - Public Properties
-    private let anylineSDK = AnylineTireTreadSdk.companion
+    private let anylineSDK = AnylineTireTreadSdk.shared
     
     // MARK: - Init
     init(delegate: ResultDetailsViewModelDelegate, uuid: String) {
@@ -31,7 +31,7 @@ class ResultDetailsViewModel {
                 resultDetailsViewModelDelegate?.showError(error: "error.license.missing_key".localized())
                 return
             }
-            try anylineSDK.doInit(licenseKey: licenceID, context: context)
+            try anylineSDK.doInit(licenseKey: licenceID)
 
             anylineSDK.getTreadDepthReportPdf(measurementUuid: self.uuid) { response in
                 print("PDF fetched from SDK.")

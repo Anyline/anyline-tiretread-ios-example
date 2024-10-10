@@ -16,7 +16,7 @@ class SystemInfo {
     }
 
     static func getSDKVersion() -> String {
-        return AnylineTireTreadSdk.companion.sdkVersion
+        return AnylineTireTreadSdk.shared.sdkVersion
     }
     
     static func getDeviceName() -> String {

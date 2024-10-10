@@ -19,7 +19,7 @@ class LandingViewModel {
     }
 
     var isInitialized: Bool {
-        AnylineTireTreadSdk.companion.isInitialized
+        AnylineTireTreadSdk.shared.isInitialized
     }
     
     func tryInitializeSdk(context: UIViewController, completion: @escaping (Bool, String?) -> Void) {
@@ -31,7 +31,7 @@ class LandingViewModel {
                 return
             }
             
-            try AnylineTireTreadSdk.companion.doInit(licenseKey: licenseString, context: context)
+            try AnylineTireTreadSdk.shared.doInit(licenseKey: licenseString)
             
             if isInitialized {
                 completion(true, nil)

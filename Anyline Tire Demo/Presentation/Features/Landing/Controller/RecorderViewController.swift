@@ -142,7 +142,7 @@ class RecorderViewController: UIViewController {
     
     private func sendTireIdFeedback(uuid: String, tireId: String, qrViewController: QRCodeReaderViewController) {
         
-        AnylineTireTreadSdk.companion.sendTireIdFeedback(measurementUuid: uuid, tireId: tireId) { [weak self] (response: Response<MeasurementInfo>) in
+        AnylineTireTreadSdk.shared.sendTireIdFeedback(measurementUuid: uuid, tireId: tireId) { [weak self] (response: Response<MeasurementInfo>) in
             switch(response) {
             case _ as ResponseSuccess<MeasurementInfo>:
                 

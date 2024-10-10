@@ -203,7 +203,7 @@ extension ScanViewController: TireTreadScanViewCallback {
         if let uuid = uuid {
             var shouldRequestForFeedback: Bool = false
             do {
-                shouldRequestForFeedback = try AnylineTireTreadSdk.companion.shouldRequestTireIdFeedback()
+                shouldRequestForFeedback = try AnylineTireTreadSdk.shared.shouldRequestTireIdFeedback()
             } catch {
                 print("caught exception: \(error.localizedDescription)")
             }

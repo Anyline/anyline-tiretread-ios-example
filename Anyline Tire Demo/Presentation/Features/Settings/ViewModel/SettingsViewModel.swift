@@ -22,7 +22,7 @@ class SettingsViewModel {
     
     func testLicenseKey(_ licenseKey: String, context: UIViewController) {
         do {
-            try AnylineTireTreadSdk.companion.doInit(licenseKey: licenseKey, context: context)
+            try AnylineTireTreadSdk.shared.doInit(licenseKey: licenseKey)
             requestPermissionsAndProceed(context: context)
         } catch {
             let errorMessage = "error.invalid_license".localized() + " (\(error.localizedDescription))"
