@@ -19,6 +19,7 @@ class SettingsView: UIView {
 
     private lazy var contentScrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
 
@@ -40,6 +41,11 @@ class SettingsView: UIView {
     
     lazy var licenseView: LicenseSettingsView = {
         let view = LicenseSettingsView()
+        return view
+    }()
+    
+    lazy var customTagView: CustomTagSettingsView = {
+        let view = CustomTagSettingsView()
         return view
     }()
     
@@ -91,27 +97,29 @@ private extension SettingsView {
     
     func addSubviews() {
         self.addSubview(buttonsView)
-        self.addSubview(contentVStackView)
+        self.addSubview(contentScrollView)
+        contentScrollView.addSubview(contentVStackView)
 
         contentVStackView.addArrangedSubview(settingsLabel)
-        contentVStackView.addArrangedSubview(imperialSystemView)
         contentVStackView.addArrangedSubview(licenseView)
+        contentVStackView.addArrangedSubview(imperialSystemView)
         contentVStackView.addArrangedSubview(captureSpeedView)
         contentVStackView.addArrangedSubview(showGuidanceView)
+        contentVStackView.addArrangedSubview(customTagView)
         contentVStackView.addArrangedSubview(infoView)
     }
     
     func setupLayout() {
-        buttonsView.snp.makeConstraints { make in
-            make.trailing.bottom.top.equalToSuperview()
-            make.width.equalTo(200).priority(.low)
-        }
-
-        contentVStackView.snp.makeConstraints { make in
+        contentScrollView.snp.makeConstraints { make in
             make.leading.equalTo(80)
             make.width.equalTo(500)
             make.top.equalTo(20)
             make.bottom.equalTo(0)
+        }
+        
+        buttonsView.snp.makeConstraints { make in
+            make.trailing.bottom.top.equalToSuperview()
+            make.width.equalTo(200).priority(.low)
         }
 
         captureSpeedView.snp.makeConstraints { make in
@@ -123,6 +131,11 @@ private extension SettingsView {
         settingsLabel.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaInsets.top)
             make.centerX.equalTo(self)
+        }
+        
+        contentVStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(contentScrollView.snp.width)
         }
     }
     

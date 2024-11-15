@@ -80,6 +80,7 @@
 		FA806DEF9791249E298CA64D /* tiretread_sound_beep_too_far.wav in Resources */ = {isa = PBXBuildFile; fileRef = B97D72540717494221B2D968 /* tiretread_sound_beep_too_far.wav */; };
 		FDF60A693E95780FFB708213 /* default_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C29DEB55C2E3EA584BCBFE0 /* default_config.json */; };
 		FE1F9B0BF324FAB9B95F0C81 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DC8214D152A69BF6BE2BFA /* ErrorViewController.swift */; };
+		FF035959932267090193E132 /* CustomTagSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2EA2E99266C509876922A0 /* CustomTagSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -135,6 +136,7 @@
 		9E205BE38F7CF6F2E673D73B /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
 		A9CB99471900809461B83691 /* TextLandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLandingView.swift; sourceTree = "<group>"; };
 		AA0D513A072F0FA35EEED2BE /* ATDTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATDTextLabel.swift; sourceTree = "<group>"; };
+		AD2EA2E99266C509876922A0 /* CustomTagSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTagSettingsView.swift; sourceTree = "<group>"; };
 		B31331DE50C6CDAD5AEA836F /* ButtonsResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsResultView.swift; sourceTree = "<group>"; };
 		B5F46F97960F579993C41507 /* SystemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfo.swift; sourceTree = "<group>"; };
 		B64E5BEDEA3ABD3A59F22090 /* ResultDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultDetailsView.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 				94B3EE586C5AEFFD0946C9B5 /* AccuracySpeedSettingsView.swift */,
 				203FEF3A731C7A34F6109D47 /* ButtonsSettingsView.swift */,
 				39FB6DAFECFCBA5FFF7D488D /* CaptureSpeedView.swift */,
+				AD2EA2E99266C509876922A0 /* CustomTagSettingsView.swift */,
 				3F4512E39D68A2ECC6176D69 /* ImperialSystemSettingsView.swift */,
 				98E054DE5275CFBA5F059FFD /* InfoSettingsView.swift */,
 				1082146CA856FECC9AE1C392 /* LicenseSettingsView.swift */,
@@ -659,6 +662,7 @@
 				4315EDFF1D1D482EB86C2AC6 /* ButtonsSettingsView.swift in Sources */,
 				CABBA4922CFF9C7D20F87DF6 /* CaptureSpeedView.swift in Sources */,
 				CE2BF07B703E436BCF4A75D0 /* ColorStruct.swift in Sources */,
+				FF035959932267090193E132 /* CustomTagSettingsView.swift in Sources */,
 				1D17BE143196523D2031D216 /* DescriptionErrorView.swift in Sources */,
 				38DB3D561F4C43FB5A8B9727 /* ErrorButtonActionsDelegate.swift in Sources */,
 				84C5DAAA08E0024CCBC9F586 /* ErrorView.swift in Sources */,
@@ -806,7 +810,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.showcase.tiretread;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -899,7 +903,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.showcase.tiretread;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -940,7 +944,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
+				minimumVersion = 9.0.0;
 			};
 		};
 		4B5AEA5F9FCA6152FDAB044B /* XCRemoteSwiftPackageReference "SnapKit" */ = {

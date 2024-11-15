@@ -15,10 +15,10 @@ class SettingsViewController: UIViewController {
     }()
     
     // MARK: - Private Properties
-    private var switchValueButton: Bool = UserDefaultsManager.shared.imageQualitySwitchValue
     private var imperialSystem: Bool = UserDefaultsManager.shared.imperialSystem
     private var showGuidance: Bool = UserDefaultsManager.shared.showGuidance
     private var scanSpeed: ScanSpeed = UserDefaultsManager.shared.scanSpeed
+    private var customTag: String? = UserDefaultsManager.shared.customTag
 
     private lazy var settingsViewModel: SettingsViewModel = {
         return SettingsViewModel(delegate: self)
@@ -48,18 +48,6 @@ class SettingsViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    // MARK: - Actions
-    func saveImageQuality() {
-        if switchValueButton {
-            // High accuracy
-            UserDefaultsManager.shared.imageQuality = 95
-        } else {
-            // High speed
-            UserDefaultsManager.shared.imageQuality = 50
-        }
-        UserDefaultsManager.shared.imageQualitySwitchValue = switchValueButton
     }
     
     func saveImperialSystem() {
@@ -96,6 +84,13 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    func saveCustomTag() {
+        let text = settingsView.customTagView.customTagTextField.text
+        
+        if(text != nil) {
+            UserDefaultsManager.shared.customTag = text
+        }
+    }
 }
 
 // MARK: - Private UI Functions
@@ -233,7 +228,7 @@ extension SettingsViewController: SettingsButtonActionsDelegate {
         saveImperialSystem()
         saveShowGuidance()
         saveLicenseID()
-        saveImageQuality()
+        saveCustomTag()
         navigationController?.popViewController(animated: true)
     }
     
@@ -266,10 +261,6 @@ extension SettingsViewController: SettingsButtonActionsDelegate {
             tappedImage.image = UIImage(systemName: "checkmark.square")
             self.showGuidance = true
         }
-    }
-    
-    func switchChanged(mySwitch: UISwitch) {
-        self.switchValueButton = mySwitch.isOn
     }
     
 }

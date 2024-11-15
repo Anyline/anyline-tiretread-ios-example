@@ -31,7 +31,8 @@ class LandingViewModel {
                 return
             }
             
-            try AnylineTireTreadSdk.shared.doInit(licenseKey: licenseString)
+            // The customTag is meant for internal use only. Simply omit this parameter in your implementation.
+            try AnylineTireTreadSdk.shared.doInit(licenseKey: licenseString, customTag: UserDefaultsManager.shared.customTag)
             
             if isInitialized {
                 completion(true, nil)

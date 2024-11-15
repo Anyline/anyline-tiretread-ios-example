@@ -22,7 +22,8 @@ class SettingsViewModel {
     
     func testLicenseKey(_ licenseKey: String, context: UIViewController) {
         do {
-            try AnylineTireTreadSdk.shared.doInit(licenseKey: licenseKey)
+            // customTag is an internal feature and should not be used
+            try AnylineTireTreadSdk.shared.doInit(licenseKey: licenseKey, customTag: UserDefaultsManager.shared.customTag)
             requestPermissionsAndProceed(context: context)
         } catch {
             let errorMessage = "error.invalid_license".localized() + " (\(error.localizedDescription))"
