@@ -67,9 +67,9 @@ private extension ScanViewController {
 
         let shouldShowGuidance = UserDefaultsManager.shared.showGuidance
 
-        customUiConfig.howToScanTooltipConfig.visible = shouldShowGuidance
         customUiConfig.tireOverlayConfig.visible = shouldShowGuidance
-        customUiConfig.lineProgressBarConfig.visible = shouldShowGuidance
+        customUiConfig.countdownConfig.visible = shouldShowGuidance
+        customUiConfig.scanDirectionConfig.visible = shouldShowGuidance
 
         let config = TireTreadScanViewConfig()
         config.measurementSystem = userDefaults.imperialSystem ? .imperial : .metric

@@ -7,7 +7,6 @@ protocol SettingsButtonActionsDelegate: AnyObject {
     func cancelButtonTapped()
     func imperialSystemImageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     func showGuidanceImageTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    func switchChanged(mySwitch: UISwitch)
 
     func scanQRCodeTapped()
     func scanSpeedDialogRequested(sender: UIButton, options: [ScanSpeed], completion: (ScanSpeed?) -> Void)

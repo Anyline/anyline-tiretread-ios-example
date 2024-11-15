@@ -18,6 +18,8 @@
 "settings.label.settings" = "Settings";
 
 "settings.label.use_imperial_system" = "Use Imperial System:";
+"settings.label.custom_tag" = "Custom Tag:";
+"settings.label.custom_tag.placeholer" = "Input custom tag";
 "settings.label.license_id" = "License Key:";
 "settings.label.accuraccy_speed" = "Accuracy / Speed: High Speed";
 "settings.label.high_accuracy" = "High Accuracy";

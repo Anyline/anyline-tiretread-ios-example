@@ -17,7 +17,6 @@ class AccuracySpeedSettingsView: UIView {
         mySwitch.thumbTintColor = ColorStruct.anylineBlue
         mySwitch.tintColor = ColorStruct.skyGrey
         mySwitch.onTintColor = ColorStruct.skyGrey
-        mySwitch.isOn = UserDefaultsManager.shared.imageQualitySwitchValue
         mySwitch.addTarget(AccuracySpeedSettingsView.self, action: #selector(switchChanged), for: UIControl.Event.valueChanged)
         return mySwitch
     }()
