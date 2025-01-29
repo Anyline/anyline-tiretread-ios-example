@@ -1,0 +1,79 @@
+"home.title" = "Tire Tread Developer Examples";
+
+"home.button.title.default" = "Default Config";
+
+"home.button.title.manual" = "Manual Config";
+
+"home.button.title.json" = "JSON Config";
+
+"home.json_select.prompt" = "Select Config File";
+
+"home.json_select.cancel" = "Cancel";
+
+"home.sdk_status.initializing" = "Initializing SDK...";
+
+"home.sdk_status.success" = "SDK initialization success";
+
+"home.sdk_status.error" = "Error: ";
+
+"home.button.retry" = "Retry";
+
+"utilities.error_message.missing_license_string" = "Please set your license key as a value for TTR_SDK_DEVEX_LICENSE_KEY under \"Environment variables\" in your app target's Info.plist file.";
+
+"settings.title" = "Manual Config";
+
+"settings.configs.default_name" = "Default Settings";
+
+"settings.configs.select_file_prompt" = "Select Config File";
+
+"settings.configs.select_cancel_text" = "Cancel";
+
+"settings.configs.heading_text" = "Config File";
+
+"settings.sdk_status.heading_text" = "SDK Status: ";
+
+"settings.sdk_status.initialized" = "initialized";
+
+"settings.sdk_status.uninitialized" = "not initialized";
+
+"settings.sdk_status.initializing" = "initializing";
+
+"settings.button.start_scanning.name" = "Start Scanning";
+
+"settings.button.reset_to_defaults.name" = "Reset to Defaults";
+
+"settings.validation_message.tire_width_not_div_by_five" = "Please enter a number divisible by 5.";
+
+"settings.validation_message.tire_width_not_in_allowed_range" = "Please enter a number between 150 and 500 (div. by 5).";
+
+"settings.scan_speeds.heading_text" = "Scan Speed";
+
+"settings.scan_speeds.select_prompt" = "Select Scan Speed";
+
+"settings.scan_speeds.slow" = "Slow";
+
+"settings.scan_speeds.fast" = "Fast";
+
+"settings.measurement_units.heading_text" = "Measurement Units";
+
+"settings.measurement_units.imperial" = "Imperial";
+
+"settings.measurement_units.select_prompt" = "Select Measurement Units";
+
+"settings.measurement_units.metric" = "Metric";
+
+"settings.tire_width.heading_text" = "Tire Width";
+
+"settings.tire_width.validation_label" = "Enter a value in the chosen measurement unit (default: mm)";
+
+"settings.show_guidance.heading_text" = "Show Guidance";
+
+"result.label.json_result" = "JSON Result";
+
+"result.label.heatmap" = "Heatmap";
+
+"result.button.title.dismiss" = "Dismiss";
+
+"result.button.title.retry" = "Retry?";
+
+"result.title" = "Scan Results";

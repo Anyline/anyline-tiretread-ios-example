@@ -1,0 +1,458 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F525E8ED3750C0B20188D85 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */; };
+		2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029EDDDD5314E198CF4118AD /* Assets.xcassets */; };
+		2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */ = {isa = PBXBuildFile; fileRef = ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */; };
+		3E3ED6C2F98335367472F5D4 /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */; };
+		652A6063B25AB9483496C833 /* configs.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DB83637D2454C9B35580A870 /* configs.bundle */; };
+		6892DDAE4A8122689260EB95 /* tiretread_sound_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */; };
+		69B4810C4E79732A4E7FC6B8 /* tiretread_sound_beep_too_far.wav in Resources */ = {isa = PBXBuildFile; fileRef = BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */; };
+		6CC842F4AC70C4B3BB65E30E /* tiretread_sound_beep_too_close.wav in Resources */ = {isa = PBXBuildFile; fileRef = 54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */; };
+		82EDBD50530FF2A6FE92CC29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */; };
+		91D9ECC7FD78FA2E2232B572 /* tiretread_sound_stop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 059EB1ED95EA949B83CE1386 /* tiretread_sound_stop.wav */; };
+		AD1F12B9C3DCB0F4923C7F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 500A3321E7CA73C2303DBBB0 /* Localizable.strings */; };
+		B320FDB84504FB2421422457 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8453F399AC5E8BFAD5ED143 /* HomeViewController.swift */; };
+		D2C57A21D0398AABB972924E /* TireScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */; };
+		D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4721BF022638E070D472F80F /* String+Extras.swift */; };
+		F05077EC6A2F25111BE31003 /* AnylineTireTreadSdk in Frameworks */ = {isa = PBXBuildFile; productRef = 8C291029483EF5A2FB06A89D /* AnylineTireTreadSdk */; };
+		F177F301F5F30CFBAD1532CC /* SDKUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		029EDDDD5314E198CF4118AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKUtilities.swift; sourceTree = "<group>"; };
+		059EB1ED95EA949B83CE1386 /* tiretread_sound_stop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_stop.wav; sourceTree = "<group>"; };
+		185D3ABA1DA50279DC45A4AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		4721BF022638E070D472F80F /* String+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extras.swift"; sourceTree = "<group>"; };
+		4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_close.wav; sourceTree = "<group>"; };
+		5FE4371143B3625111243881 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A8453F399AC5E8BFAD5ED143 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_focuspoint_found.wav; sourceTree = "<group>"; };
+		BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_far.wav; sourceTree = "<group>"; };
+		D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
+		DB83637D2454C9B35580A870 /* configs.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = configs.bundle; sourceTree = "<group>"; };
+		F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_start.wav; sourceTree = "<group>"; };
+		F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TireScannerViewController.swift; sourceTree = "<group>"; };
+		FCDB6030A094FDABE482126E /* Developer Examples.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Developer Examples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6696AD3930BD86D7CE9975A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F05077EC6A2F25111BE31003 /* AnylineTireTreadSdk in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0269EA23AD8C93918EE427BB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */,
+				54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */,
+				BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */,
+				F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */,
+				059EB1ED95EA949B83CE1386 /* tiretread_sound_stop.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1CAA7C0538C03F9BECDDD3D6 = {
+			isa = PBXGroup;
+			children = (
+				1ECE739C539CDC5913A4BF19 /* Source */,
+				EEE0E8985266E3EC20E0B829 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1ECE739C539CDC5913A4BF19 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */,
+				A8453F399AC5E8BFAD5ED143 /* HomeViewController.swift */,
+				D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */,
+				038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */,
+				3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */,
+				4721BF022638E070D472F80F /* String+Extras.swift */,
+				F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */,
+				0269EA23AD8C93918EE427BB /* Resources */,
+				71C121E41BB3DADD1C81DCE7 /* Support Files */,
+			);
+			name = Source;
+			path = TireTreadDeveloperExamples;
+			sourceTree = "<group>";
+		};
+		71C121E41BB3DADD1C81DCE7 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				029EDDDD5314E198CF4118AD /* Assets.xcassets */,
+				DB83637D2454C9B35580A870 /* configs.bundle */,
+				185D3ABA1DA50279DC45A4AD /* Info.plist */,
+				500A3321E7CA73C2303DBBB0 /* Localizable.strings */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		EEE0E8985266E3EC20E0B829 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCDB6030A094FDABE482126E /* Developer Examples.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		072A52D3AB5DE80FFDE036DB /* Developer Examples */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B32B6391F020DD13AE9946B /* Build configuration list for PBXNativeTarget "Developer Examples" */;
+			buildPhases = (
+				3F3B938DB97102E72F5BFCBD /* Sources */,
+				4D5376532F8CA12E21C4FA18 /* Resources */,
+				6696AD3930BD86D7CE9975A7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Developer Examples";
+			packageProductDependencies = (
+				8C291029483EF5A2FB06A89D /* AnylineTireTreadSdk */,
+			);
+			productName = "Developer Examples";
+			productReference = FCDB6030A094FDABE482126E /* Developer Examples.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83C14E6DEBEF0196B6EA9132 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					072A52D3AB5DE80FFDE036DB = {
+						DevelopmentTeam = 35RHL53WRE;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = BCEE58A928AD863261648FD5 /* Build configuration list for PBXProject "TireTreadDeveloperExamples" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1CAA7C0538C03F9BECDDD3D6;
+			packageReferences = (
+				826B2CCE9C9453244537817D /* XCRemoteSwiftPackageReference "anyline-tiretread-spm-module" */,
+			);
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				072A52D3AB5DE80FFDE036DB /* Developer Examples */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4D5376532F8CA12E21C4FA18 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */,
+				AD1F12B9C3DCB0F4923C7F05 /* Localizable.strings in Resources */,
+				652A6063B25AB9483496C833 /* configs.bundle in Resources */,
+				2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */,
+				6CC842F4AC70C4B3BB65E30E /* tiretread_sound_beep_too_close.wav in Resources */,
+				69B4810C4E79732A4E7FC6B8 /* tiretread_sound_beep_too_far.wav in Resources */,
+				6892DDAE4A8122689260EB95 /* tiretread_sound_start.wav in Resources */,
+				91D9ECC7FD78FA2E2232B572 /* tiretread_sound_stop.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3F3B938DB97102E72F5BFCBD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82EDBD50530FF2A6FE92CC29 /* AppDelegate.swift in Sources */,
+				B320FDB84504FB2421422457 /* HomeViewController.swift in Sources */,
+				F177F301F5F30CFBAD1532CC /* SDKUtilities.swift in Sources */,
+				3E3ED6C2F98335367472F5D4 /* ScanResultViewController.swift in Sources */,
+				0F525E8ED3750C0B20188D85 /* SettingsTableViewController.swift in Sources */,
+				D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */,
+				D2C57A21D0398AABB972924E /* TireScannerViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		500A3321E7CA73C2303DBBB0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FE4371143B3625111243881 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		800033EE4CF1E222539A3206 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B20EC58B8882598A6F22C39B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 35RHL53WRE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TireTreadDeveloperExamples/Support Files/Info.plist";
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permission for capturing video";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = (
+					UIInterfaceOrientationLandscapeLeft,
+					UIInterfaceOrientationLandscapeRight,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CA471F2BA87509DDDCB63354 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FA61DF9F3EF0B807F1D5AEA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 35RHL53WRE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TireTreadDeveloperExamples/Support Files/Info.plist";
+				INFOPLIST_KEY_CFBundleIconName = AppIcon;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permission for capturing video";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = (
+					UIInterfaceOrientationLandscapeLeft,
+					UIInterfaceOrientationLandscapeRight,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4B32B6391F020DD13AE9946B /* Build configuration list for PBXNativeTarget "Developer Examples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA61DF9F3EF0B807F1D5AEA0 /* Debug */,
+				B20EC58B8882598A6F22C39B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BCEE58A928AD863261648FD5 /* Build configuration list for PBXProject "TireTreadDeveloperExamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA471F2BA87509DDDCB63354 /* Debug */,
+				800033EE4CF1E222539A3206 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		826B2CCE9C9453244537817D /* XCRemoteSwiftPackageReference "anyline-tiretread-spm-module" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8C291029483EF5A2FB06A89D /* AnylineTireTreadSdk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 826B2CCE9C9453244537817D /* XCRemoteSwiftPackageReference "anyline-tiretread-spm-module" */;
+			productName = AnylineTireTreadSdk;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 83C14E6DEBEF0196B6EA9132 /* Project object */;
+}
