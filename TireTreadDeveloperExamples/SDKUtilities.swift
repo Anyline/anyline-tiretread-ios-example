@@ -29,7 +29,7 @@ struct SDKUtilities {
                 continuation.resume(returning: .success(()))
             } catch {
                 // To get the error object from the TireTread SDK, you first need to convert it to a KotlinException
-                var errorMessage = "Unable to initialize the Tire Tread SDK. Reason: \n"
+                var errorMessage = "Unable to initialize the Tire Tread SDK. \nReason: \n"
                 if let kException = (error as NSError).kotlinException {
                     switch kException {
                     case let ex as SdkLicenseKeyInvalidException:
@@ -42,6 +42,7 @@ struct SDKUtilities {
                         errorMessage += " \(kException)"
                     }
                 }
+                errorMessage += "\n\n" + licenseStringMissingErrorMessage
                 continuation.resume(returning: .failure(TireTreadError.responseError(errorMessage)))
             }
         }
