@@ -35,6 +35,17 @@ class ScanResultViewController: UIViewController {
         return label
     }()
     
+    lazy var minimumDepthLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .boldSystemFont(ofSize: 28)
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = "–\nmm"
+        return label
+    }()
+    
     lazy var localDepth1Label: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -152,6 +163,7 @@ class ScanResultViewController: UIViewController {
         
         scrollView.addSubview(dismissButton)
         scrollView.addSubview(globalDepthLabel)
+        scrollView.addSubview(minimumDepthLabel)
         
         let stackView = UIStackView(arrangedSubviews: [
             localDepth1Label, localDepth2Label, localDepth3Label
@@ -187,7 +199,10 @@ class ScanResultViewController: UIViewController {
             globalDepthLabel.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 20),
             globalDepthLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
-            stackView.topAnchor.constraint(equalTo: globalDepthLabel.bottomAnchor, constant: 10),
+            minimumDepthLabel.topAnchor.constraint(equalTo: globalDepthLabel.bottomAnchor, constant: 20),
+            minimumDepthLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            
+            stackView.topAnchor.constraint(equalTo: minimumDepthLabel.bottomAnchor, constant: 10),
             stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
             heatmapImageView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
@@ -211,6 +226,9 @@ class ScanResultViewController: UIViewController {
         let globalThreadResult = treadDepthResult.global
         let localThreadResult = treadDepthResult.regions
         globalDepthLabel.text = String(format: "%.2f\nmm", globalThreadResult.valueMm)
+        if let minimumValue = treadDepthResult.minimumValueMm?.doubleValue {
+            minimumDepthLabel.text = String(format: "%.2f\nmm", minimumValue)
+        }
         localDepth1Label.text = String(format: "%.2f\nmm", localThreadResult[0].valueMm)
         localDepth2Label.text = String(format: "%.2f\nmm", localThreadResult[1].valueMm)
         localDepth3Label.text = String(format: "%.2f\nmm", localThreadResult[2].valueMm)

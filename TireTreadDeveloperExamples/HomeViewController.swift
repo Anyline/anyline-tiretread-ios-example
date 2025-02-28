@@ -148,8 +148,11 @@ class HomeViewController: UIViewController {
         jsonConfigButton.setTitle("home.button.title.json".localized, for: .normal)
         styleButton(jsonConfigButton)
         jsonConfigButton.addTarget(self, action: #selector(jsonConfigTapped), for: .touchUpInside)
-
-        stackView = UIStackView(arrangedSubviews: [defaultConfigButton, manualConfigButton, jsonConfigButton])
+        
+        let appVersionLabel = UILabel()
+        appVersionLabel.text = "TTR SDK: \(AnylineTireTreadSdk.shared.sdkVersion)"
+        
+        stackView = UIStackView(arrangedSubviews: [defaultConfigButton, manualConfigButton, jsonConfigButton, appVersionLabel])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
