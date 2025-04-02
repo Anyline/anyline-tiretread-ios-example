@@ -226,9 +226,7 @@ class ScanResultViewController: UIViewController {
         let globalThreadResult = treadDepthResult.global
         let localThreadResult = treadDepthResult.regions
         globalDepthLabel.text = String(format: "%.2f\nmm", globalThreadResult.valueMm)
-        if let minimumValue = treadDepthResult.minimumValueMm?.doubleValue {
-            minimumDepthLabel.text = String(format: "%.2f\nmm", minimumValue)
-        }
+        minimumDepthLabel.text = String(format: "%.2f\nmm", treadDepthResult.minimumValue.valueMm)
         localDepth1Label.text = String(format: "%.2f\nmm", localThreadResult[0].valueMm)
         localDepth2Label.text = String(format: "%.2f\nmm", localThreadResult[1].valueMm)
         localDepth3Label.text = String(format: "%.2f\nmm", localThreadResult[2].valueMm)
