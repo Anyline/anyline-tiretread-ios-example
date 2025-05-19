@@ -1,10 +1,10 @@
 import UIKit
 import AnylineTireTreadSdk
 
-class TireScannerViewController: UIViewController, ScannerViewControllerHolder {
+class TireScannerViewController: UIViewController {
 
     // if config is non-null, jsonConfig would be ignored
-    init(config: TireTreadScanViewConfig) {
+    init(config: TireTreadConfig) {
         scanViewConfig = config
         super.init(nibName: nil, bundle: nil)
     }
@@ -18,13 +18,11 @@ class TireScannerViewController: UIViewController, ScannerViewControllerHolder {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var dismissViewController: (() -> Void)?
-
     var scannerViewController: UIViewController?
 
     var uuid: String?
 
-    var scanViewConfig: TireTreadScanViewConfig!
+    var scanViewConfig: TireTreadConfig!
 
     var scanViewConfigStr: String?
 
@@ -59,39 +57,31 @@ class TireScannerViewController: UIViewController, ScannerViewControllerHolder {
         assert(scanViewConfig != nil || scanViewConfigStr != nil)
 
         if let scanViewConfig = scanViewConfig {
-            print("""
-            Tire Config:
-            - scan speed: \(scanViewConfig.scanSpeed)
-            - measurement system: \(scanViewConfig.measurementSystem)
-            - countdown: \(scanViewConfig.defaultUiConfig.countdownConfig.visible)
-            - scan direction: \(scanViewConfig.defaultUiConfig.scanDirectionConfig.visible)
-            - tire overlay: \(scanViewConfig.defaultUiConfig.tireOverlayConfig.visible)
-            """)
-            TireTreadScanViewKt.TireTreadScanView(
-                context: self,
+            self.scannerViewController = TireTreadScanViewKt.TireTreadScanView(
                 config: scanViewConfig,
                 onScanAborted: onScanAborted,
                 onScanProcessCompleted: showResult,
                 callback: handleScanEvent
             ) { measurementUUID, error in
                 print("Initialization failed: \(error)")
-                self.dismiss(animated: true)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true)
+                }
             }
         } else if let scanViewConfigStr = scanViewConfigStr {
-            print("Tire Config: \(scanViewConfigStr)")
-            TireTreadScanViewKt.TireTreadScanView(
-                context: self,
+            self.scannerViewController = TireTreadScanViewKt.TireTreadScanView(
                 config: scanViewConfigStr,
                 onScanAborted: onScanAborted,
                 onScanProcessCompleted: showResult,
                 callback: handleScanEvent
             ) { measurementUUID, error in
                 print("Initialization failed: \(error)")
-                self.dismiss(animated: true)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true)
+                }
             }
         }
 
-        self.dismissViewController = { print("Dismissing view controller") }
         addScanViewControllerAsChild()
     }
 

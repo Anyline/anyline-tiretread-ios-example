@@ -195,9 +195,9 @@ class SettingsTableViewController: UITableViewController, UITextViewDelegate {
     /// Returns a new TireTreadScanViewConfig object, populated with values supplied by
     /// the Settings UI. This is passed to TireScannerViewController which then uses it
     /// to construct the TireTreadScanView.
-    fileprivate func getTireTreadScanViewConfig() -> TireTreadScanViewConfig {
+    fileprivate func getTireTreadScanViewConfig() -> TireTreadConfig {
 
-        let tireConfig = TireTreadScanViewConfig()
+        let tireConfig = TireTreadConfig()
 
         // Set scan speed property
         var scanSpeedStr: String = configJSON?["scanSpeed"] as? String ?? ""
@@ -207,9 +207,9 @@ class SettingsTableViewController: UITableViewController, UITextViewDelegate {
 
         switch scanSpeedStr {
         case "settings.scan_speeds.slow".localized:
-            tireConfig.scanSpeed = .slow
+            tireConfig.uiConfig.scanSpeed = .slow
         case "settings.scan_speeds.fast".localized:
-            tireConfig.scanSpeed = .fast
+            tireConfig.uiConfig.scanSpeed = .fast
         default: break
         }
 
@@ -221,20 +221,20 @@ class SettingsTableViewController: UITableViewController, UITextViewDelegate {
 
         switch measurementUnitStr {
         case "settings.measurement_units.metric".localized:
-            tireConfig.measurementSystem = .metric
+            tireConfig.uiConfig.measurementSystem = .metric
         case "settings.measurement_units.imperial".localized:
-            tireConfig.measurementSystem = .imperial
+            tireConfig.uiConfig.measurementSystem = .imperial
         default: break
         }
 
         // Set user guidance properties
-        tireConfig.defaultUiConfig.scanDirectionConfig.visible = isCustomShowGuidanceEnabled
-        tireConfig.defaultUiConfig.countdownConfig.visible = isCustomShowGuidanceEnabled
-        tireConfig.defaultUiConfig.tireOverlayConfig.visible = isCustomShowGuidanceEnabled
+        tireConfig.uiConfig.scanDirectionConfig.visible = isCustomShowGuidanceEnabled
+        tireConfig.uiConfig.countdownConfig.visible = isCustomShowGuidanceEnabled
+        tireConfig.uiConfig.tireOverlayConfig.visible = isCustomShowGuidanceEnabled
 
         // Set miscellaneous properties
-        tireConfig.useDefaultUi = true
-        tireConfig.useDefaultHaptic = true
+        tireConfig.uiConfig.useDefaultUi = true
+        tireConfig.uiConfig.useDefaultHaptic = true
 
         return tireConfig
     }

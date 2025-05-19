@@ -21,7 +21,9 @@ class HomeViewController: UIViewController {
 
     @objc func defaultConfigTapped() {
         // create a TireTreadScanViewConfig without parameters
-        let config = TireTreadScanViewConfig()
+        let config = TireTreadConfig()
+        config.scanConfig.showMeasuringSpots = true
+        config.scanConfig.heatmapStyle = HeatmapStyle.grayscale
         let tireScanViewController = TireScannerViewController(config: config)
         tireScanViewController.modalPresentationStyle = .fullScreen
         present(tireScanViewController, animated: true, completion: nil)
