@@ -1,0 +1,8 @@
+{
+  "uiConfig": {
+    "measurementSystem": "Metric",
+    "tireWidthInputConfig": {
+      "visible": false
+    }
+  }
+}
