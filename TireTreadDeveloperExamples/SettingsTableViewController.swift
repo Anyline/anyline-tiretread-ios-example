@@ -374,6 +374,18 @@ class SettingsTableViewController: UITableViewController, UITextViewDelegate {
                     }))
                 }
                 alert.addAction(UIAlertAction(title: "settings.configs.select_cancel_text".localized, style: .cancel, handler: nil))
+                
+                // Configure popover presentation for iPad
+                if let popover = alert.popoverPresentationController {
+                    if let cell = tableView.cellForRow(at: indexPath) {
+                        popover.sourceView = cell
+                        popover.sourceRect = cell.bounds
+                    } else {
+                        popover.sourceView = tableView
+                        popover.sourceRect = tableView.bounds
+                    }
+                }
+                
                 present(alert, animated: true, completion: nil)
             }
         case 2:
@@ -393,6 +405,18 @@ class SettingsTableViewController: UITableViewController, UITextViewDelegate {
                     }))
                 }
                 alert.addAction(UIAlertAction(title: "settings.configs.select_cancel_text".localized, style: .cancel, handler: nil))
+                
+                // Configure popover presentation for iPad
+                if let popover = alert.popoverPresentationController {
+                    if let cell = tableView.cellForRow(at: indexPath) {
+                        popover.sourceView = cell
+                        popover.sourceRect = cell.bounds
+                    } else {
+                        popover.sourceView = tableView
+                        popover.sourceRect = tableView.bounds
+                    }
+                }
+                
                 present(alert, animated: true, completion: nil)
             }
         case 3:
