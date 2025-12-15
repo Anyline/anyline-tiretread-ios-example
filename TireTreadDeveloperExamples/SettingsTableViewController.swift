@@ -232,10 +232,6 @@ class SettingsTableViewController: UITableViewController, UITextViewDelegate {
         tireConfig.uiConfig.countdownConfig.visible = isCustomShowGuidanceEnabled
         tireConfig.uiConfig.tireOverlayConfig.visible = isCustomShowGuidanceEnabled
 
-        // Set miscellaneous properties
-        tireConfig.uiConfig.useDefaultUi = true
-        tireConfig.uiConfig.useDefaultHaptic = true
-
         return tireConfig
     }
 

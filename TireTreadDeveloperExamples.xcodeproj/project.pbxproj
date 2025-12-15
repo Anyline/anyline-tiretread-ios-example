@@ -10,6 +10,7 @@
 		0F525E8ED3750C0B20188D85 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */; };
 		2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029EDDDD5314E198CF4118AD /* Assets.xcassets */; };
 		2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */ = {isa = PBXBuildFile; fileRef = ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */; };
+		2DA2CDDF39CC9E54BFB2F735 /* UcrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B06074D9AFD6D3BD059CB7 /* UcrViewController.swift */; };
 		3E3ED6C2F98335367472F5D4 /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */; };
 		652A6063B25AB9483496C833 /* configs.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DB83637D2454C9B35580A870 /* configs.bundle */; };
 		6892DDAE4A8122689260EB95 /* tiretread_sound_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */; };
@@ -29,6 +30,7 @@
 		029EDDDD5314E198CF4118AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKUtilities.swift; sourceTree = "<group>"; };
 		059EB1ED95EA949B83CE1386 /* tiretread_sound_stop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_stop.wav; sourceTree = "<group>"; };
+		14B06074D9AFD6D3BD059CB7 /* UcrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UcrViewController.swift; sourceTree = "<group>"; };
 		185D3ABA1DA50279DC45A4AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		4721BF022638E070D472F80F /* String+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extras.swift"; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */,
 				4721BF022638E070D472F80F /* String+Extras.swift */,
 				F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */,
+				14B06074D9AFD6D3BD059CB7 /* UcrViewController.swift */,
 				0269EA23AD8C93918EE427BB /* Resources */,
 				71C121E41BB3DADD1C81DCE7 /* Support Files */,
 			);
@@ -201,6 +204,7 @@
 				0F525E8ED3750C0B20188D85 /* SettingsTableViewController.swift in Sources */,
 				D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */,
 				D2C57A21D0398AABB972924E /* TireScannerViewController.swift in Sources */,
+				2DA2CDDF39CC9E54BFB2F735 /* UcrViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +304,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.1;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -400,7 +404,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.1;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -441,7 +445,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 13.0.2;
+				minimumVersion = 14.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

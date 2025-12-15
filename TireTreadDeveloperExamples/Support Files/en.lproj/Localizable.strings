@@ -6,6 +6,8 @@
 
 "home.button.title.json" = "JSON Config";
 
+"home.button.title.results" = "View Results";
+
 "home.json_select.prompt" = "Select Config File";
 
 "home.json_select.cancel" = "Cancel";
@@ -77,3 +79,47 @@
 "result.button.title.retry" = "Retry?";
 
 "result.title" = "Scan Results";
+
+"result.search.placeholder" = "Enter Measurement UUID";
+
+"result.search.button" = "Load Results";
+
+"result.results_header" = "Results:";
+
+"result.global_value" = "Global value";
+
+"result.minimum_value" = "Minimum value";
+
+"result.region_label" = "Region";
+
+"home.button.title.ucr" = "User-Corrected Results";
+
+"ucr.title" = "User-Corrected Results";
+
+"ucr.uuid.placeholder" = "Measurement UUID";
+
+"ucr.unit.mm" = "mm";
+
+"ucr.unit.inch" = "inch";
+
+"ucr.unit.32nds" = "32nds";
+
+"ucr.region.label" = "Region %d";
+
+"ucr.send_result.button" = "Send Result";
+
+"ucr.comment.placeholder" = "Add comment about this measurement...";
+
+"ucr.send_comment.button" = "Send Comment";
+
+"ucr.status.loading" = "Loading results...";
+
+"ucr.status.success_result" = "Corrected results submitted successfully";
+
+"ucr.status.success_comment" = "Comment submitted successfully";
+
+"ucr.status.error" = "Error: %@";
+
+"ucr.validation.invalid_values" = "Please enter valid numeric values";
+
+"ucr.validation.empty_comment" = "Please enter a comment";

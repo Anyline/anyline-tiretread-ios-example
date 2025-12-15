@@ -7,7 +7,7 @@ enum TireTreadError: Error {
 
 struct SDKUtilities {
     struct Constants {
-        static let timeoutInSec: Int32 = 30
+        static let timeoutInSec: Int32 = 60
     }
 
     static let licenseStringMissingErrorMessage = "utilities.error_message.missing_license_string".localized
@@ -81,6 +81,44 @@ struct SDKUtilities {
                     continuation.resume(returning: .failure(TireTreadError.responseError(message)))
                 case let responseException as ResponseException<TreadDepthResult>:
                     let exceptionMessage = "Unable to get tread depth result: " + (responseException.exception.message ?? "Unknown exception")
+                    continuation.resume(returning: .failure(TireTreadError.responseException(exceptionMessage)))
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    static func sendTreadDepthResultFeedback(uuid: String, treadResultRegions: [TreadResultRegion]) async -> Result<MeasurementInfo, TireTreadError> {
+        await withCheckedContinuation { continuation in
+            AnylineTireTreadSdk.shared.sendTreadDepthResultFeedback(resultUuid: uuid, treadResultRegions: treadResultRegions) { response in
+                switch(response) {
+                case let response as ResponseSuccess<MeasurementInfo>:
+                    continuation.resume(returning: .success(response.data))
+                case let response as ResponseError<MeasurementInfo>:
+                    let message = response.errorMessage ?? "Unknown error"
+                    continuation.resume(returning: .failure(TireTreadError.responseError(message)))
+                case let responseException as ResponseException<MeasurementInfo>:
+                    let exceptionMessage = "Unable to send tread depth feedback: " + (responseException.exception.message ?? "Unknown exception")
+                    continuation.resume(returning: .failure(TireTreadError.responseException(exceptionMessage)))
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    static func sendCommentFeedback(uuid: String, comment: String) async -> Result<MeasurementInfo, TireTreadError> {
+        await withCheckedContinuation { continuation in
+            AnylineTireTreadSdk.shared.sendCommentFeedback(uuid: uuid, comment: comment) { response in
+                switch(response) {
+                case let response as ResponseSuccess<MeasurementInfo>:
+                    continuation.resume(returning: .success(response.data))
+                case let response as ResponseError<MeasurementInfo>:
+                    let message = response.errorMessage ?? "Unknown error"
+                    continuation.resume(returning: .failure(TireTreadError.responseError(message)))
+                case let responseException as ResponseException<MeasurementInfo>:
+                    let exceptionMessage = "Unable to send comment feedback: " + (responseException.exception.message ?? "Unknown exception")
                     continuation.resume(returning: .failure(TireTreadError.responseException(exceptionMessage)))
                 default:
                     break

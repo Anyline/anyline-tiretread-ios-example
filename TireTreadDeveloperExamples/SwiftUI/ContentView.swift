@@ -100,6 +100,14 @@ struct MyViewControllerRepresentable: UIViewControllerRepresentable {
             print("Initialization failed: \(error)")
         }
 
+        // Log the current configuration as JSON (for debug purposes only)
+        do {
+            let configJson = try TireTreadScanner.companion.getTireTreadConfigAsJson()
+            print("Current TireTreadConfig (JSON): \(configJson)")
+        } catch {
+            print("Could not get config JSON: \(error)")
+        }
+
         callus.dismissViewController = {
             // dismiss it!
             print("dismissing")

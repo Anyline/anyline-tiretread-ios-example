@@ -35,18 +35,21 @@ class TireScannerViewController: UIViewController {
     func addResultView(uuid: String) {
 
         let resultViewController = ScanResultViewController(uuid: uuid)
+        let navigationController = UINavigationController(rootViewController: resultViewController)
 
-        addChild(resultViewController)
-        view.addSubview(resultViewController.view)
+        addChild(navigationController)
+        view.addSubview(navigationController.view)
 
-        resultViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        navigationController.view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            resultViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            resultViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            resultViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            resultViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            navigationController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+
+        navigationController.didMove(toParent: self)
     }
 
     @objc func dismissButtonTapped(button: UIButton) {
@@ -83,6 +86,14 @@ class TireScannerViewController: UIViewController {
         }
 
         addScanViewControllerAsChild()
+        
+        // Log the current configuration as JSON (for debug purposes only)
+        do {
+            let configJson = try TireTreadScanner.companion.getTireTreadConfigAsJson()
+            print("TireTreadConfig in use: \(configJson)")
+        } catch {
+            print("Could not get config JSON: \(error)")
+        }
     }
 
     private func onScanAborted(measurementUUID: String?) {
@@ -95,7 +106,7 @@ class TireScannerViewController: UIViewController {
         switch(event) {
             
         case let event as OnImageUploaded:
-            print("onImageUploaded: \(event.total) images uploaded in total")
+            print("onImageUploaded: \(event.description())")
             break
             
         default:

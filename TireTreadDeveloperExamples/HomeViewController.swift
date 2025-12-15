@@ -24,6 +24,7 @@ class HomeViewController: UIViewController {
         let config = TireTreadConfig()
         config.scanConfig.showMeasuringSpots = true
         config.scanConfig.heatmapStyle = HeatmapStyle.grayscale
+
         let tireScanViewController = TireScannerViewController(config: config)
         tireScanViewController.modalPresentationStyle = .fullScreen
         present(tireScanViewController, animated: true, completion: nil)
@@ -59,6 +60,25 @@ class HomeViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    @objc func viewResultsTapped() {
+        // Example Measurement UUID for requesting results
+        // ⚠️ In your implementation, use the Measurement UUID returned by
+        // the 'onScanProcessCompleted' callback of the ScanView to request its results.
+        let exampleMeasurementUUID = "8f2b96bc-8f0a-4a0a-8bbd-92f39270a0e7"
+
+        let resultViewController = ScanResultViewController(uuid: exampleMeasurementUUID)
+        let navigationController = UINavigationController(rootViewController: resultViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
+
+    @objc func ucrTapped() {
+        let ucrViewController = UcrViewController()
+        let navigationController = UINavigationController(rootViewController: ucrViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
+
     @objc func didPressInitializeSDK() {
         initializeSDK()
     }
@@ -74,7 +94,6 @@ class HomeViewController: UIViewController {
 
         initializeSDK()
     }
-
 
     private func initializeSDK() {
         // Disable buttons and show status indicator
@@ -150,14 +169,25 @@ class HomeViewController: UIViewController {
         jsonConfigButton.setTitle("home.button.title.json".localized, for: .normal)
         styleButton(jsonConfigButton)
         jsonConfigButton.addTarget(self, action: #selector(jsonConfigTapped), for: .touchUpInside)
-        
+
+        let viewResultsButton = UIButton(type: .system)
+        viewResultsButton.setTitle("home.button.title.results".localized, for: .normal)
+        styleButton(viewResultsButton)
+        viewResultsButton.addTarget(self, action: #selector(viewResultsTapped), for: .touchUpInside)
+
+        let ucrButton = UIButton(type: .system)
+        ucrButton.setTitle("home.button.title.ucr".localized, for: .normal)
+        styleButton(ucrButton)
+        ucrButton.addTarget(self, action: #selector(ucrTapped), for: .touchUpInside)
+
         let appVersionLabel = UILabel()
         appVersionLabel.text = "TTR SDK: \(AnylineTireTreadSdk.shared.sdkVersion)"
-        
-        stackView = UIStackView(arrangedSubviews: [defaultConfigButton, manualConfigButton, jsonConfigButton, appVersionLabel])
+
+        stackView = UIStackView(arrangedSubviews: [defaultConfigButton, manualConfigButton, jsonConfigButton, viewResultsButton, ucrButton, appVersionLabel])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fill
+        stackView.spacing = 20
 
         contentView.addSubview(stackView)
 
@@ -165,21 +195,26 @@ class HomeViewController: UIViewController {
         defaultConfigButton.translatesAutoresizingMaskIntoConstraints = false
         manualConfigButton.translatesAutoresizingMaskIntoConstraints = false
         jsonConfigButton.translatesAutoresizingMaskIntoConstraints = false
+        viewResultsButton.translatesAutoresizingMaskIntoConstraints = false
+        ucrButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
 
-            stackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 70),
+            stackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 50),
             stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             stackView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.7),
-            stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 240),
 
             defaultConfigButton.heightAnchor.constraint(equalToConstant: 48),
             manualConfigButton.heightAnchor.constraint(equalToConstant: 48),
             jsonConfigButton.heightAnchor.constraint(equalToConstant: 48),
+            viewResultsButton.heightAnchor.constraint(equalToConstant: 48),
+            ucrButton.heightAnchor.constraint(equalToConstant: 48),
 
             defaultConfigButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             manualConfigButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             jsonConfigButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            viewResultsButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            ucrButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
 
         sdkStatusLabel = UILabel()
