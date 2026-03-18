@@ -7,20 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F525E8ED3750C0B20188D85 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */; };
 		2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029EDDDD5314E198CF4118AD /* Assets.xcassets */; };
 		2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */ = {isa = PBXBuildFile; fileRef = ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */; };
-		2DA2CDDF39CC9E54BFB2F735 /* UcrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B06074D9AFD6D3BD059CB7 /* UcrViewController.swift */; };
-		3E3ED6C2F98335367472F5D4 /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */; };
-		652A6063B25AB9483496C833 /* configs.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DB83637D2454C9B35580A870 /* configs.bundle */; };
 		6892DDAE4A8122689260EB95 /* tiretread_sound_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */; };
 		69B4810C4E79732A4E7FC6B8 /* tiretread_sound_beep_too_far.wav in Resources */ = {isa = PBXBuildFile; fileRef = BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */; };
 		6CC842F4AC70C4B3BB65E30E /* tiretread_sound_beep_too_close.wav in Resources */ = {isa = PBXBuildFile; fileRef = 54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */; };
 		82EDBD50530FF2A6FE92CC29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */; };
 		91D9ECC7FD78FA2E2232B572 /* tiretread_sound_stop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 059EB1ED95EA949B83CE1386 /* tiretread_sound_stop.wav */; };
 		AD1F12B9C3DCB0F4923C7F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 500A3321E7CA73C2303DBBB0 /* Localizable.strings */; };
-		B320FDB84504FB2421422457 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8453F399AC5E8BFAD5ED143 /* HomeViewController.swift */; };
-		D2C57A21D0398AABB972924E /* TireScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */; };
+		B90B63230E1806F04B46E055 /* ApiExplorerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CF9FC1B104BFE6A9258C3 /* ApiExplorerViewController.swift */; };
 		D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4721BF022638E070D472F80F /* String+Extras.swift */; };
 		F05077EC6A2F25111BE31003 /* AnylineTireTreadSdk in Frameworks */ = {isa = PBXBuildFile; productRef = 8C291029483EF5A2FB06A89D /* AnylineTireTreadSdk */; };
 		F177F301F5F30CFBAD1532CC /* SDKUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */; };
@@ -30,20 +25,15 @@
 		029EDDDD5314E198CF4118AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKUtilities.swift; sourceTree = "<group>"; };
 		059EB1ED95EA949B83CE1386 /* tiretread_sound_stop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_stop.wav; sourceTree = "<group>"; };
-		14B06074D9AFD6D3BD059CB7 /* UcrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UcrViewController.swift; sourceTree = "<group>"; };
 		185D3ABA1DA50279DC45A4AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		4721BF022638E070D472F80F /* String+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extras.swift"; sourceTree = "<group>"; };
 		4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4F3CF9FC1B104BFE6A9258C3 /* ApiExplorerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExplorerViewController.swift; sourceTree = "<group>"; };
 		54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_close.wav; sourceTree = "<group>"; };
 		5FE4371143B3625111243881 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A8453F399AC5E8BFAD5ED143 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_focuspoint_found.wav; sourceTree = "<group>"; };
 		BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_far.wav; sourceTree = "<group>"; };
-		D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
-		DB83637D2454C9B35580A870 /* configs.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = configs.bundle; sourceTree = "<group>"; };
 		F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_start.wav; sourceTree = "<group>"; };
-		F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TireScannerViewController.swift; sourceTree = "<group>"; };
 		FCDB6030A094FDABE482126E /* Developer Examples.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Developer Examples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -82,14 +72,10 @@
 		1ECE739C539CDC5913A4BF19 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4F3CF9FC1B104BFE6A9258C3 /* ApiExplorerViewController.swift */,
 				4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */,
-				A8453F399AC5E8BFAD5ED143 /* HomeViewController.swift */,
-				D15DAF835E28F84357CF3DFB /* ScanResultViewController.swift */,
 				038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */,
-				3F9C6D6E79F4FDAF03984348 /* SettingsTableViewController.swift */,
 				4721BF022638E070D472F80F /* String+Extras.swift */,
-				F815FF1F7A290AD98BBE7648 /* TireScannerViewController.swift */,
-				14B06074D9AFD6D3BD059CB7 /* UcrViewController.swift */,
 				0269EA23AD8C93918EE427BB /* Resources */,
 				71C121E41BB3DADD1C81DCE7 /* Support Files */,
 			);
@@ -101,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				029EDDDD5314E198CF4118AD /* Assets.xcassets */,
-				DB83637D2454C9B35580A870 /* configs.bundle */,
 				185D3ABA1DA50279DC45A4AD /* Info.plist */,
 				500A3321E7CA73C2303DBBB0 /* Localizable.strings */,
 			);
@@ -181,7 +166,6 @@
 			files = (
 				2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */,
 				AD1F12B9C3DCB0F4923C7F05 /* Localizable.strings in Resources */,
-				652A6063B25AB9483496C833 /* configs.bundle in Resources */,
 				2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */,
 				6CC842F4AC70C4B3BB65E30E /* tiretread_sound_beep_too_close.wav in Resources */,
 				69B4810C4E79732A4E7FC6B8 /* tiretread_sound_beep_too_far.wav in Resources */,
@@ -197,14 +181,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B90B63230E1806F04B46E055 /* ApiExplorerViewController.swift in Sources */,
 				82EDBD50530FF2A6FE92CC29 /* AppDelegate.swift in Sources */,
-				B320FDB84504FB2421422457 /* HomeViewController.swift in Sources */,
 				F177F301F5F30CFBAD1532CC /* SDKUtilities.swift in Sources */,
-				3E3ED6C2F98335367472F5D4 /* ScanResultViewController.swift in Sources */,
-				0F525E8ED3750C0B20188D85 /* SettingsTableViewController.swift in Sources */,
 				D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */,
-				D2C57A21D0398AABB972924E /* TireScannerViewController.swift in Sources */,
-				2DA2CDDF39CC9E54BFB2F735 /* UcrViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +247,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -299,7 +279,7 @@
 					UIInterfaceOrientationLandscapeLeft,
 					UIInterfaceOrientationLandscapeRight,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -367,7 +347,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -399,7 +379,7 @@
 					UIInterfaceOrientationLandscapeLeft,
 					UIInterfaceOrientationLandscapeRight,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -445,7 +425,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 14.0.0;
+				minimumVersion = 15.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
