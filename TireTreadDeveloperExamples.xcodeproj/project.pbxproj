@@ -425,7 +425,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 15.0.0;
+				minimumVersion = 15.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

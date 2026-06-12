@@ -14,6 +14,11 @@ class ApiExplorerViewController: UIViewController {
     private var scrollView: UIScrollView!
     private var contentView: UIView!
 
+    // Device Support
+    private var deviceSupportButton: UIButton!
+    private var deviceSupportStatusLabel: UILabel!
+    private var deviceSupportSpinner: UIActivityIndicatorView!
+
     // Init
     private var sdkVersionLabel: UILabel!
     private var initButton: UIButton!
@@ -55,6 +60,36 @@ class ApiExplorerViewController: UIViewController {
 
     @objc private func initButtonTapped() {
         initializeSDK()
+    }
+
+    @objc private func deviceSupportTapped() {
+        checkDeviceSupport()
+    }
+
+    // MARK: - Device Support
+
+    private func checkDeviceSupport() {
+        deviceSupportButton.isEnabled = false
+        deviceSupportStatusLabel.text = "Checking..."
+        deviceSupportStatusLabel.textColor = .secondaryLabel
+        deviceSupportSpinner.startAnimating()
+
+        AnylineTireTread.shared.isDeviceSupported { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.deviceSupportSpinner.stopAnimating()
+                self.deviceSupportButton.isEnabled = true
+
+                if result.isOk {
+                    let supported = result.result?.boolValue ?? false
+                    self.deviceSupportStatusLabel.text = supported ? "Device is supported" : "Device is NOT supported"
+                    self.deviceSupportStatusLabel.textColor = supported ? .systemGreen : .systemRed
+                } else if let error = result.error {
+                    self.deviceSupportStatusLabel.text = "\(error.code): \(error.message)"
+                    self.deviceSupportStatusLabel.textColor = .systemRed
+                }
+            }
+        }
     }
 
     // MARK: - SDK Init
@@ -295,6 +330,22 @@ class ApiExplorerViewController: UIViewController {
 
         let pad: CGFloat = 20
 
+        // === SECTION: Device Support ===
+
+        let deviceSupportHeader = makeSectionHeader("Device Support")
+        contentView.addSubview(deviceSupportHeader)
+
+        deviceSupportButton = makeActionButton(title: "Check Device Support", color: UIColor(red: 0.345, green: 0.337, blue: 0.839, alpha: 1), action: #selector(deviceSupportTapped))
+        contentView.addSubview(deviceSupportButton)
+
+        deviceSupportStatusLabel = makeStatusLabel()
+        contentView.addSubview(deviceSupportStatusLabel)
+
+        deviceSupportSpinner = UIActivityIndicatorView(style: .medium)
+        deviceSupportSpinner.hidesWhenStopped = true
+        deviceSupportSpinner.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(deviceSupportSpinner)
+
         // === SECTION 0: SDK Init ===
 
         let initHeader = makeSectionHeader("SDK Status")
@@ -447,8 +498,24 @@ class ApiExplorerViewController: UIViewController {
         // === Layout ===
 
         NSLayoutConstraint.activate([
+            // Section: Device Support
+            deviceSupportHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: pad),
+            deviceSupportHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
+
+            deviceSupportButton.topAnchor.constraint(equalTo: deviceSupportHeader.bottomAnchor, constant: 10),
+            deviceSupportButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
+            deviceSupportButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
+            deviceSupportButton.heightAnchor.constraint(equalToConstant: 44),
+
+            deviceSupportStatusLabel.topAnchor.constraint(equalTo: deviceSupportButton.bottomAnchor, constant: 8),
+            deviceSupportStatusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
+            deviceSupportStatusLabel.trailingAnchor.constraint(equalTo: deviceSupportSpinner.leadingAnchor, constant: -8),
+
+            deviceSupportSpinner.centerYAnchor.constraint(equalTo: deviceSupportStatusLabel.centerYAnchor),
+            deviceSupportSpinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
+
             // Section 0: SDK Init
-            initHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: pad),
+            initHeader.topAnchor.constraint(equalTo: deviceSupportStatusLabel.bottomAnchor, constant: pad),
             initHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
 
             sdkVersionLabel.topAnchor.constraint(equalTo: initHeader.bottomAnchor, constant: 8),
