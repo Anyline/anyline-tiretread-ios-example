@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029EDDDD5314E198CF4118AD /* Assets.xcassets */; };
 		2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */ = {isa = PBXBuildFile; fileRef = ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */; };
+		35263C0BCFD5E51678B03748 /* TireGlyphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0854D5858FEE2CBC300EE70 /* TireGlyphs.swift */; };
 		6892DDAE4A8122689260EB95 /* tiretread_sound_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */; };
 		69B4810C4E79732A4E7FC6B8 /* tiretread_sound_beep_too_far.wav in Resources */ = {isa = PBXBuildFile; fileRef = BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */; };
 		6CC842F4AC70C4B3BB65E30E /* tiretread_sound_beep_too_close.wav in Resources */ = {isa = PBXBuildFile; fileRef = 54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */; };
@@ -33,6 +34,7 @@
 		5FE4371143B3625111243881 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_focuspoint_found.wav; sourceTree = "<group>"; };
 		BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_far.wav; sourceTree = "<group>"; };
+		D0854D5858FEE2CBC300EE70 /* TireGlyphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TireGlyphs.swift; sourceTree = "<group>"; };
 		F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_start.wav; sourceTree = "<group>"; };
 		FCDB6030A094FDABE482126E /* Developer Examples.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Developer Examples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -76,6 +78,7 @@
 				4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */,
 				038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */,
 				4721BF022638E070D472F80F /* String+Extras.swift */,
+				D0854D5858FEE2CBC300EE70 /* TireGlyphs.swift */,
 				0269EA23AD8C93918EE427BB /* Resources */,
 				71C121E41BB3DADD1C81DCE7 /* Support Files */,
 			);
@@ -185,6 +188,7 @@
 				82EDBD50530FF2A6FE92CC29 /* AppDelegate.swift in Sources */,
 				F177F301F5F30CFBAD1532CC /* SDKUtilities.swift in Sources */,
 				D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */,
+				35263C0BCFD5E51678B03748 /* TireGlyphs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,7 +288,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1.0;
+				MARKETING_VERSION = 15.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -384,7 +388,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1.0;
+				MARKETING_VERSION = 15.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -425,7 +429,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 15.1.0;
+				minimumVersion = 15.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

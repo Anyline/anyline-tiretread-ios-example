@@ -22,6 +22,8 @@
 	<false/>
 	<key>LSEnvironment</key>
 	<dict>
+		<key>TSW_CLOUD_API_CLIENT_ID</key>
+		<string>rp92BW0g61Z8ep4CL5lc8R8kTCRTPJHq</string>
 		<key>TTR_SDK_DEVEX_LICENSE_KEY</key>
 		<string>YOUR_LICENSE_KEY</string>
 	</dict>

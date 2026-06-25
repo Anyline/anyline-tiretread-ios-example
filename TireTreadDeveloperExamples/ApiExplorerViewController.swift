@@ -3,7 +3,9 @@ import AnylineTireTreadSdk
 
 class ApiExplorerViewController: UIViewController {
 
-    private static let defaultCorrelationId = "123e4567-e89b-12d3-a456-426614174000"
+    // Generated once when this screen loads; reused for both the tread-depth
+    // and sidewall scans (a v4 UUID is required).
+    private let correlationId = UUID().uuidString
 
     // MARK: - Properties
 
@@ -24,6 +26,9 @@ class ApiExplorerViewController: UIViewController {
     private var initButton: UIButton!
     private var initStatusLabel: UILabel!
     private var initSpinner: UIActivityIndicatorView!
+    private var setupCompleteChip: UIView!
+    private var deviceSupportCircle: StatusCircle!
+    private var initCircle: StatusCircle!
 
     // Config controls
     private var appearanceControl: UISegmentedControl!
@@ -31,14 +36,33 @@ class ApiExplorerViewController: UIViewController {
     private var measurementSystemControl: UISegmentedControl!
     private var heatmapStyleControl: UISegmentedControl!
     private var tireWidthField: UITextField!
+    private var tireWidthFromTag: ChipLabel!
     private var correlationIdSwitch: UISwitch!
+    private var correlationMonoInset: UIView!
     private var tirePositionSwitch: UISwitch!
-    private var additionalContextSummaryLabel: UILabel!
 
     // Scan
     private var scanButton: UIButton!
+    private var treadStatusChip: ChipLabel!
     private var uuidTextField: UITextField!
     private var scanStatusLabel: UILabel!
+
+    // Sidewall Scanner
+    private var sidewallScanButton: UIButton!
+    private var sidewallScanSpinner: UIActivityIndicatorView!
+    private var sidewallSupportChip: ChipLabel!
+    private var sidewallAttachedChip: UIView!
+    private var sidewallStatusIcon: UIImageView!
+    private var sidewallScanAttributedTitle: NSAttributedString?
+    private var sidewallStatusLabel: UILabel!
+    private var sidewallImageView: UIImageView!
+    private var sidewallSizeTitleLabel: UILabel!
+    private var sidewallSizeLabel: UILabel!
+    private var sidewallHandoffChip: ChipLabel!
+    private var sidewallJsonLabel: UILabel!
+    private var sidewallJsonHeader: UIView!
+    private var sidewallJsonChevron: UIImageView!
+    private var sidewallJsonExpanded = false
 
     // Results
     private var getResultsButton: UIButton!
@@ -55,7 +79,20 @@ class ApiExplorerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        updateAdditionalContextSummary()
+        checkSidewallSupport()
+    }
+
+    private func checkSidewallSupport() {
+        AnylineTireSidewallScanner.companion.isSupported { [weak self] status, _ in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                let supported = status is TswSupportStatus.Supported
+                self.sidewallSupportChip.configure(
+                    text: supported ? "Supported" : "Not supported",
+                    kind: .soft(supported ? Accent.success : .systemRed)
+                )
+            }
+        }
     }
 
     @objc private func initButtonTapped() {
@@ -69,25 +106,24 @@ class ApiExplorerViewController: UIViewController {
     // MARK: - Device Support
 
     private func checkDeviceSupport() {
-        deviceSupportButton.isEnabled = false
-        deviceSupportStatusLabel.text = "Checking..."
+        setSoftButtonLoading(deviceSupportButton, spinner: deviceSupportSpinner, loading: true, title: "")
+        deviceSupportStatusLabel.text = "Checking…"
         deviceSupportStatusLabel.textColor = .secondaryLabel
-        deviceSupportSpinner.startAnimating()
 
         AnylineTireTread.shared.isDeviceSupported { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                self.deviceSupportSpinner.stopAnimating()
-                self.deviceSupportButton.isEnabled = true
-
+                var supported = false
                 if result.isOk {
-                    let supported = result.result?.boolValue ?? false
-                    self.deviceSupportStatusLabel.text = supported ? "Device is supported" : "Device is NOT supported"
-                    self.deviceSupportStatusLabel.textColor = supported ? .systemGreen : .systemRed
+                    supported = result.result?.boolValue ?? false
+                    self.deviceSupportStatusLabel.text = supported ? "Device is supported" : "Device is not supported"
+                    self.deviceSupportStatusLabel.textColor = supported ? Accent.success : .systemRed
                 } else if let error = result.error {
                     self.deviceSupportStatusLabel.text = "\(error.code): \(error.message)"
                     self.deviceSupportStatusLabel.textColor = .systemRed
                 }
+                self.deviceSupportCircle.done = supported
+                self.setSoftButtonLoading(self.deviceSupportButton, spinner: self.deviceSupportSpinner, loading: false, title: "Re-check")
             }
         }
     }
@@ -96,28 +132,29 @@ class ApiExplorerViewController: UIViewController {
 
     private func initializeSDK() {
         scanButton.isEnabled = false
-        initButton.isEnabled = false
-        initStatusLabel.text = "Initializing SDK..."
+        setSoftButtonLoading(initButton, spinner: initSpinner, loading: true, title: "")
+        initStatusLabel.text = "Initializing SDK…"
         initStatusLabel.textColor = .secondaryLabel
-        initSpinner.startAnimating()
 
         Task {
             let result = await SDKUtilities.initializeSDK()
 
             await MainActor.run {
-                self.initSpinner.stopAnimating()
-
                 switch result {
                 case .success:
                     self.scanButton.isEnabled = true
+                    self.initStatusLabel.text = "Initialized · ready to scan"
+                    self.initStatusLabel.textColor = Accent.success
+                    self.sdkVersionLabel.text = AnylineTireTread.shared.sdkVersion
+                    self.initCircle.done = true
+                    self.setupCompleteChip.isHidden = false
+                    self.treadStatusChip.configure(text: "Ready", kind: .soft(Accent.success))
+                    self.setSoftButtonLoading(self.initButton, spinner: self.initSpinner, loading: false, title: "Initialize")
                     self.initButton.isEnabled = false
-                    self.initStatusLabel.text = "SDK initialized"
-                    self.initStatusLabel.textColor = .systemGreen
-                    self.sdkVersionLabel.text = "TTR SDK: \(AnylineTireTread.shared.sdkVersion)"
                 case .failure(let error):
-                    self.initButton.isEnabled = true
                     self.initStatusLabel.text = "Init failed: \(error.localizedDescription)"
                     self.initStatusLabel.textColor = .systemRed
+                    self.setSoftButtonLoading(self.initButton, spinner: self.initSpinner, loading: false, title: "Initialize")
                 }
             }
         }
@@ -138,7 +175,7 @@ class ApiExplorerViewController: UIViewController {
 
         var additionalContext: [String: Any] = [:]
         if correlationIdSwitch.isOn {
-            additionalContext["correlationId"] = Self.defaultCorrelationId
+            additionalContext["correlationId"] = correlationId
         }
         if tirePositionSwitch.isOn {
             additionalContext["tirePosition"] = [
@@ -167,21 +204,34 @@ class ApiExplorerViewController: UIViewController {
         return "{}"
     }
 
-    private func updateAdditionalContextSummary() {
-        additionalContextSummaryLabel.text = Self.additionalContextSummary(
-            includeCorrelationId: correlationIdSwitch.isOn,
-            includeTirePosition: tirePositionSwitch.isOn
-        )
-    }
-
-    @objc private func configChanged() {
-        updateAdditionalContextSummary()
-    }
-
     // MARK: - Actions
 
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+
+    /// The "from sidewall" tag only applies while the field still holds the
+    /// detected width — clear it as soon as the user edits the value by hand.
+    @objc private func tireWidthEdited() {
+        tireWidthFromTag.isHidden = true
+    }
+
+    /// The generated UUID is only relevant while correlation is enabled.
+    @objc private func correlationToggled() {
+        let on = correlationIdSwitch.isOn
+        correlationMonoInset.isHidden = !on
+        sidewallAttachedChip.isHidden = !on
+    }
+
+    @objc private func toggleSidewallJson() {
+        sidewallJsonExpanded.toggle()
+        UIView.animate(withDuration: 0.2) {
+            self.sidewallJsonLabel.isHidden = !self.sidewallJsonExpanded
+            self.sidewallJsonChevron.transform = self.sidewallJsonExpanded
+                ? CGAffineTransform(rotationAngle: .pi / 2)
+                : .identity
+            self.view.layoutIfNeeded()
+        }
     }
 
     @objc private func scanTapped() {
@@ -209,19 +259,106 @@ class ApiExplorerViewController: UIViewController {
 
                 switch result {
                 case .success(let treadDepthResult):
-                    self.globalDepthLabel.text = String(format: "%.2f\nmm", treadDepthResult.global.valueMm)
-                    self.minimumDepthLabel.text = String(format: "%.2f\nmm", treadDepthResult.minimumValue.valueMm)
+                    self.globalDepthLabel.text = String(format: "%.2f", treadDepthResult.global.valueMm)
+                    self.minimumDepthLabel.text = String(format: "%.2f", treadDepthResult.minimumValue.valueMm)
                     let regions = treadDepthResult.regions
                     if regions.count >= 3 {
-                        self.localDepth1Label.text = String(format: "%.2f\nmm", regions[0].valueMm)
-                        self.localDepth2Label.text = String(format: "%.2f\nmm", regions[1].valueMm)
-                        self.localDepth3Label.text = String(format: "%.2f\nmm", regions[2].valueMm)
+                        self.localDepth1Label.text = String(format: "%.2f", regions[0].valueMm)
+                        self.localDepth2Label.text = String(format: "%.2f", regions[1].valueMm)
+                        self.localDepth3Label.text = String(format: "%.2f", regions[2].valueMm)
                     }
                     self.resultsStatusLabel.text = "Results loaded"
-                    self.resultsStatusLabel.textColor = .systemGreen
+                    self.resultsStatusLabel.textColor = Accent.success
                 case .failure(let error):
                     self.resultsStatusLabel.text = error.localizedDescription
                     self.resultsStatusLabel.textColor = .systemRed
+                }
+            }
+        }
+    }
+
+    // MARK: - Sidewall Scanner
+
+    @objc private func sidewallScanTapped() {
+        launchSidewallScan()
+    }
+
+    private func launchSidewallScan() {
+        sidewallStatusLabel.text = "Scanning…"
+        sidewallStatusLabel.textColor = .secondaryLabel
+        sidewallStatusIcon.isHidden = true
+        sidewallImageView.image = nil
+        sidewallImageView.isHidden = true
+        sidewallSizeTitleLabel.isHidden = true
+        sidewallSizeLabel.isHidden = true
+        sidewallHandoffChip.isHidden = true
+        sidewallJsonHeader.isHidden = true
+        sidewallJsonLabel.isHidden = true
+        sidewallJsonLabel.text = nil
+        sidewallJsonExpanded = false
+        sidewallJsonChevron.transform = .identity
+        setButtonLoading(sidewallScanButton, spinner: sidewallScanSpinner, loading: true)
+
+        // Optional TswScannerConfig. Two things you can set:
+        //
+        //  • config.texts — override the UI strings shown in the scanner
+        //    overlay, e.g.:
+        //
+        //        config.texts.textAlignTire = NSLocalizedString("tsw_align_tire", comment: "")
+        //        config.texts.textHoldSteady = NSLocalizedString("tsw_hold_steady", comment: "")
+        //
+        //    Any field you don't set keeps its English default.
+        //
+        //  • config.correlationId — an optional v4 UUID multiple Anyline scans can be correlated.
+        //    It must be a valid version-4 UUID, otherwise the scan fails fast with
+        //    ErrorCode.INVALID_UUID. Here it's driven by the shared
+        //    "Include correlationId" switch, which applies to both scans.
+        let env = Bundle.main.infoDictionary?["LSEnvironment"] as? [String: String]
+
+        let config = TswScannerConfig()
+        config.correlationId = correlationIdSwitch.isOn ? correlationId : nil
+
+        AnylineTireSidewallScanner().scan(
+            from: self,
+            clientId: env?["TSW_CLOUD_API_CLIENT_ID"] ?? "",
+            config: config
+        ) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.setButtonLoading(self.sidewallScanButton, spinner: self.sidewallScanSpinner, loading: false)
+
+                if let completed = result as? TswScanResult.Completed {
+                    self.sidewallStatusLabel.textColor = Accent.success
+                    self.sidewallStatusLabel.text = "Completed"
+                    self.setSidewallStatusIcon("checkmark", color: Accent.success)
+                    if let image = UIImage(data: completed.imageBytes.toNSData() as Data) {
+                        self.sidewallImageView.image = image
+                        self.sidewallImageView.isHidden = false
+                    }
+                    self.sidewallJsonHeader.isHidden = false
+                    self.sidewallJsonLabel.isHidden = true // collapsed; tap header to expand
+                    self.sidewallJsonLabel.text = Self.prettyJson(completed.resultJson)
+                    let parsed = completed.resultJson.data(using: .utf8)
+                        .flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] }
+                    if let sizeString = parsed?["size"] as? String, !sizeString.isEmpty {
+                        self.sidewallSizeLabel.text = sizeString
+                        self.sidewallSizeTitleLabel.isHidden = false
+                        self.sidewallSizeLabel.isHidden = false
+                        if let width = Self.extractTireWidthFromTireSizeString(sizeString) {
+                            self.tireWidthField.text = "\(width)"
+                            self.tireWidthFromTag.isHidden = false
+                            self.sidewallHandoffChip.configure(text: "Width \(width) mm sent to Tread", kind: .soft(Accent.brand))
+                            self.sidewallHandoffChip.isHidden = false
+                        }
+                    }
+                } else if result is TswScanResult.Aborted {
+                    self.sidewallStatusLabel.text = "Sidewall scan aborted"
+                    self.sidewallStatusLabel.textColor = Accent.warning
+                    self.setSidewallStatusIcon("exclamationmark.triangle", color: Accent.warning)
+                } else if let failed = result as? TswScanResult.Failed {
+                    self.sidewallStatusLabel.text = "Failed (\(failed.error.code)): \(failed.error.message)"
+                    self.sidewallStatusLabel.textColor = .systemRed
+                    self.setSidewallStatusIcon("exclamationmark.triangle", color: .systemRed)
                 }
             }
         }
@@ -233,10 +370,24 @@ class ApiExplorerViewController: UIViewController {
         button.isEnabled = !loading
         if loading {
             button.setTitle("", for: .normal)
+            if button === sidewallScanButton { button.setAttributedTitle(NSAttributedString(string: ""), for: .normal) }
             spinner.startAnimating()
         } else {
             spinner.stopAnimating()
             if button === getResultsButton { button.setTitle("Get Results", for: .normal) }
+            else if button === sidewallScanButton { button.setAttributedTitle(sidewallScanAttributedTitle, for: .normal) }
+        }
+    }
+
+    private func setSoftButtonLoading(_ button: UIButton, spinner: UIActivityIndicatorView, loading: Bool, title: String) {
+        if loading {
+            button.setTitle("", for: .normal)
+            button.isEnabled = false
+            spinner.startAnimating()
+        } else {
+            spinner.stopAnimating()
+            button.setTitle(title, for: .normal)
+            button.isEnabled = true
         }
     }
 
@@ -266,14 +417,14 @@ class ApiExplorerViewController: UIViewController {
             measurementUUID = uuid
             uuidTextField.text = uuid
             scanStatusLabel.text = "Outcome: success (\(uuid))"
-            scanStatusLabel.textColor = .systemGreen
+            scanStatusLabel.textColor = Accent.success
         case "ScanAborted":
             if let uuid = outcome.measurementUUID, !uuid.isEmpty {
                 measurementUUID = uuid
                 uuidTextField.text = uuid
             }
             scanStatusLabel.text = "Outcome: aborted"
-            scanStatusLabel.textColor = .systemOrange
+            scanStatusLabel.textColor = Accent.warning
         case "ScanFailed":
             scanStatusLabel.text = "Outcome: failed (\(scanFailureMessage(from: outcome)))"
             scanStatusLabel.textColor = .systemRed
@@ -300,8 +451,8 @@ class ApiExplorerViewController: UIViewController {
     // MARK: - UI Setup
 
     private func setupUI() {
-        title = "TireTread Developer Examples"
-        view.backgroundColor = .systemBackground
+        title = "API Explorer"
+        view.backgroundColor = .systemGroupedBackground
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -315,6 +466,280 @@ class ApiExplorerViewController: UIViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
 
+        // === 1 · SET UP =====================================================
+
+        sdkVersionLabel = makeValuePill()
+        sdkVersionLabel.text = AnylineTireTread.shared.sdkVersion
+
+        deviceSupportCircle = StatusCircle()
+        deviceSupportButton = makeSoftButton(title: "Check", action: #selector(deviceSupportTapped))
+        deviceSupportSpinner = makeButtonSpinner(in: deviceSupportButton, color: Accent.brand)
+        deviceSupportStatusLabel = makeDetailLabel("Not checked yet")
+
+        initCircle = StatusCircle()
+        initButton = makeSoftButton(title: "Initialize", action: #selector(initButtonTapped))
+        initSpinner = makeButtonSpinner(in: initButton, color: Accent.brand)
+        initStatusLabel = makeDetailLabel("Not initialized")
+
+        setupCompleteChip = makeStatusChipView(text: "Complete", color: Accent.success, systemIcon: "checkmark.circle.fill")
+        setupCompleteChip.isHidden = true
+
+        let setupCard = makeCard([
+            makeMetaRow(key: "TTR SDK version", value: sdkVersionLabel),
+            makeHairline(),
+            makeSetupRow(circle: deviceSupportCircle, title: "Check device support", detailLabel: deviceSupportStatusLabel, button: deviceSupportButton),
+            makeHairline(),
+            makeSetupRow(circle: initCircle, title: "Initialize SDK", detailLabel: initStatusLabel, button: initButton),
+        ])
+
+        // === CORRELATION ID (optional, shared) ==============================
+
+        correlationIdSwitch = UISwitch()
+        correlationIdSwitch.isOn = true
+        correlationIdSwitch.onTintColor = Accent.brand
+        correlationIdSwitch.addTarget(self, action: #selector(correlationToggled), for: .valueChanged)
+
+        correlationMonoInset = makeMonoInset(tag: "UUID", value: correlationId, tagColor: Accent.correlation)
+
+        let correlationCard = makeCard([
+            makeCardHeader(
+                icon: makeIconTile(image: UIImage(systemName: "link") ?? UIImage(), accent: Accent.correlation, size: 34),
+                title: "Correlation ID",
+                subtitle: "Links one sidewall + one tread scan as a pair. Applies to both scanners below.",
+                titleTrailing: makeMutedChip("Optional"),
+                status: correlationIdSwitch
+            ),
+            correlationMonoInset,
+        ])
+
+        // === 2 · SCAN — Tire Sidewall =======================================
+
+        sidewallScanButton = makeActionButton(title: "Sidewall Scan", color: Accent.brand, icon: TireGlyphs.centerFocusStrong(), action: #selector(sidewallScanTapped))
+        sidewallScanSpinner = makeButtonSpinner(in: sidewallScanButton, color: .white)
+        sidewallScanAttributedTitle = sidewallScanButton.attributedTitle(for: .normal)
+
+        sidewallSupportChip = ChipLabel()
+        sidewallSupportChip.configure(text: "Checking…", kind: .muted)
+
+        sidewallAttachedChip = makeAttachedChip()
+        sidewallAttachedChip.isHidden = !correlationIdSwitch.isOn
+
+        sidewallStatusIcon = UIImageView()
+        sidewallStatusIcon.contentMode = .scaleAspectFit
+        sidewallStatusIcon.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold)
+        sidewallStatusIcon.setContentHuggingPriority(.required, for: .horizontal)
+        sidewallStatusIcon.isHidden = true
+        sidewallStatusLabel = makeStatusLabel()
+        let sidewallStatusRow = UIStackView(arrangedSubviews: [sidewallStatusIcon, sidewallStatusLabel])
+        sidewallStatusRow.axis = .horizontal
+        sidewallStatusRow.alignment = .center
+        sidewallStatusRow.spacing = 7
+
+        sidewallImageView = UIImageView()
+        // The sidewall scanner returns a 3:4 (portrait) capture — match that
+        // ratio and fill the frame so the thumbnail isn't letterboxed.
+        sidewallImageView.contentMode = .scaleAspectFill
+        sidewallImageView.backgroundColor = UIColor(rgb: 0x101114)
+        sidewallImageView.isHidden = true
+        sidewallImageView.layer.cornerRadius = 12
+        sidewallImageView.layer.masksToBounds = true
+        sidewallImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sidewallImageView.widthAnchor.constraint(equalToConstant: 90),
+            sidewallImageView.heightAnchor.constraint(equalToConstant: 120),
+        ])
+
+        sidewallSizeTitleLabel = UILabel()
+        sidewallSizeTitleLabel.text = "DETECTED SIZE"
+        sidewallSizeTitleLabel.font = .systemFont(ofSize: 11, weight: .bold)
+        sidewallSizeTitleLabel.textColor = .secondaryLabel
+        sidewallSizeTitleLabel.isHidden = true
+
+        sidewallSizeLabel = UILabel()
+        sidewallSizeLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        sidewallSizeLabel.textColor = .label
+        sidewallSizeLabel.isHidden = true
+
+        sidewallHandoffChip = ChipLabel()
+        sidewallHandoffChip.isHidden = true
+
+        let sidewallDetails = UIStackView(arrangedSubviews: [sidewallSizeTitleLabel, sidewallSizeLabel, sidewallHandoffChip])
+        sidewallDetails.axis = .vertical
+        sidewallDetails.spacing = 5
+        sidewallDetails.alignment = .leading
+
+        let sidewallImageRow = UIStackView(arrangedSubviews: [sidewallImageView, sidewallDetails])
+        sidewallImageRow.axis = .horizontal
+        sidewallImageRow.spacing = 12
+        sidewallImageRow.alignment = .top
+
+        let jsonChevron = UIImageView(image: UIImage(systemName: "chevron.right"))
+        jsonChevron.tintColor = .secondaryLabel
+        jsonChevron.contentMode = .scaleAspectFit
+        jsonChevron.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
+        jsonChevron.setContentHuggingPriority(.required, for: .horizontal)
+        sidewallJsonChevron = jsonChevron
+
+        let jsonHeaderSpacer = UIView()
+        jsonHeaderSpacer.isUserInteractionEnabled = false
+        jsonHeaderSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let jsonHeader = UIStackView(arrangedSubviews: [jsonChevron, makeSubhead("Result JSON"), jsonHeaderSpacer])
+        jsonHeader.axis = .horizontal
+        jsonHeader.alignment = .center
+        jsonHeader.spacing = 6
+        jsonHeader.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleSidewallJson)))
+        jsonHeader.isHidden = true
+        sidewallJsonHeader = jsonHeader
+
+        let jsonLabel = InsetLabel()
+        jsonLabel.contentInsets = UIEdgeInsets(top: 11, left: 11, bottom: 11, right: 11)
+        jsonLabel.font = .monospacedSystemFont(ofSize: 11, weight: .regular)
+        jsonLabel.textColor = .label
+        jsonLabel.numberOfLines = 0
+        jsonLabel.backgroundColor = .tertiarySystemGroupedBackground
+        jsonLabel.layer.cornerRadius = 10
+        jsonLabel.layer.masksToBounds = true
+        jsonLabel.isHidden = true
+        sidewallJsonLabel = jsonLabel
+
+        let sidewallCard = makeCard([
+            makeCardHeader(
+                icon: makeIconTile(image: TireGlyphs.sidewall(), accent: Accent.brand),
+                title: "Tire Sidewall",
+                subtitle: "Reads tire size markings off the sidewall",
+                status: sidewallSupportChip
+            ),
+            sidewallAttachedChip,
+            sidewallScanButton,
+            sidewallStatusRow,
+            sidewallImageRow,
+            sidewallJsonHeader,
+            sidewallJsonLabel,
+        ])
+
+        // === 2 · SCAN — Tire Tread ==========================================
+
+        appearanceControl = makeSegmentedControl(items: ["Classic", "Neon"], selected: 1)
+        scanSpeedControl = makeSegmentedControl(items: ["Fast", "Slow"], selected: 0)
+        measurementSystemControl = makeSegmentedControl(items: ["Metric", "Imperial"], selected: 0)
+        heatmapStyleControl = makeSegmentedControl(items: ["Colored", "Grayscale"], selected: 0)
+
+        tireWidthField = UITextField()
+        tireWidthField.placeholder = "not set"
+        tireWidthField.borderStyle = .roundedRect
+        tireWidthField.keyboardType = .numberPad
+        tireWidthField.textAlignment = .right
+        tireWidthField.font = .systemFont(ofSize: 14)
+        tireWidthField.translatesAutoresizingMaskIntoConstraints = false
+        tireWidthField.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        tireWidthField.addTarget(self, action: #selector(tireWidthEdited), for: .editingChanged)
+
+        tireWidthFromTag = ChipLabel()
+        tireWidthFromTag.configure(text: "from sidewall", kind: .soft(Accent.sidewall))
+        tireWidthFromTag.isHidden = true
+
+        tirePositionSwitch = UISwitch()
+        tirePositionSwitch.isOn = true
+        tirePositionSwitch.onTintColor = Accent.brand
+
+        scanButton = makeActionButton(title: "Tread Scan", color: Accent.brand, icon: TireGlyphs.cropFree(), action: #selector(scanTapped))
+        scanButton.isEnabled = false
+
+        treadStatusChip = ChipLabel()
+        treadStatusChip.configure(text: "Needs setup", kind: .muted)
+
+        uuidTextField = UITextField()
+        uuidTextField.placeholder = "Measurement UUID (auto-filled after scan)"
+        uuidTextField.borderStyle = .roundedRect
+        uuidTextField.autocapitalizationType = .none
+        uuidTextField.autocorrectionType = .no
+        uuidTextField.font = .systemFont(ofSize: 14)
+        uuidTextField.translatesAutoresizingMaskIntoConstraints = false
+        uuidTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
+        scanStatusLabel = makeStatusLabel()
+
+        let treadCard = makeCard([
+            makeCardHeader(
+                icon: makeIconTile(image: TireGlyphs.tread(), accent: Accent.brand),
+                title: "Tire Tread",
+                subtitle: "Measures tread depth across the tire",
+                status: treadStatusChip
+            ),
+            makeSubhead("Scan configuration"),
+            makeSegmentRow("Appearance", appearanceControl),
+            makeSegmentRow("Scan speed", scanSpeedControl),
+            makeSegmentRow("Units", measurementSystemControl),
+            makeSegmentRow("Heatmap", heatmapStyleControl),
+            makeTireWidthRow(),
+            makeHairline(),
+            makeSwitchRow("Include tirePosition", sub: "Added to additionalContext", tirePositionSwitch),
+            scanButton,
+            scanStatusLabel,
+            makeUuidBlock(),
+        ])
+
+        // === 3 · RESULTS ====================================================
+
+        getResultsButton = makeOutlineButton(title: "Get Results", action: #selector(getResultsTapped))
+        resultsSpinner = makeButtonSpinner(in: getResultsButton, color: Accent.brand)
+        resultsStatusLabel = makeStatusLabel()
+
+        globalDepthLabel = UILabel()
+        minimumDepthLabel = UILabel()
+        localDepth1Label = UILabel()
+        localDepth2Label = UILabel()
+        localDepth3Label = UILabel()
+
+        let metricsRow = UIStackView(arrangedSubviews: [
+            makeMetricTile(title: "Global", valueLabel: globalDepthLabel, highlight: false),
+            makeMetricTile(title: "Minimum", valueLabel: minimumDepthLabel, highlight: true),
+        ])
+        metricsRow.axis = .horizontal
+        metricsRow.distribution = .fillEqually
+        metricsRow.spacing = 10
+
+        let regionsRow = UIStackView(arrangedSubviews: [
+            makeRegionTile(title: "R[0]", valueLabel: localDepth1Label),
+            makeRegionTile(title: "R[1]", valueLabel: localDepth2Label),
+            makeRegionTile(title: "R[2]", valueLabel: localDepth3Label),
+        ])
+        regionsRow.axis = .horizontal
+        regionsRow.distribution = .fillEqually
+        regionsRow.spacing = 8
+
+        let resultsCard = makeCard([
+            getResultsButton,
+            resultsStatusLabel,
+            metricsRow,
+            makeSubhead("Per region"),
+            regionsRow,
+        ])
+
+        // === Assemble ========================================================
+
+        let group1 = makeGroupHeader(1, "Set up", trailing: setupCompleteChip)
+        let group2 = makeGroupHeader(2, "Scan", hint: "Two independent scanners")
+        let group3 = makeGroupHeader(3, "Results", hint: "From the Tread scan above")
+
+        let rootStack = UIStackView(arrangedSubviews: [
+            group1, setupCard,
+            correlationCard,
+            group2, sidewallCard, treadCard,
+            group3, resultsCard,
+        ])
+        rootStack.axis = .vertical
+        rootStack.spacing = 12
+        rootStack.translatesAutoresizingMaskIntoConstraints = false
+        // Tight gap below a group header; extra breathing room above the next one.
+        rootStack.setCustomSpacing(6, after: group1)
+        rootStack.setCustomSpacing(6, after: group2)
+        rootStack.setCustomSpacing(6, after: group3)
+        rootStack.setCustomSpacing(22, after: correlationCard)
+        rootStack.setCustomSpacing(22, after: treadCard)
+        contentView.addSubview(rootStack)
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -326,288 +751,449 @@ class ApiExplorerViewController: UIViewController {
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            rootStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            rootStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            rootStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            rootStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30),
+        ])
+    }
+
+    // MARK: - Card / group toolkit
+
+    private func makeCard(_ items: [UIView]) -> CardView {
+        let card = CardView()
+        card.backgroundColor = .secondarySystemGroupedBackground
+        card.translatesAutoresizingMaskIntoConstraints = false
+
+        let body = UIStackView(arrangedSubviews: items)
+        body.axis = .vertical
+        body.spacing = 10
+        body.isLayoutMarginsRelativeArrangement = true
+        body.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        body.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(body)
+        NSLayoutConstraint.activate([
+            body.topAnchor.constraint(equalTo: card.topAnchor),
+            body.leadingAnchor.constraint(equalTo: card.leadingAnchor),
+            body.trailingAnchor.constraint(equalTo: card.trailingAnchor),
+            body.bottomAnchor.constraint(equalTo: card.bottomAnchor),
+        ])
+        return card
+    }
+
+    private func makeGroupHeader(_ number: Int, _ title: String, hint: String? = nil, trailing: UIView? = nil) -> UIView {
+        let numberBox = UILabel()
+        numberBox.text = "\(number)"
+        numberBox.font = .systemFont(ofSize: 12, weight: .bold)
+        numberBox.textColor = .systemBackground
+        numberBox.textAlignment = .center
+        numberBox.backgroundColor = .label
+        numberBox.layer.cornerRadius = 7
+        numberBox.layer.masksToBounds = true
+        numberBox.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            numberBox.widthAnchor.constraint(equalToConstant: 22),
+            numberBox.heightAnchor.constraint(equalToConstant: 22),
         ])
 
-        let pad: CGFloat = 20
+        let titleLabel = UILabel()
+        titleLabel.attributedText = NSAttributedString(
+            string: title.uppercased(),
+            attributes: [
+                .kern: 1.1,
+                .font: UIFont.systemFont(ofSize: 13, weight: .bold),
+                .foregroundColor: UIColor.secondaryLabel,
+            ]
+        )
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
 
-        // === SECTION: Device Support ===
+        let spacer = UIView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-        let deviceSupportHeader = makeSectionHeader("Device Support")
-        contentView.addSubview(deviceSupportHeader)
+        let row = UIStackView(arrangedSubviews: [numberBox, titleLabel, spacer])
+        row.axis = .horizontal
+        row.spacing = 8
+        row.alignment = .center
 
-        deviceSupportButton = makeActionButton(title: "Check Device Support", color: UIColor(red: 0.345, green: 0.337, blue: 0.839, alpha: 1), action: #selector(deviceSupportTapped))
-        contentView.addSubview(deviceSupportButton)
+        if let trailing {
+            trailing.setContentHuggingPriority(.required, for: .horizontal)
+            row.addArrangedSubview(trailing)
+        } else if let hint {
+            let hintLabel = UILabel()
+            hintLabel.text = hint
+            hintLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+            hintLabel.textColor = .secondaryLabel
+            row.addArrangedSubview(hintLabel)
+        }
+        return row
+    }
 
-        deviceSupportStatusLabel = makeStatusLabel()
-        contentView.addSubview(deviceSupportStatusLabel)
+    private func makeCardHeader(icon: UIView?, title: String, subtitle: String?, titleTrailing: UIView? = nil, status: UIView?) -> UIView {
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        titleLabel.textColor = .label
 
-        deviceSupportSpinner = UIActivityIndicatorView(style: .medium)
-        deviceSupportSpinner.hidesWhenStopped = true
-        deviceSupportSpinner.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(deviceSupportSpinner)
+        let titleLine: UIView
+        if let titleTrailing {
+            titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+            titleTrailing.setContentHuggingPriority(.required, for: .horizontal)
+            let spacer = UIView()
+            spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            let line = UIStackView(arrangedSubviews: [titleLabel, titleTrailing, spacer])
+            line.axis = .horizontal
+            line.alignment = .center
+            line.spacing = 8
+            titleLine = line
+        } else {
+            titleLine = titleLabel
+        }
 
-        // === SECTION 0: SDK Init ===
+        let textStack = UIStackView(arrangedSubviews: [titleLine])
+        textStack.axis = .vertical
+        textStack.spacing = 2
+        if let subtitle {
+            let sub = UILabel()
+            sub.text = subtitle
+            sub.font = .systemFont(ofSize: 12.5)
+            sub.textColor = .secondaryLabel
+            sub.numberOfLines = 0
+            textStack.addArrangedSubview(sub)
+        }
+        textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-        let initHeader = makeSectionHeader("SDK Status")
-        contentView.addSubview(initHeader)
+        let row = UIStackView()
+        row.axis = .horizontal
+        row.spacing = 12
+        row.alignment = .center
+        if let icon { row.addArrangedSubview(icon) }
+        row.addArrangedSubview(textStack)
+        if let status {
+            status.setContentHuggingPriority(.required, for: .horizontal)
+            status.setContentCompressionResistancePriority(.required, for: .horizontal)
+            row.addArrangedSubview(status)
+        }
+        return row
+    }
 
-        sdkVersionLabel = UILabel()
-        sdkVersionLabel.text = "TTR SDK: --"
-        sdkVersionLabel.font = .systemFont(ofSize: 14)
-        sdkVersionLabel.textColor = .secondaryLabel
-        sdkVersionLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(sdkVersionLabel)
+    private func makeIconTile(image: UIImage, accent: UIColor, size: CGFloat = 38) -> UIView {
+        let tile = UIView()
+        tile.backgroundColor = accent.withAlphaComponent(0.12)
+        tile.layer.cornerRadius = 11
+        tile.translatesAutoresizingMaskIntoConstraints = false
 
-        initButton = UIButton(type: .system)
-        initButton.setTitle("Initialize", for: .normal)
-        initButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        initButton.setTitleColor(.white, for: .normal)
-        initButton.backgroundColor = .systemBlue
-        initButton.layer.cornerRadius = 22
-        initButton.translatesAutoresizingMaskIntoConstraints = false
-        initButton.addTarget(self, action: #selector(initButtonTapped), for: .touchUpInside)
-        contentView.addSubview(initButton)
-
-        initStatusLabel = UILabel()
-        initStatusLabel.text = ""
-        initStatusLabel.font = .systemFont(ofSize: 14)
-        initStatusLabel.numberOfLines = 0
-        initStatusLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(initStatusLabel)
-
-        initSpinner = UIActivityIndicatorView(style: .medium)
-        initSpinner.hidesWhenStopped = true
-        initSpinner.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(initSpinner)
-
-        // === SECTION 1: Scan Config ===
-
-        let configHeader = makeSectionHeader("Scan Config")
-        contentView.addSubview(configHeader)
-
-        // Enum controls
-        appearanceControl = UISegmentedControl(items: ["Classic", "Neon"])
-        appearanceControl.selectedSegmentIndex = 1
-        appearanceControl.addTarget(self, action: #selector(configChanged), for: .valueChanged)
-
-        scanSpeedControl = UISegmentedControl(items: ["Fast", "Slow"])
-        scanSpeedControl.selectedSegmentIndex = 0
-        scanSpeedControl.addTarget(self, action: #selector(configChanged), for: .valueChanged)
-
-        measurementSystemControl = UISegmentedControl(items: ["Metric", "Imperial"])
-        measurementSystemControl.selectedSegmentIndex = 0
-        measurementSystemControl.addTarget(self, action: #selector(configChanged), for: .valueChanged)
-
-        heatmapStyleControl = UISegmentedControl(items: ["Colored", "Grayscale"])
-        heatmapStyleControl.selectedSegmentIndex = 0
-        heatmapStyleControl.addTarget(self, action: #selector(configChanged), for: .valueChanged)
-
-        tireWidthField = UITextField()
-        tireWidthField.placeholder = "empty = not set"
-        tireWidthField.borderStyle = .roundedRect
-        tireWidthField.keyboardType = .numberPad
-        tireWidthField.font = .systemFont(ofSize: 14)
-        tireWidthField.translatesAutoresizingMaskIntoConstraints = false
-
-        correlationIdSwitch = UISwitch()
-        correlationIdSwitch.isOn = true
-        correlationIdSwitch.addTarget(self, action: #selector(configChanged), for: .valueChanged)
-
-        tirePositionSwitch = UISwitch()
-        tirePositionSwitch.isOn = true
-        tirePositionSwitch.addTarget(self, action: #selector(configChanged), for: .valueChanged)
-
-        additionalContextSummaryLabel = UILabel()
-        additionalContextSummaryLabel.font = .systemFont(ofSize: 12)
-        additionalContextSummaryLabel.textColor = .secondaryLabel
-        additionalContextSummaryLabel.numberOfLines = 0
-
-        // Build config rows stack
-        let configStack = UIStackView(arrangedSubviews: [
-            makeSegmentRow("Appearance", appearanceControl),
-            makeSegmentRow("Scan Speed", scanSpeedControl),
-            makeSegmentRow("Units", measurementSystemControl),
-            makeSegmentRow("Heatmap Style", heatmapStyleControl),
-            makeFieldRow("Tire Width (mm)", tireWidthField),
-            makeSwitchRow("Include correlationId", correlationIdSwitch),
-            makeSwitchRow("Include tirePosition", tirePositionSwitch),
-            additionalContextSummaryLabel,
-        ])
-        configStack.axis = .vertical
-        configStack.spacing = 8
-        configStack.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(configStack)
-
-        // Scan button
-        scanButton = makeActionButton(title: "Scan", color: UIColor(red: 0, green: 0.6, blue: 1, alpha: 1), action: #selector(scanTapped))
-        scanButton.isEnabled = false
-        contentView.addSubview(scanButton)
-
-        uuidTextField = UITextField()
-        uuidTextField.placeholder = "Measurement UUID (auto-filled after scan)"
-        uuidTextField.borderStyle = .roundedRect
-        uuidTextField.autocapitalizationType = .none
-        uuidTextField.autocorrectionType = .no
-        uuidTextField.font = .systemFont(ofSize: 14)
-        uuidTextField.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(uuidTextField)
-
-        scanStatusLabel = makeStatusLabel()
-        contentView.addSubview(scanStatusLabel)
-
-        // === SECTION 2: Results ===
-
-        let resultsSectionHeader = makeSectionHeader("Results")
-        contentView.addSubview(resultsSectionHeader)
-
-        getResultsButton = makeActionButton(title: "Get Results", color: .systemBlue, action: #selector(getResultsTapped))
-        resultsSpinner = makeSpinner(in: getResultsButton)
-        contentView.addSubview(getResultsButton)
-
-        resultsStatusLabel = makeStatusLabel()
-        contentView.addSubview(resultsStatusLabel)
-
-        globalDepthLabel = makeDepthLabel()
-        minimumDepthLabel = makeDepthLabel()
-        localDepth1Label = makeDepthLabel()
-        localDepth2Label = makeDepthLabel()
-        localDepth3Label = makeDepthLabel()
-
-        let topDepthRow = UIStackView(arrangedSubviews: [
-            makeDepthStack(titleText: "Global", label: globalDepthLabel),
-            makeDepthStack(titleText: "Minimum", label: minimumDepthLabel),
-        ])
-        topDepthRow.axis = .horizontal
-        topDepthRow.distribution = .fillEqually
-        topDepthRow.spacing = 10
-        topDepthRow.translatesAutoresizingMaskIntoConstraints = false
-
-        let bottomDepthRow = UIStackView(arrangedSubviews: [
-            makeDepthStack(titleText: "R[0]", label: localDepth1Label),
-            makeDepthStack(titleText: "R[1]", label: localDepth2Label),
-            makeDepthStack(titleText: "R[2]", label: localDepth3Label),
-        ])
-        bottomDepthRow.axis = .horizontal
-        bottomDepthRow.distribution = .fillEqually
-        bottomDepthRow.spacing = 10
-        bottomDepthRow.translatesAutoresizingMaskIntoConstraints = false
-
-        contentView.addSubview(topDepthRow)
-        contentView.addSubview(bottomDepthRow)
-
-        // === Layout ===
+        let imageView = UIImageView(image: image.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = accent
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        tile.addSubview(imageView)
 
         NSLayoutConstraint.activate([
-            // Section: Device Support
-            deviceSupportHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: pad),
-            deviceSupportHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-
-            deviceSupportButton.topAnchor.constraint(equalTo: deviceSupportHeader.bottomAnchor, constant: 10),
-            deviceSupportButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            deviceSupportButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-            deviceSupportButton.heightAnchor.constraint(equalToConstant: 44),
-
-            deviceSupportStatusLabel.topAnchor.constraint(equalTo: deviceSupportButton.bottomAnchor, constant: 8),
-            deviceSupportStatusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            deviceSupportStatusLabel.trailingAnchor.constraint(equalTo: deviceSupportSpinner.leadingAnchor, constant: -8),
-
-            deviceSupportSpinner.centerYAnchor.constraint(equalTo: deviceSupportStatusLabel.centerYAnchor),
-            deviceSupportSpinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            // Section 0: SDK Init
-            initHeader.topAnchor.constraint(equalTo: deviceSupportStatusLabel.bottomAnchor, constant: pad),
-            initHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-
-            sdkVersionLabel.topAnchor.constraint(equalTo: initHeader.bottomAnchor, constant: 8),
-            sdkVersionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            sdkVersionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            initButton.topAnchor.constraint(equalTo: sdkVersionLabel.bottomAnchor, constant: 10),
-            initButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            initButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-            initButton.heightAnchor.constraint(equalToConstant: 44),
-
-            initStatusLabel.topAnchor.constraint(equalTo: initButton.bottomAnchor, constant: 8),
-            initStatusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            initStatusLabel.trailingAnchor.constraint(equalTo: initSpinner.leadingAnchor, constant: -8),
-
-            initSpinner.centerYAnchor.constraint(equalTo: initStatusLabel.centerYAnchor),
-            initSpinner.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            // Section 1: Config & Scan
-            configHeader.topAnchor.constraint(equalTo: initStatusLabel.bottomAnchor, constant: pad),
-            configHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-
-            configStack.topAnchor.constraint(equalTo: configHeader.bottomAnchor, constant: 10),
-            configStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            configStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            scanButton.topAnchor.constraint(equalTo: configStack.bottomAnchor, constant: 16),
-            scanButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            scanButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-            scanButton.heightAnchor.constraint(equalToConstant: 44),
-
-            uuidTextField.topAnchor.constraint(equalTo: scanButton.bottomAnchor, constant: 12),
-            uuidTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            uuidTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-            uuidTextField.heightAnchor.constraint(equalToConstant: 40),
-
-            scanStatusLabel.topAnchor.constraint(equalTo: uuidTextField.bottomAnchor, constant: 6),
-            scanStatusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            scanStatusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            // Section 2: Results
-            resultsSectionHeader.topAnchor.constraint(equalTo: scanStatusLabel.bottomAnchor, constant: pad),
-            resultsSectionHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-
-            getResultsButton.topAnchor.constraint(equalTo: resultsSectionHeader.bottomAnchor, constant: 10),
-            getResultsButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            getResultsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-            getResultsButton.heightAnchor.constraint(equalToConstant: 44),
-
-            resultsStatusLabel.topAnchor.constraint(equalTo: getResultsButton.bottomAnchor, constant: 6),
-            resultsStatusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            resultsStatusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            topDepthRow.topAnchor.constraint(equalTo: resultsStatusLabel.bottomAnchor, constant: 10),
-            topDepthRow.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            topDepthRow.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-
-            bottomDepthRow.topAnchor.constraint(equalTo: topDepthRow.bottomAnchor, constant: 10),
-            bottomDepthRow.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: pad),
-            bottomDepthRow.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -pad),
-            bottomDepthRow.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30),
+            tile.widthAnchor.constraint(equalToConstant: size),
+            tile.heightAnchor.constraint(equalToConstant: size),
+            imageView.centerXAnchor.constraint(equalTo: tile.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: size * 0.62),
+            imageView.heightAnchor.constraint(equalToConstant: size * 0.62),
         ])
+        return tile
     }
 
-    // MARK: - UI Factory Helpers
-
-    private func makeSectionHeader(_ text: String) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private func makeHairline() -> UIView {
+        let line = UIView()
+        line.backgroundColor = .separator
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        return line
     }
 
-    private func makeActionButton(title: String, color: UIColor, titleColor: UIColor = .white, action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
+    private func makeMetaRow(key: String, value: UILabel) -> UIView {
+        let keyLabel = UILabel()
+        keyLabel.text = key
+        keyLabel.font = .systemFont(ofSize: 14, weight: .semibold)
+        keyLabel.textColor = .secondaryLabel
+        keyLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        value.setContentHuggingPriority(.required, for: .horizontal)
+
+        let row = UIStackView(arrangedSubviews: [keyLabel, value])
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 8
+        return row
+    }
+
+    private func makeSoftButton(title: String, action: Selector) -> SoftButton {
+        let button = SoftButton()
         button.setTitle(title, for: .normal)
-        button.backgroundColor = color
-        button.setTitleColor(titleColor, for: .normal)
-        button.setTitleColor(titleColor.withAlphaComponent(0.4), for: .disabled)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        button.layer.cornerRadius = 20
-        button.clipsToBounds = true
         button.addTarget(self, action: action, for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }
 
-    private func makeSpinner(in button: UIButton) -> UIActivityIndicatorView {
+    private func makeDetailLabel(_ text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 12.5, weight: .semibold)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        return label
+    }
+
+    private func makeSetupRow(circle: UIView, title: String, detailLabel: UILabel, button: UIView) -> UIView {
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 15, weight: .bold)
+        titleLabel.textColor = .label
+
+        let textStack = UIStackView(arrangedSubviews: [titleLabel, detailLabel])
+        textStack.axis = .vertical
+        textStack.spacing = 2
+        textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
+
+        let row = UIStackView(arrangedSubviews: [circle, textStack, button])
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 12
+        return row
+    }
+
+    private func makeStatusChipView(text: String, color: UIColor, systemIcon: String) -> UIView {
+        let icon = UIImageView(image: UIImage(systemName: systemIcon))
+        icon.tintColor = color
+        icon.contentMode = .scaleAspectFit
+        icon.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
+
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 11, weight: .bold)
+        label.textColor = color
+
+        let row = UIStackView(arrangedSubviews: [icon, label])
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 4
+        row.isLayoutMarginsRelativeArrangement = true
+        row.layoutMargins = UIEdgeInsets(top: 5, left: 9, bottom: 5, right: 9)
+        row.translatesAutoresizingMaskIntoConstraints = false
+
+        let pill = PillView()
+        pill.backgroundColor = color.withAlphaComponent(0.12)
+        pill.addSubview(row)
+        NSLayoutConstraint.activate([
+            row.topAnchor.constraint(equalTo: pill.topAnchor),
+            row.leadingAnchor.constraint(equalTo: pill.leadingAnchor),
+            row.trailingAnchor.constraint(equalTo: pill.trailingAnchor),
+            row.bottomAnchor.constraint(equalTo: pill.bottomAnchor),
+        ])
+        return pill
+    }
+
+    /// Left-aligned pill marking a scanner as carrying the shared correlationId.
+    private func makeAttachedChip() -> UIView {
+        let chip = makeStatusChipView(text: "correlationId attached", color: Accent.correlation, systemIcon: "link")
+        chip.translatesAutoresizingMaskIntoConstraints = false
+        let container = UIView()
+        container.addSubview(chip)
+        NSLayoutConstraint.activate([
+            chip.topAnchor.constraint(equalTo: container.topAnchor),
+            chip.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            chip.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            chip.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor),
+        ])
+        return container
+    }
+
+    private func setSidewallStatusIcon(_ systemName: String, color: UIColor) {
+        sidewallStatusIcon.image = UIImage(systemName: systemName)
+        sidewallStatusIcon.tintColor = color
+        sidewallStatusIcon.isHidden = false
+    }
+
+    private func makeMonoInset(tag: String, value: String, tagColor: UIColor) -> UIView {
+        let container = UIView()
+        container.backgroundColor = .tertiarySystemGroupedBackground
+        container.layer.cornerRadius = 10
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let tagLabel = UILabel()
+        tagLabel.text = tag
+        tagLabel.font = .systemFont(ofSize: 9, weight: .bold)
+        tagLabel.textColor = tagColor
+        tagLabel.setContentHuggingPriority(.required, for: .horizontal)
+
+        let valueLabel = UILabel()
+        valueLabel.text = value
+        valueLabel.font = .monospacedSystemFont(ofSize: 11, weight: .regular)
+        valueLabel.textColor = .secondaryLabel
+        valueLabel.lineBreakMode = .byTruncatingTail
+
+        let row = UIStackView(arrangedSubviews: [tagLabel, valueLabel])
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 8
+        row.isLayoutMarginsRelativeArrangement = true
+        row.layoutMargins = UIEdgeInsets(top: 9, left: 11, bottom: 9, right: 11)
+        row.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(row)
+        NSLayoutConstraint.activate([
+            row.topAnchor.constraint(equalTo: container.topAnchor),
+            row.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            row.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            row.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+        ])
+        return container
+    }
+
+    private func makeTireWidthRow() -> UIView {
+        let label = UILabel()
+        label.text = "Tire width (mm)"
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .label
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let row = UIStackView(arrangedSubviews: [label, tireWidthFromTag, tireWidthField])
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 8
+        return row
+    }
+
+    private func makeUuidBlock() -> UIView {
+        let header = makeSubhead("Measurement UUID")
+        let stack = UIStackView(arrangedSubviews: [header, uuidTextField])
+        stack.axis = .vertical
+        stack.spacing = 6
+        return stack
+    }
+
+    private func makeMetricTile(title: String, valueLabel: UILabel, highlight: Bool) -> UIView {
+        let tile = UIView()
+        tile.backgroundColor = highlight ? Accent.brand.withAlphaComponent(0.12) : .tertiarySystemGroupedBackground
+        tile.layer.cornerRadius = 13
+        tile.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.text = title.uppercased()
+        titleLabel.font = .systemFont(ofSize: 11, weight: .bold)
+        titleLabel.textColor = highlight ? Accent.brand : .secondaryLabel
+
+        valueLabel.text = "\u{2013}"
+        valueLabel.font = .systemFont(ofSize: 26, weight: .bold)
+        valueLabel.textColor = highlight ? Accent.brand : .label
+        valueLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let unitLabel = UILabel()
+        unitLabel.text = "mm"
+        unitLabel.font = .systemFont(ofSize: 12, weight: .bold)
+        unitLabel.textColor = highlight ? Accent.brand : .secondaryLabel
+
+        let valueRow = UIStackView(arrangedSubviews: [valueLabel, unitLabel])
+        valueRow.axis = .horizontal
+        valueRow.spacing = 3
+        valueRow.alignment = .lastBaseline
+
+        let stack = UIStackView(arrangedSubviews: [titleLabel, valueRow])
+        stack.axis = .vertical
+        stack.spacing = 6
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 13, left: 13, bottom: 13, right: 13)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        tile.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: tile.topAnchor),
+            stack.leadingAnchor.constraint(equalTo: tile.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: tile.trailingAnchor),
+            stack.bottomAnchor.constraint(equalTo: tile.bottomAnchor),
+        ])
+        return tile
+    }
+
+    private func makeRegionTile(title: String, valueLabel: UILabel) -> UIView {
+        let tile = UIView()
+        tile.backgroundColor = .tertiarySystemGroupedBackground
+        tile.layer.cornerRadius = 11
+        tile.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 11)
+        titleLabel.textColor = .secondaryLabel
+        titleLabel.textAlignment = .center
+
+        valueLabel.text = "\u{2013}"
+        valueLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        valueLabel.textColor = .label
+        valueLabel.textAlignment = .center
+
+        let stack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
+        stack.axis = .vertical
+        stack.spacing = 3
+        stack.alignment = .center
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        tile.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: tile.topAnchor),
+            stack.leadingAnchor.constraint(equalTo: tile.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: tile.trailingAnchor),
+            stack.bottomAnchor.constraint(equalTo: tile.bottomAnchor),
+        ])
+        return tile
+    }
+
+    // MARK: - Control / label factory
+
+    private func makeActionButton(title: String, color: UIColor, titleColor: UIColor = .white, icon: UIImage? = nil, action: Selector) -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = color
+        button.setTitleColor(titleColor, for: .normal)
+        button.setTitleColor(titleColor.withAlphaComponent(0.6), for: .disabled)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.layer.cornerRadius = 14
+        button.clipsToBounds = true
+        button.addTarget(self, action: action, for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 48).isActive = true
+
+        if let icon {
+            func titled(_ tint: UIColor) -> NSAttributedString {
+                let attachment = NSTextAttachment()
+                attachment.image = icon.withTintColor(tint, renderingMode: .alwaysOriginal)
+                attachment.bounds = CGRect(x: 0, y: -4, width: icon.size.width, height: icon.size.height)
+                let attributed = NSMutableAttributedString(attachment: attachment)
+                attributed.append(NSAttributedString(
+                    string: "  " + title,
+                    attributes: [.foregroundColor: tint, .font: UIFont.boldSystemFont(ofSize: 15)]
+                ))
+                return attributed
+            }
+            button.setAttributedTitle(titled(titleColor), for: .normal)
+            button.setAttributedTitle(titled(titleColor.withAlphaComponent(0.6)), for: .disabled)
+        } else {
+            button.setTitle(title, for: .normal)
+        }
+        return button
+    }
+
+    private func makeOutlineButton(title: String, action: Selector) -> OutlineButton {
+        let button = OutlineButton()
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(Accent.brand, for: .normal)
+        button.setTitleColor(Accent.brand.withAlphaComponent(0.4), for: .disabled)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.borderColorProvider = Accent.brand
+        button.backgroundColor = .clear
+        button.addTarget(self, action: action, for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        return button
+    }
+
+    private func makeButtonSpinner(in button: UIButton, color: UIColor) -> UIActivityIndicatorView {
         let spinner = UIActivityIndicatorView(style: .medium)
-        spinner.color = .white
+        spinner.color = color
         spinner.hidesWhenStopped = true
         spinner.translatesAutoresizingMaskIntoConstraints = false
         button.addSubview(spinner)
@@ -618,6 +1204,16 @@ class ApiExplorerViewController: UIViewController {
         return spinner
     }
 
+    private func makeSegmentedControl(items: [String], selected: Int) -> UISegmentedControl {
+        let control = UISegmentedControl(items: items)
+        control.selectedSegmentIndex = selected
+        control.selectedSegmentTintColor = Accent.brand
+        control.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 13, weight: .semibold)], for: .selected)
+        control.setTitleTextAttributes([.foregroundColor: UIColor.label, .font: UIFont.systemFont(ofSize: 13)], for: .normal)
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
+    }
+
     private func makeStatusLabel() -> UILabel {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
@@ -626,49 +1222,54 @@ class ApiExplorerViewController: UIViewController {
         return label
     }
 
-    private func makeDepthLabel() -> UILabel {
+    private func makeSubhead(_ text: String) -> UILabel {
         let label = UILabel()
-        label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .label
-        label.textAlignment = .center
-        label.text = "\u{2013}\nmm"
-        label.backgroundColor = .secondarySystemBackground
-        label.layer.cornerRadius = 8
-        label.layer.masksToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = NSAttributedString(
+            string: text.uppercased(),
+            attributes: [
+                .kern: 0.6,
+                .font: UIFont.systemFont(ofSize: 11, weight: .bold),
+                .foregroundColor: UIColor.secondaryLabel,
+            ]
+        )
         return label
     }
 
-    private func makeDepthStack(titleText: String, label: UILabel) -> UIStackView {
-        let titleLabel = UILabel()
-        titleLabel.text = titleText
-        titleLabel.font = .systemFont(ofSize: 12)
-        titleLabel.textColor = .secondaryLabel
-        titleLabel.textAlignment = .center
-
-        let stack = UIStackView(arrangedSubviews: [titleLabel, label])
-        stack.axis = .vertical
-        stack.spacing = 4
-        stack.alignment = .center
-
-        label.widthAnchor.constraint(greaterThanOrEqualToConstant: 70).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 55).isActive = true
-
-        return stack
+    private func makeValuePill() -> InsetLabel {
+        let label = InsetLabel()
+        label.contentInsets = UIEdgeInsets(top: 5, left: 9, bottom: 5, right: 9)
+        label.font = .monospacedSystemFont(ofSize: 13, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.backgroundColor = .tertiarySystemGroupedBackground
+        label.layer.cornerRadius = 7
+        label.layer.masksToBounds = true
+        return label
     }
 
-    private func makeSwitchRow(_ title: String, _ toggle: UISwitch) -> UIView {
+    private func makeSwitchRow(_ title: String, sub: String? = nil, _ toggle: UISwitch) -> UIView {
         let label = UILabel()
         label.text = title
         label.font = .systemFont(ofSize: 14)
         label.textColor = .label
 
-        let row = UIStackView(arrangedSubviews: [label, toggle])
+        let textStack = UIStackView(arrangedSubviews: [label])
+        textStack.axis = .vertical
+        textStack.spacing = 2
+        if let sub {
+            let subLabel = UILabel()
+            subLabel.text = sub
+            subLabel.font = .systemFont(ofSize: 11.5)
+            subLabel.textColor = .secondaryLabel
+            subLabel.numberOfLines = 0
+            textStack.addArrangedSubview(subLabel)
+        }
+        textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        toggle.setContentHuggingPriority(.required, for: .horizontal)
+
+        let row = UIStackView(arrangedSubviews: [textStack, toggle])
         row.axis = .horizontal
-        row.distribution = .fill
         row.alignment = .center
-        row.translatesAutoresizingMaskIntoConstraints = false
+        row.spacing = 8
         return row
     }
 
@@ -679,41 +1280,218 @@ class ApiExplorerViewController: UIViewController {
         label.textColor = .label
         label.setContentHuggingPriority(.required, for: .horizontal)
 
-        control.translatesAutoresizingMaskIntoConstraints = false
-
         let row = UIStackView(arrangedSubviews: [label, control])
         row.axis = .horizontal
         row.spacing = 8
-        row.distribution = .fill
         row.alignment = .center
-        row.translatesAutoresizingMaskIntoConstraints = false
         return row
     }
 
-    private func makeFieldRow(_ title: String, _ field: UITextField) -> UIView {
-        let label = UILabel()
-        label.text = title
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .label
-        label.setContentHuggingPriority(.required, for: .horizontal)
-
-        field.translatesAutoresizingMaskIntoConstraints = false
-        field.widthAnchor.constraint(equalToConstant: 120).isActive = true
-
-        let row = UIStackView(arrangedSubviews: [label, field])
-        row.axis = .horizontal
-        row.spacing = 8
-        row.distribution = .fill
-        row.alignment = .center
-        row.translatesAutoresizingMaskIntoConstraints = false
-        return row
+    private func makeMutedChip(_ text: String) -> ChipLabel {
+        let chip = ChipLabel()
+        chip.configure(text: text, kind: .muted)
+        return chip
     }
 
-    private static func additionalContextSummary(includeCorrelationId: Bool, includeTirePosition: Bool) -> String {
-        var parts: [String] = []
-        if includeCorrelationId { parts.append("correlationId") }
-        if includeTirePosition { parts.append("tirePosition") }
-        if parts.isEmpty { return "No additional context" }
-        return "Additional context: " + parts.joined(separator: " + ")
+    private static func extractTireWidthFromTireSizeString(_ tireSizeString: String) -> Int? {
+        guard let match = tireSizeString.range(of: #"[A-Za-z]*\d{3}"#, options: .regularExpression) else { return nil }
+        let digits = String(tireSizeString[match].filter { $0.isNumber }.prefix(3))
+        guard let width = Int(digits), (100...500).contains(width) else { return nil }
+        return width
+    }
+
+    private static func prettyJson(_ raw: String) -> String {
+        guard let data = raw.data(using: .utf8),
+              let obj = try? JSONSerialization.jsonObject(with: data),
+              let pretty = try? JSONSerialization.data(withJSONObject: obj, options: [.prettyPrinted, .sortedKeys]),
+              let str = String(data: pretty, encoding: .utf8)
+        else { return raw }
+        return str
+    }
+}
+
+// MARK: - Anyline design-system accents
+
+/// Single source of truth for the accent colors, with light/dark variants so
+/// the whole screen reads correctly in both appearances.
+private enum Accent {
+    static let brand = dynamic(light: 0x0099FF, dark: 0x0A9DFF)
+    static let sidewall = dynamic(light: 0x0C93B0, dark: 0x5FD6EA)
+    static let correlation = dynamic(light: 0x5246E0, dark: 0xA09DF6)
+    static let success = dynamic(light: 0x00A37A, dark: 0x2EE0AB)
+    static let warning = dynamic(light: 0xB5740A, dark: 0xFFB340)
+
+    private static func dynamic(light: Int, dark: Int) -> UIColor {
+        UIColor { traits in
+            traits.userInterfaceStyle == .dark ? UIColor(rgb: dark) : UIColor(rgb: light)
+        }
+    }
+}
+
+private extension UIColor {
+    convenience init(rgb: Int) {
+        self.init(
+            red: CGFloat((rgb >> 16) & 0xFF) / 255,
+            green: CGFloat((rgb >> 8) & 0xFF) / 255,
+            blue: CGFloat(rgb & 0xFF) / 255,
+            alpha: 1
+        )
+    }
+}
+
+// MARK: - Small presentation primitives
+
+/// Rounded, hairline-bordered surface. Refreshes its border in `layoutSubviews`
+/// so the separator color tracks light/dark changes.
+private final class CardView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = 18
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.separator.resolvedColor(with: traitCollection).cgColor
+        layer.masksToBounds = true
+    }
+}
+
+/// Outlined pill button (secondary action). Border tracks light/dark.
+private final class OutlineButton: UIButton {
+    var borderColorProvider: UIColor = .label
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = 14
+        layer.borderWidth = 1.5
+        layer.borderColor = borderColorProvider.resolvedColor(with: traitCollection).cgColor
+        layer.masksToBounds = true
+    }
+}
+
+/// Compact, brand-tinted secondary button used inside setup rows.
+private final class SoftButton: UIButton {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentEdgeInsets = UIEdgeInsets(top: 9, left: 14, bottom: 9, right: 14)
+        titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
+        setContentHuggingPriority(.required, for: .horizontal)
+        updateColors()
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override var isEnabled: Bool { didSet { updateColors() } }
+
+    private func updateColors() {
+        backgroundColor = isEnabled ? Accent.brand.withAlphaComponent(0.12) : .tertiarySystemGroupedBackground
+        setTitleColor(isEnabled ? Accent.brand : .tertiaryLabel, for: .normal)
+    }
+}
+
+/// 26pt step indicator: a hairline-bordered dot that fills green with a check
+/// once its step is done.
+private final class StatusCircle: UIView {
+    private let check = UIImageView(image: UIImage(systemName: "checkmark"))
+    var done = false { didSet { update() } }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        translatesAutoresizingMaskIntoConstraints = false
+        check.tintColor = .white
+        check.contentMode = .scaleAspectFit
+        check.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 11, weight: .bold)
+        check.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(check)
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: 26),
+            heightAnchor.constraint(equalToConstant: 26),
+            check.centerXAnchor.constraint(equalTo: centerXAnchor),
+            check.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+        update()
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.height / 2
+        if !done { layer.borderColor = UIColor.separator.resolvedColor(with: traitCollection).cgColor }
+    }
+
+    private func update() {
+        check.isHidden = !done
+        backgroundColor = done ? UIColor(rgb: 0x00BB8E) : .tertiarySystemGroupedBackground
+        layer.borderWidth = done ? 0 : 1
+        setNeedsLayout()
+    }
+}
+
+/// A view that rounds itself to a capsule.
+private final class PillView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.height / 2
+        layer.masksToBounds = true
+    }
+}
+
+/// UILabel with content insets (used for value pills and the JSON block).
+private class InsetLabel: UILabel {
+    var contentInsets = UIEdgeInsets(top: 5, left: 9, bottom: 5, right: 9)
+
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: contentInsets))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(
+            width: size.width + contentInsets.left + contentInsets.right,
+            height: size.height + contentInsets.top + contentInsets.bottom
+        )
+    }
+}
+
+/// Status pill — either a soft tinted capsule or a subtle outlined tag.
+private final class ChipLabel: InsetLabel {
+    enum Kind {
+        case soft(UIColor)
+        case muted
+    }
+
+    private var kind: Kind = .muted
+    private var capsule = true
+
+    func configure(text: String, kind: Kind) {
+        self.kind = kind
+        self.text = text
+        switch kind {
+        case .soft(let color):
+            capsule = true
+            textColor = color
+            backgroundColor = color.withAlphaComponent(0.12)
+            font = .systemFont(ofSize: 11, weight: .bold)
+            contentInsets = UIEdgeInsets(top: 5, left: 9, bottom: 5, right: 9)
+        case .muted:
+            capsule = false
+            textColor = .secondaryLabel
+            backgroundColor = .clear
+            font = .systemFont(ofSize: 11, weight: .semibold)
+            contentInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        invalidateIntrinsicContentSize()
+        setNeedsLayout()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.masksToBounds = true
+        layer.cornerRadius = capsule ? bounds.height / 2 : 6
+        if case .muted = kind {
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.separator.resolvedColor(with: traitCollection).cgColor
+        } else {
+            layer.borderWidth = 0
+        }
     }
 }
