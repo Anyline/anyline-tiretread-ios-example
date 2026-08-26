@@ -288,7 +288,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.2.0;
+				MARKETING_VERSION = 15.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -388,7 +388,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.2.0;
+				MARKETING_VERSION = 15.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -429,7 +429,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 15.2.0;
+				minimumVersion = 15.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
