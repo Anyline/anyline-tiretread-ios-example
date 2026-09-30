@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2114452ABCEE1CECFD0BE16B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029EDDDD5314E198CF4118AD /* Assets.xcassets */; };
 		2BCA9F4B3EB9E975CD3F5AC8 /* tiretread_focuspoint_found.wav in Resources */ = {isa = PBXBuildFile; fileRef = ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */; };
+		30618D177B46474CC7A905B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EC0B40F4B4675AA0EA82B0 /* SceneDelegate.swift */; };
 		35263C0BCFD5E51678B03748 /* TireGlyphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0854D5858FEE2CBC300EE70 /* TireGlyphs.swift */; };
 		6892DDAE4A8122689260EB95 /* tiretread_sound_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = F65373EABE98880ADEF33243 /* tiretread_sound_start.wav */; };
 		69B4810C4E79732A4E7FC6B8 /* tiretread_sound_beep_too_far.wav in Resources */ = {isa = PBXBuildFile; fileRef = BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */; };
@@ -32,6 +33,7 @@
 		4F3CF9FC1B104BFE6A9258C3 /* ApiExplorerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExplorerViewController.swift; sourceTree = "<group>"; };
 		54713308380E850446F7786B /* tiretread_sound_beep_too_close.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_close.wav; sourceTree = "<group>"; };
 		5FE4371143B3625111243881 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		86EC0B40F4B4675AA0EA82B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		ADFD100075E423F984844807 /* tiretread_focuspoint_found.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_focuspoint_found.wav; sourceTree = "<group>"; };
 		BE5C16D73BEA09CF98F030B3 /* tiretread_sound_beep_too_far.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tiretread_sound_beep_too_far.wav; sourceTree = "<group>"; };
 		D0854D5858FEE2CBC300EE70 /* TireGlyphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TireGlyphs.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 			children = (
 				4F3CF9FC1B104BFE6A9258C3 /* ApiExplorerViewController.swift */,
 				4E8A77D0AB5A0854AACA860A /* AppDelegate.swift */,
+				86EC0B40F4B4675AA0EA82B0 /* SceneDelegate.swift */,
 				038AE0D4021C238594C2CCC6 /* SDKUtilities.swift */,
 				4721BF022638E070D472F80F /* String+Extras.swift */,
 				D0854D5858FEE2CBC300EE70 /* TireGlyphs.swift */,
@@ -187,6 +190,7 @@
 				B90B63230E1806F04B46E055 /* ApiExplorerViewController.swift in Sources */,
 				82EDBD50530FF2A6FE92CC29 /* AppDelegate.swift in Sources */,
 				F177F301F5F30CFBAD1532CC /* SDKUtilities.swift in Sources */,
+				30618D177B46474CC7A905B0 /* SceneDelegate.swift in Sources */,
 				D6952F397A828CE26BA427E7 /* String+Extras.swift in Sources */,
 				35263C0BCFD5E51678B03748 /* TireGlyphs.swift in Sources */,
 			);
@@ -251,7 +255,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -283,12 +287,12 @@
 					UIInterfaceOrientationLandscapeLeft,
 					UIInterfaceOrientationLandscapeRight,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.4.0;
+				MARKETING_VERSION = 16.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -351,7 +355,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -383,12 +387,12 @@
 					UIInterfaceOrientationLandscapeLeft,
 					UIInterfaceOrientationLandscapeRight,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 15.4.0;
+				MARKETING_VERSION = 16.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.anyline.tiretread.developerexamples;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -429,7 +433,7 @@
 			repositoryURL = "https://github.com/Anyline/anyline-tiretread-spm-module";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 15.4.0;
+				minimumVersion = 16.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
