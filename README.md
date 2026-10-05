@@ -5,7 +5,7 @@ accurately assess the health of their vehicle's tires. The application code is i
 to help developers build the SDK into their own iOS applications.
 
 For more information and additional guidance, please check the 
-[Tire Tread SDK iOS Documentation](https://documentation.anyline.com/tiretreadsdk-component/latest/ios/overview.html). 
+[Tire Tread SDK iOS Documentation](https://documentation.anyline.com/tiretreadsdk-component/latest/getting-started.html). 
 
 
 ## Get Help (Support) ##
