@@ -29,6 +29,7 @@ class ApiExplorerViewController: UIViewController {
     private var setupCompleteChip: UIView!
     private var deviceSupportCircle: StatusCircle!
     private var initCircle: StatusCircle!
+    private var shoulderWearSwitch: UISwitch!
 
     // Config controls
     private var appearanceControl: UISegmentedControl!
@@ -72,6 +73,8 @@ class ApiExplorerViewController: UIViewController {
     private var localDepth1Label: UILabel!
     private var localDepth2Label: UILabel!
     private var localDepth3Label: UILabel!
+    private var leftShoulderWearLabel: UILabel!
+    private var rightShoulderWearLabel: UILabel!
     private var resultsStatusLabel: UILabel!
 
     // MARK: - Lifecycle
@@ -97,6 +100,15 @@ class ApiExplorerViewController: UIViewController {
 
     @objc private func initButtonTapped() {
         initializeSDK()
+    }
+
+    @objc private func shoulderWearToggled() {
+        // The option is read on initialize, so allow initializing again.
+        initButton.isEnabled = true
+        if initCircle.done {
+            initStatusLabel.text = "Initialize again to apply shoulder wear"
+            initStatusLabel.textColor = .secondaryLabel
+        }
     }
 
     @objc private func deviceSupportTapped() {
@@ -133,13 +145,15 @@ class ApiExplorerViewController: UIViewController {
     private func initializeSDK() {
         scanButton.isEnabled = false
         setSoftButtonLoading(initButton, spinner: initSpinner, loading: true, title: "")
+        shoulderWearSwitch.isEnabled = false
         initStatusLabel.text = "Initializing SDK…"
         initStatusLabel.textColor = .secondaryLabel
 
         Task {
-            let result = await SDKUtilities.initializeSDK()
+            let result = await SDKUtilities.initializeSDK(shoulderWearEnabled: shoulderWearSwitch.isOn)
 
             await MainActor.run {
+                self.shoulderWearSwitch.isEnabled = true
                 switch result {
                 case .success:
                     self.scanButton.isEnabled = true
@@ -267,6 +281,8 @@ class ApiExplorerViewController: UIViewController {
                         self.localDepth2Label.text = String(format: "%.2f", regions[1].valueMm)
                         self.localDepth3Label.text = String(format: "%.2f", regions[2].valueMm)
                     }
+                    self.leftShoulderWearLabel.text = self.formatShoulderWear(regions.first?.shoulderWear)
+                    self.rightShoulderWearLabel.text = self.formatShoulderWear(regions.last?.shoulderWear)
                     self.resultsStatusLabel.text = "Results loaded"
                     self.resultsStatusLabel.textColor = Accent.success
                 case .failure(let error):
@@ -365,6 +381,11 @@ class ApiExplorerViewController: UIViewController {
     }
 
     // MARK: - Helpers
+
+    private func formatShoulderWear(_ shoulderWear: ShoulderWear?) -> String {
+        guard let shoulderWear = shoulderWear else { return "No estimate" }
+        return shoulderWear.isWorn ? "Worn" : "Not worn"
+    }
 
     private func setButtonLoading(_ button: UIButton, spinner: UIActivityIndicatorView, loading: Bool) {
         button.isEnabled = !loading
@@ -481,6 +502,11 @@ class ApiExplorerViewController: UIViewController {
         initSpinner = makeButtonSpinner(in: initButton, color: Accent.brand)
         initStatusLabel = makeDetailLabel("Not initialized")
 
+        shoulderWearSwitch = UISwitch()
+        shoulderWearSwitch.isOn = false
+        shoulderWearSwitch.onTintColor = Accent.brand
+        shoulderWearSwitch.addTarget(self, action: #selector(shoulderWearToggled), for: .valueChanged)
+
         setupCompleteChip = makeStatusChipView(text: "Complete", color: Accent.success, systemIcon: "checkmark.circle.fill")
         setupCompleteChip.isHidden = true
 
@@ -489,6 +515,7 @@ class ApiExplorerViewController: UIViewController {
             makeHairline(),
             makeSetupRow(circle: deviceSupportCircle, title: "Check device support", detailLabel: deviceSupportStatusLabel, button: deviceSupportButton),
             makeHairline(),
+            makeSwitchRow("Shoulder wear (BETA)", sub: "InitOptions.shoulderWearEnabled, applied on Initialize", shoulderWearSwitch),
             makeSetupRow(circle: initCircle, title: "Initialize SDK", detailLabel: initStatusLabel, button: initButton),
         ])
 
@@ -691,6 +718,8 @@ class ApiExplorerViewController: UIViewController {
         localDepth1Label = UILabel()
         localDepth2Label = UILabel()
         localDepth3Label = UILabel()
+        leftShoulderWearLabel = UILabel()
+        rightShoulderWearLabel = UILabel()
 
         let metricsRow = UIStackView(arrangedSubviews: [
             makeMetricTile(title: "Global", valueLabel: globalDepthLabel, highlight: false),
@@ -709,12 +738,22 @@ class ApiExplorerViewController: UIViewController {
         regionsRow.distribution = .fillEqually
         regionsRow.spacing = 8
 
+        let shoulderWearRow = UIStackView(arrangedSubviews: [
+            makeRegionTile(title: "Left", valueLabel: leftShoulderWearLabel),
+            makeRegionTile(title: "Right", valueLabel: rightShoulderWearLabel),
+        ])
+        shoulderWearRow.axis = .horizontal
+        shoulderWearRow.distribution = .fillEqually
+        shoulderWearRow.spacing = 8
+
         let resultsCard = makeCard([
             getResultsButton,
             resultsStatusLabel,
             metricsRow,
             makeSubhead("Per region"),
             regionsRow,
+            makeSubhead("Shoulder wear (BETA)"),
+            shoulderWearRow,
         ])
 
         // === Assemble ========================================================

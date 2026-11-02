@@ -16,10 +16,16 @@ struct SDKUtilities {
         return licenseStringMissingErrorMessage
     }
 
-    static func initializeSDK() async -> Result<Void, Error> {
+    static func initializeSDK(shoulderWearEnabled: Bool) async -> Result<Void, Error> {
         await withCheckedContinuation { continuation in
             let licenseString = SDKUtilities.getLicenseString()
-            AnylineTireTread.shared.initialize(licenseKey: licenseString) { sdkResult in
+            let options = InitOptions(
+                customTag: nil,
+                wrapperInfo: nil,
+                uploadTimeoutMillis: InitOptions.companion.DEFAULT_UPLOAD_TIMEOUT_MILLIS,
+                shoulderWearEnabled: shoulderWearEnabled
+            )
+            AnylineTireTread.shared.initialize(licenseKey: licenseString, options: options) { sdkResult in
                 if sdkResult.isOk {
                     continuation.resume(returning: .success(()))
                 } else if let error = sdkResult.error {
